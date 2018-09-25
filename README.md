@@ -1,1 +1,1 @@
-# cubiccalculator
+# Cubic Calculator
