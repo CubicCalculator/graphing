@@ -131,7 +131,9 @@ var evaluate = function(func, vars, values) {
     
     // multiplication/division
     for (var i = 0; i < func.length; i ++) {
-        if ('*/'.split('').indexOf(func[i]) > -1) {
+        if ('*/
+
+/*'.split('').indexOf(func[i]) > -1) {
             var total = operate(func, i, (func[i] === '*') ? multiply : divide);
             
             func = func.substring(0, total.start) + total.num + func.substring(total.end, func.length);
