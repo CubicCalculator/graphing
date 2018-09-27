@@ -26,15 +26,15 @@ var findGroup = function(func) {
     var end = -1;
 
     for (var i = 0; i < func.length; i ++) {
-        if (func[i] == '(') {
+        if (func[i] === '(') {
             depth ++;
-            if (depth == 1) {
+            if (depth === 1) {
                 start = i;
             }
         }
-        if (func[i] == ')') {
+        if (func[i] === ')') {
             depth --;
-            if (depth == 0) {
+            if (depth === 0) {
                 end = i;
                 
                 return [start, end];
@@ -53,7 +53,7 @@ var numTrackBack = function(func, pos) {
             numFound = true;
             end = pos;
         }
-        if (func[pos] == '-' && numFound) {
+        if (func[pos] === '-' && numFound) {
             negative = true;
         }
         
@@ -120,7 +120,7 @@ var evaluate = function(func, vars, values) {
     
     // exponents
     for (var i = 0; i < func.length; i ++) {
-        if (func[i] == '^') {
+        if (func[i] === '^') {
             
             var total = operate(func, i, pow);
             
@@ -132,7 +132,7 @@ var evaluate = function(func, vars, values) {
     // multiplication/division
     for (var i = 0; i < func.length; i ++) {
         if ('*/'.split('').indexOf(func[i]) > -1) {
-            var total = operate(func, i, (func[i] == '*') ? multiply : divide);
+            var total = operate(func, i, (func[i] === '*') ? multiply : divide);
             
             func = func.substring(0, total.start) + total.num + func.substring(total.end, func.length);
             i = total.newPos;
@@ -143,7 +143,7 @@ var evaluate = function(func, vars, values) {
     for (var i = 0; i < func.length; i ++) {
         if ('+-'.split('').indexOf(func[i]) > -1) {
             
-            var total = operate(func, i, (func[i] == '+') ? add : subtract);
+            var total = operate(func, i, (func[i] === '+') ? add : subtract);
             
             func = func.substring(0, total.start) + total.num + func.substring(total.end, func.length);
             i = total.newPos;
@@ -191,9 +191,9 @@ var graph2D = function(func, vars, constraints, x, y, w, h) {
     popMatrix();
 };
 var graph = function(func, vars, constraints, x, y, w, h) {
-    if (vars.length == 1) {
+    if (vars.length === 1) {
         graph2D(func, vars, constraints, x, y, w, h);
-    } else if (vars.length == 2) {
+    } else if (vars.length === 2) {
         
     } else {
         throw 'Attempted to graph in more than 3 dimensions';
