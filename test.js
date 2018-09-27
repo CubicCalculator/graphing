@@ -9,12 +9,12 @@ var g = '2.*a + 2*b - 3 * (a / b) + 15.';
 var f = '(x - 2)^2';
 
 var isEqual = function(arr1, arr2) {
-    if (arr1.length != arr2.length) {
+    if (arr1.length !== arr2.length) {
         return false;
     }
     
     for (var i = 0; i < arr1.length; i ++) {
-        if (arr1[i] != arr2[i]) { return false; }
+        if (arr1[i] !== arr2[i]) { return false; }
     }
     
     return true;
@@ -67,8 +67,8 @@ var numTrackForward = function(func, pos) {
     var start;
     
     var origPos = pos;
-    while (('0123456789.-'.split('').indexOf(func[pos]) > -1 || !numFound) && ('-' != func[pos] || !numFound)) {
-        if ('0123456789.-'.split('').indexOf(func[pos]) > -1 && !numFound && origPos != pos) {
+    while (('0123456789.-'.split('').indexOf(func[pos]) > -1 || !numFound) && ('-' !== func[pos] || !numFound)) {
+        if ('0123456789.-'.split('').indexOf(func[pos]) > -1 && !numFound && origPos !== pos) {
             numFound = true;
             start = pos;
         }
@@ -103,7 +103,7 @@ var evaluate = function(func, vars, values) {
     
     // replace variables
     for (var i = 0; i < vars.length; i ++) {
-        while (func != func.replace(vars[i], values[i])) {
+        while (func !== func.replace(vars[i], values[i])) {
             func = func.replace(vars[i], values[i]);
         }
     }
