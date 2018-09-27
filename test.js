@@ -1,8 +1,8 @@
-/*
+
 void setup() { 
   size(1000, 600); 
 } 
-
+/*
 smooth();
 
 var g = '2.*a + 2*b - 3 * (a / b) + 15.';
