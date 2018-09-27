@@ -1,4 +1,4 @@
-
+/*
 void setup() { 
   size(1000, 600); 
 } 
@@ -207,3 +207,4 @@ var graph = function(func, vars, constraints, x, y, w, h) {
     //background(255, 255, 255);
     //graph(f, ['x'], [[-2, 2], [-4, 4]]);
 //};
+*/
