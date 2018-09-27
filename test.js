@@ -202,7 +202,7 @@ var graph = function(func, vars, constraints, x, y, w, h) {
 
 //println('f(2) = ' + evaluate(f, ['x'], [2]));
 
-graph(f, ['x'], [[-2, 2], [-4, 4]], 100, 100);
+//graph(f, ['x'], [[-2, 2], [-4, 4]], 100, 100);
 void draw() {
     //background(255, 255, 255);
     //graph(f, ['x'], [[-2, 2], [-4, 4]]);
