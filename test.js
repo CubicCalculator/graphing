@@ -2,7 +2,7 @@
 void setup() { 
   size(1000, 600); 
 } 
-/*
+
 smooth();
 
 var g = '2.*a + 2*b - 3 * (a / b) + 15.';
@@ -131,9 +131,7 @@ var evaluate = function(func, vars, values) {
     
     // multiplication/division
     for (var i = 0; i < func.length; i ++) {
-        if ('*/
-
-/*'.split('').indexOf(func[i]) > -1) {
+        if ('*/'.split('').indexOf(func[i]) > -1) {
             var total = operate(func, i, (func[i] === '*') ? multiply : divide);
             
             func = func.substring(0, total.start) + total.num + func.substring(total.end, func.length);
@@ -205,8 +203,8 @@ var graph = function(func, vars, constraints, x, y, w, h) {
 //println('f(2) = ' + evaluate(f, ['x'], [2]));
 
 //graph(f, ['x'], [[-2, 2], [-4, 4]], 100, 100);
-//void draw() {
+void draw() {
     //background(255, 255, 255);
     //graph(f, ['x'], [[-2, 2], [-4, 4]]);
-//};
-*/
+};
+
