@@ -2004,6 +2004,7 @@ var addGraph = function() {
             }
             resetMatrix();
             fill(100, 100, 100);
+            textSize(15);
             text(funcs[i].name, width-106, floor(i/3)*30+50);
         }
         else if (i%3 === 1) {
@@ -2026,6 +2027,7 @@ var addGraph = function() {
             }
             resetMatrix();
             fill(100, 100, 100);
+            textSize(15);
             text(funcs[i].name, width-66, floor(i/3)*30+50);
         }
         else if (i%3 === 2) {
@@ -2048,7 +2050,7 @@ var addGraph = function() {
             }
             resetMatrix();
             fill(100, 100, 100);
-            textSize(1);
+            textSize(15);
             text(funcs[i].name, width-26, floor(i/3)*30+50);
         }
     }
