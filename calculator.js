@@ -1522,7 +1522,7 @@ var titleScreen = function() {
     noStroke();
     rect(0, 0, width, height);
     imageMode(CENTER);
-    /*@pjs preload="hpcubiccalcsmall.png"*/
+    /*@pjs preload="hpcubiccalcsmall.png";*/
     PImage b;
     b = loadImage("hpcubiccalcsmall.png");
     image(b, 200*wh, 200*ht);
