@@ -1522,10 +1522,7 @@ var titleScreen = function() {
     noStroke();
     rect(0, 0, width, height);
     imageMode(CENTER);
-    /*@pjs preload="hpcubiccalcsmall.png";*/
-    PImage b;
-    b = loadImage("hpcubiccalcsmall.png");
-    image(b, 200*wh, 200*ht);
+    image(loadImage("https://imgur.com/lrF0MXq"), 200*wh, 200*ht);
     fill(77, 77, 77, 150);
     textSize(15*wh);
     text("Click to proceed", 200*wh, 250*ht);
