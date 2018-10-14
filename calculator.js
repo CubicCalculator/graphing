@@ -1529,12 +1529,12 @@ var titleScreen = function() {
     rect(0, 0, width, height);
     textSize(50*wh);
     fill(93, 148, 141);
-    text("Logo goes here", 200*wh, 125*ht);
+    text("Logo goes here", 200*wh, 50*ht);
     fill(77, 77, 77, 150);
     textSize(15*wh);
-    text("Click to proceed", 200*wh, 250*ht);
+    text("Click to proceed", 200*wh, 150*ht);
     textSize(10*wh);
-    text("Andrew and Hazel Prasetya", 325*wh, 390*ht);
+    text("Andrew and Hazel Prasetya", 325*wh, 290*ht);
     textAlign(LEFT, BASELINE);
     if (mouseIsReleased) {
         translat = true;
