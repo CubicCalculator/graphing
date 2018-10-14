@@ -744,7 +744,7 @@ var constraintedit = function(x, y, val, constraint, edited, indices) {
             constraintsub1+=key.toString();
             constraintPos++;
         }
-        if (keyIsPresed === true && keyCode === 8 && constraintPos >0) {
+        if (keyIsPresed === true && KeyboardEvent.key.code === 8 && constraintPos >0) {
             constraintsub1 = constraintsub1.substring(0, constraintsub1.length-1);
             constraintPos--;
         }
@@ -885,7 +885,7 @@ var edit = function(func, i) {
 
     }
 
-    if (keyIsPresed && keyCode === 8 && renamePos >= 1) {
+    if (keyIsPresed && KeyboardEvent.key.code === 8 && renamePos >= 1) {
 
         rensub1 = rensub1.substring(0, rensub1.length-1);
 
@@ -1602,12 +1602,12 @@ var funcDropDown = function() {
     
             }
     
-            if (keyIsPresed && keyCode === 8 && pos >= 1) {
+            if (keyIsPresed && KeyboardEvent.key.code === 8 && pos >= 1) {
     
                 sub1 = sub1.substring(0, sub1.length-1);
     
                 funcs[currFunc-currFuncs[0]].func = sub1 + sub2;
-    
+   
                 pos --;
     
             }
@@ -2383,7 +2383,7 @@ void mouseReleased() {
     mouseIsReleased = true;
 };
 
-void keyPressed() {
+void event.keydown() {
     if (key.toString() !== prevKey && key.toString() !== renprevKey && key.toString() !== consprevKey) {
         keyIsPresed = true;
     }
