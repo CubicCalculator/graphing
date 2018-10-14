@@ -1,7 +1,8 @@
 //code
 import Math;
-width = 1900;
-height = 920;
+
+var width = window.innerWidth - 20;
+var height = window.innerHeight - 20;
 void setup() {
     size(width, height);
 }
