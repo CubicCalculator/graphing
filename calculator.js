@@ -2437,6 +2437,7 @@ void mouseReleased() {
 };
 
 void keyPressed() {
+    console.log("keyPressed: keyCode=" + keyCode);
     myKey.keyCode = keyCode;
 };
 
