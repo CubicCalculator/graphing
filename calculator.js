@@ -573,9 +573,8 @@ var graph3D = function(funcs, colors, vars, constraints, x, y, w, h, d) {
     drawer(faces);
     popMatrix();
     
-    
-    for (var i = 0; i < faces.length; i ++) {
-        if (mouseIsPressed) {
+    if (mousePressed) {
+        for (var i = 0; i < faces.length; i ++) {
             rotateXAxis(-(pmouseY - mouseY), faces[i], [0, 0, 0]);
             rotateYAxis((pmouseX - mouseX), faces[i], [0, 0, 0]);
         }
@@ -623,7 +622,6 @@ var keyIsPresed = false;
 var prevKey = "";
 var keyIsReleased = false;
 var keyIsPressed = false;
-var mouseIsPressed = false;
 var sub1 = "";
 var sub2 = "";
 var pos = 0;
@@ -693,7 +691,7 @@ var button = function(x, y, w, h, rad, r, g, b) {
 
         fill(r-15, g-15, b-15);
 
-        if (mouseIsPressed) {
+        if (mousePressed) {
 
             fill(r-30, g-30, b-30);
 
@@ -822,7 +820,7 @@ var circButton = function(x, y, d, r, g, b) {
 
         fill(r-20, g-20, b-20);
 
-        if(mouseIsPressed) {
+        if(mousePressed) {
 
             fill(r-40, g-40, b-40);
 
@@ -1019,7 +1017,7 @@ if (alpha > 0 && beta > 0 && gamma > 0) {
     
 if (inTri1 || inTri2 || inRect) {
 
-        if (mouseIsPressed) {
+        if (mousePressed) {
 
             stroke(0, 0, 0);
 
@@ -2369,7 +2367,6 @@ void draw() {
     keyIsReleased = false;
     keyIsPressed = false;
     mouseIsReleased = false;
-    mouseIsPressed = false;
 };
 
 //mouse and key functions
@@ -2377,7 +2374,6 @@ void mousePressed() {
     if (prevMouse !== true) {
         mouseIsPresed = true;
     }
-    mouseIsPressed = true;
 };
 void mouseReleased() {
     mouseIsReleased = true;
