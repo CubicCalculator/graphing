@@ -1,12 +1,9 @@
 //code
 
-var width = 1000;
-var height = 600;
 void setup() {
-    size(width, height);
+    size(1000, 600);
 }
-println(width);
-println(height);
+
 //graphing functions
 noStroke();
 var dimensionsOfFunc = function(func) {
@@ -611,8 +608,10 @@ var aboutopen = false;
 var helpState = 1;
 var helpopen = false;
 var graphopen = false;
+width = 1000;
+height = 600;
 var wh = width/400;
-var ht = width/400;
+var ht = height/400;
 var translat = false;
 var titleScroll = 0;
 var titleOn = true;
