@@ -621,6 +621,7 @@ var keyIsPresed = false;
 var prevKey = "";
 var keyIsReleased = false;
 var keyIsPressed = false;
+var mouseIsPressed = false;
 var sub1 = "";
 var sub2 = "";
 var pos = 0;
@@ -2363,7 +2364,7 @@ void draw() {
     keyIsReleased = false;
     keyIsPressed = false;
     mouseIsReleased = false;
-    
+    mouseIsPressed = false;
 };
 
 //mouse and key functions
@@ -2371,6 +2372,7 @@ void mousePressed() {
     if (prevMouse !== true) {
         mouseIsPresed = true;
     }
+    mouseIsPressed = true;
 };
 void mouseReleased() {
     mouseIsReleased = true;
