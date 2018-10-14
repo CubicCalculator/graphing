@@ -1,7 +1,7 @@
 //code
 import Math;
 void setup() {
-    size(1800, 900);
+    size(1900, 920);
 }
 
 //graphing functions
@@ -603,8 +603,8 @@ var aboutopen = false;
 var helpState = 1;
 var helpopen = false;
 var graphopen = false;
-width = 1800;
-height = 900;
+width = 1900;
+height = 920;
 var wh = width/400;
 var ht = height/400;
 var translat = false;
@@ -1602,10 +1602,10 @@ var titleScreen = function() {
     /* @pjs preload = "hpcubiccalc.png"; */
     PImage b;
     b = loadImage("hpcubiccalc.png");
-    image(b, width/2, height/2-50, 300*wh, 150*ht);
+    image(b, width/2, height/2.5, 300*wh, 200*ht);
     fill(77, 77, 77, 150);
     textSize(12*wh);
-    text("Click to proceed", 200*wh, 250*ht);
+    text("Click to proceed", 200*wh, 275*ht);
     textSize(10*wh);
     text("Andrew and Hazel Prasetya", 325*wh, 370*ht);
     textAlign(LEFT, BASELINE);
@@ -2276,7 +2276,7 @@ void draw() {
             if (str(grapphs[i].name+"("+grapphs[i].vars+") = "  + grapphs[i].func).length > 18) {
                 textSize(15/(textWidth(str(grapphs[i].name+"("+grapphs[i].vars+") = "  + grapphs[i].func))/150));
             }
-            text(grapphs[i].name+"("+grapphs[i].vars+") = "  + grapphs[i].func, (i%floor(width/200))*200 + 100, 230*(floor(i/floor(width/200)))+40);
+            text(grapphs[i].name+"("+grapphs[i].vars+") = "  + grapphs[i].func, ((i%floor(width/200))*min(width, height)/3 + 25)+min(width, height)/8, (min(width, height)/3 + 30)*(floor(i/floor(width/200)))+40);
         }
         else {
             fill(0, 0, 0);
@@ -2290,10 +2290,10 @@ void draw() {
             if (string.length > 18) {
                 textSize(15/(textWidth(string)/150));
             }
-            text(string, (i%floor(width/200))*200 + 100, 230*(floor(i/floor(width/200)))+40);
+            text(string,  ((i%floor(width/200))*min(width, height)/3 + 25)+min(width, height)/8, (min(width, height)/3+30)*(floor(i/floor(width/200)))+40);
         }
         noStroke();
-        if (button((i%floor(width/200))*200 + 35, 230*(floor(i/floor(width/200)))+457+funcTranslate, 100, 20, 2, 226, 227, 245)&&editCon === false&&colOn === false && graphopen === false && helpopen === false) {
+        if (button((i%floor(width/200))*min(width, height)/3 + 65, (min(width, height)/3+30)*(floor(i/floor(width/200)))+457+funcTranslate, 100, 20, 2, 226, 227, 245)&&editCon === false&&colOn === false && graphopen === false && helpopen === false) {
             prevGraph = {"constraints": [], "index": i};
             for (var c = 0; c < grapphs[i].constraints.length; c ++) {
                 prevGraph.constraints.push([]);
@@ -2305,21 +2305,21 @@ void draw() {
             constraintPos = str(prevGraph.constraints[0][0]).length;
             currCons = "startX";
         }
-        if (button((i%floor(width/200))*200 + 147, 230*(floor(i/floor(width/200)))+457+funcTranslate, 20, 20, 2, 226, 227, 245)&&editCon === false&&helpopen === false) {
+        if (button((i%floor(width/200))*min(width, height)/3 + 177, (min(width, height)/3 + 30)*(floor(i/floor(width/200)))+457+funcTranslate, 20, 20, 2, 226, 227, 245)&&editCon === false&&helpopen === false) {
             grapphs.splice(i, 1);
             break;
         }
         stroke(255, 0, 0);
         strokeWeight(3);
-        line(i%floor(width/200)*200 + 152, 230*(floor(i/floor(width/200)))+462,i%floor(width/200)*200 + 162, 230*(floor(i/floor(width/200)))+472);
-        line(i%floor(width/200)*200 + 152, 230*(floor(i/floor(width/200)))+472,i%floor(width/200)*200 + 162, 230*(floor(i/floor(width/200)))+462);
+        line(i%floor(width/200)*min(width, height)/3 + 182, (min(width, height)/3+30)*(floor(i/floor(width/200)))+472,i%floor(width/200)*min(width, height)/3 + 192, (min(width, height)/3 + 30)*(floor(i/floor(width/200)))+462);
+        line(i%floor(width/200)*min(width, height)/3 + 182, (min(width, height)/3+30)*(floor(i/floor(width/200)))+462,i%floor(width/200)*min(width, height)/3 + 192, (min(width, height)/3 + 30)*(floor(i/floor(width/200)))+472);
         fill(0, 0, 0);
         textSize(10);
-        text("Edit Constraints", 200*(i%floor(width/200)) + 85, 230*(floor(i/floor(width/200)))+467);
+        text("Edit Constraints", min(width, height)/3*(i%floor(width/200)) + 115, (min(width, height)/3 + 30)*(floor(i/floor(width/200)))+467);
         textAlign(LEFT, BASELINE);
         textSize(13);
         resetMatrix();
-        graph(grapphs[i].func, grapphs[i].color, grapphs[i].vars, grapphs[i].constraints, (i%floor(width/200))*width/3 + 25, (height/3 + 35)*(floor(i/floor(width/200)))+495 + funcTranslate, min(width, height)/4, min(width, height)/4);
+        graph(grapphs[i].func, grapphs[i].color, grapphs[i].vars, grapphs[i].constraints, (i%floor(width/200))*min(width, height)/3 + 25, (min(width, height)/3 + 30)*(floor(i/floor(width/200)))+495 + funcTranslate, min(width, height)/4, min(width, height)/4);
     }
     
     //color menu
