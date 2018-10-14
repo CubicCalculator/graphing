@@ -2244,14 +2244,14 @@ void draw() {
             constraintPos = str(prevGraph.constraints[0][0]).length;
             currCons = "startX";
         }
-        if (button((i%floor(width/200))*min(width, height) + 147, (min(width, height)/3 + 30)*(floor(i/floor(width/200)))+457+funcTranslate, 20, 20, 2, 226, 227, 245)&&editCon === false&&helpopen === false) {
+        if (button((i%floor(width/200))*min(width, height)/3 + 147, (min(width, height)/3 + 30)*(floor(i/floor(width/200)))+457+funcTranslate, 20, 20, 2, 226, 227, 245)&&editCon === false&&helpopen === false) {
             grapphs.splice(i, 1);
             break;
         }
         stroke(255, 0, 0);
         strokeWeight(3);
-        line(i%floor(width/200)*min(width, height) + 152, (min(width, height)/3+30)*(floor(i/floor(width/200)))+462,i%floor(width/200)*min(width, height)/3 + 162, (min(width, height)/3 + 30)*(floor(i/floor(width/200)))+472);
-        line(i%floor(width/200)*min(width, height) + 152, (min(width, height)/3+30)*(floor(i/floor(width/200)))+472,i%floor(width/200)*min(width, height)/3 + 162, (min(width, height)/3 + 30)*(floor(i/floor(width/200)))+462);
+        line(i%floor(width/200)*min(width, height)/3 + 152, (min(width, height)/3+30)*(floor(i/floor(width/200)))+462,i%floor(width/200)*min(width, height)/3 + 162, (min(width, height)/3 + 30)*(floor(i/floor(width/200)))+472);
+        line(i%floor(width/200)*min(width, height)/3 + 152, (min(width, height)/3+30)*(floor(i/floor(width/200)))+472,i%floor(width/200)*min(width, height)/3 + 162, (min(width, height)/3 + 30)*(floor(i/floor(width/200)))+462);
         fill(0, 0, 0);
         textSize(10);
         text("Edit Constraints", min(width, height)/3*(i%floor(width/200)) + 85, (min(width, height)/3 + 30)*(floor(i/floor(width/200)))+467);
