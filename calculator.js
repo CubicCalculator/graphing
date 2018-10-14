@@ -1,4 +1,800 @@
+//code
 
+void setup() {
+    size(1000, 600);
+}
+
+//graphing functions
+noStroke();
+var dimensionsOfFunc = function(func) {
+    if (func.indexOf('x') > -1 && func.indexOf('y') > -1) {
+        return ['x', 'y'];
+    }
+    return ['x'];
+};
+
+var isEqual = function(arr1, arr2) {
+    if (arr1.length !== arr2.length) {
+        return false;
+    }
+    
+    for (var i = 0; i < arr1.length; i ++) {
+        if (arr1[i] !== arr2[i]) { return false; }
+    }
+    
+    return true;
+};
+var findGroup = function(func) {
+    var depth = 0;
+    
+    var start = -1;
+    var end = -1;
+
+    for (var i = 0; i < func.length; i ++) {
+        if (func[i] === '(') {
+            depth ++;
+            if (depth === 1) {
+                start = i;
+            }
+        }
+        if (func[i] === ')') {
+            depth --;
+            if (depth === 0) {
+                end = i;
+                
+                return [start, end];
+            }
+        }
+    }
+    
+    return [start, end];
+};
+var numTrackBack = function(func, pos) {
+    var numFound = false;
+    var negative = false;
+    var end;
+    while (('0123456789.-'.split('').indexOf(func[pos]) > -1 || !numFound) && !negative) {
+        if ('0123456789.'.split('').indexOf(func[pos]) > -1 && !numFound) {
+            numFound = true;
+            end = pos;
+        }
+        if (func[pos] === '-' && numFound) {
+            negative = true;
+        }
+        
+        pos --;
+    }
+    
+    return [pos + 1, end + 1];
+};
+var numTrackForward = function(func, pos) {
+    var numFound = false;
+    var start;
+    
+    var origPos = pos;
+    while (('0123456789.-'.split('').indexOf(func[pos]) > -1 || !numFound) && ('-' !== func[pos] || !numFound)) {
+        if ('0123456789.-'.split('').indexOf(func[pos]) > -1 && !numFound && origPos !== pos) {
+            numFound = true;
+            start = pos;
+        }
+        
+        pos ++;
+    }
+    
+    return [start, pos];
+};
+var operate = function(func, idx, combine) {
+    var first = numTrackBack(func, idx);
+    var second = numTrackForward(func, idx);
+    
+    var total = combine(
+        parseFloat(func.substring(first[0], first[1])), 
+        parseFloat(func.substring(second[0], second[1]))
+    );
+    
+    var res = {'num': total.toString(), 'newPos': idx - (first[1] - first[0]) + total.toString().length - 1, 'start': first[0], 'end': second[1]};
+    return res;
+};
+    
+var add = function(a, b) { return a + b; };
+var subtract = function(a, b) { return a - b; };
+var multiply = function(a, b) { return a * b; };
+var divide = function(a, b) { return a / b; };
+
+var evaluate = function(func, vars, values) {
+    func = "0+" + func;
+    func = func.toLowerCase();
+    func = func.replace(/\s/g, '');
+    func = func.replace(/e/g, '2.718281828459045');
+    func = func.replace(/pi/g, '3.141592653589793');
+    
+    // replace variables
+    for (var i = 0; i < vars.length; i ++) {
+        while (func !== func.replace(vars[i], values[i])) {
+            if (str(values[i]).indexOf('e-') > -1) {
+                values[i] = 0;
+            }
+            func = func.replace(vars[i], values[i]);
+        }
+    }
+    func = func.replace(/--/g, '');
+
+    var result = 0;
+    
+    // find parentheses and handle them
+    while (!isEqual(findGroup(func), [-1, -1])) {
+        var currGroup = findGroup(func);
+        func = func.substring(0, currGroup[0]) + 
+            evaluate(func.substring(currGroup[0] + 1, currGroup[1]), [], []) +
+            func.substring(currGroup[1] + 1, func.length);
+    }
+    
+    // exponents
+    for (var i = 0; i < func.length; i ++) {
+        if (func[i] === '^') {
+            
+            var total = operate(func, i, pow);
+            
+            func = func.substring(0, total.start) + total.num + func.substring(total.end, func.length);
+            i = total.newPos;
+        }
+    }
+    
+    // multiplication/division
+    for (var i = 0; i < func.length; i ++) {
+        if ('*/'.split('').indexOf(func[i]) > -1) {
+            var total = operate(func, i, (func[i] === '*') ? multiply : divide);
+            
+            func = func.substring(0, total.start) + total.num + func.substring(total.end, func.length);
+            i = total.newPos;
+        }
+    }
+    
+    // addition/subtraction
+    for (var i = 0; i < func.length; i ++) {
+        if ('+-'.split('').indexOf(func[i]) > -1) {
+            
+            var total = operate(func, i, (func[i] === '+') ? add : subtract);
+            
+            func = func.substring(0, total.start) + total.num + func.substring(total.end, func.length);
+            i = total.newPos;
+        }
+    }
+    
+    return parseFloat(func);
+};
+
+var backgroundLight = 0.4;
+
+var subtractVectors = function(v1, v2){
+    return [[v1[0] - v2[0]],
+            [v1[1] - v2[1]],
+            [v1[2] - v2[2]]];
+};
+var normalOfPlane = function(face) {
+    var nodes = face.nodes;
+    
+    var n1;
+    var n2;
+    var n3;
+    
+    n1 = nodes[0];
+    n2 = nodes[1];
+    n3 = nodes[2];
+    
+    var v1 = subtractVectors(n1, n2);
+    var v2 = subtractVectors(n1, n3);
+    
+    var v3 = [[v1[1]*v2[2] - v1[2]*v2[1]],
+              [v1[2]*v2[0] - v1[0]*v2[2]],
+              [v1[0]*v2[1] - v1[1]*v2[0]]];
+    return v3;
+};
+
+var normaliseVector = function(v) {
+    var d = sqrt(v[0]*v[0]+v[1]*v[1]+v[2]*v[2]);
+    return [v[0]/d, v[1]/d, v[2]/d];
+};
+
+var lightVector = [-0.5, -0.2, 1];
+var lightVector = normaliseVector(lightVector);
+
+var dotProduct = function(v1, v2){
+    // Assume everything has 3 dimensions
+    return v1[0]*v2[0] + v1[1]*v2[1] + v1[2]*v2[2];
+};
+
+var dirVector = function(node1, node2, center) {
+    var res = [];
+    for (var i = 0; i < node1.length; i ++) {
+        if (abs(node1[i] - center[i]) > abs(node2[i] - center[i])) {
+            res.push(round(node1[i] - center[i]));
+        } else {
+            res.push(round(node2[i] - center[i]));
+        }
+    }
+    
+    var magnitude = 0;
+    for (var i = 0; i < res.length; i ++) {
+        magnitude += res[i] * res[i];
+    }
+    magnitude = sqrt(magnitude);
+    
+    for (var i = 0; i < res.length; i ++) {
+        res[i] /= magnitude;
+    }
+    
+    return res;
+};
+
+var Face = function() {
+    var args;
+    if (arguments.length === 1 && Array.isArray(arguments[0])) {
+        args = arguments[0];
+    } else {
+        args = arguments;
+    }
+    this.color = args[0];
+    this.transparency = args[1];
+    this.drawStyle = args[2];
+    
+    var pointer = 3;
+    if (this.drawStyle === 'text') {
+        this.text = args[3];
+        this.size = args[4];
+        pointer += 2;
+    }
+    
+    this.z = 0;
+    this.nodes = [];
+    for (var i = pointer; i < args.length; i ++) {
+        this.nodes.push([]);
+        for (var j = 0; j < args[i].length; j ++) {
+            this.nodes[i - pointer].push(args[i][j]);
+        }
+        this.z += args[i][2];
+    }
+};
+var rotateYAxis = function(angle,face,center) {
+    var sinAngle = sin(angle);
+    var cosAngle = cos(angle);
+    
+    var nodes = face.nodes;
+    for (var i = 0; i < nodes.length; i ++) {
+        var node = nodes[i];
+        var x = node[0] - center[0];
+        var z = node[2] - center[2];
+        node[0] = x * cosAngle - z * sinAngle + center[0];
+        node[2] = z * cosAngle + x * sinAngle + center[2];
+    }
+    face.z -= center[2];
+    face.z = face.z * cosAngle + face.x * sinAngle + center[2];
+    
+    if (face.drawStyle === 'text') {
+        var direction = dirVector(face.nodes[0], [0, 0, 0], [0, 0, 0]);
+        face.size = (direction[2] + 2) * 10;
+    }
+};
+var rotateXAxis = function(angle,face,center) {
+    var sinAngle = sin(angle);
+    var cosAngle = cos(angle);
+    
+    var nodes = face.nodes;
+    for (var i = 0; i < nodes.length; i ++) {
+        var node = nodes[i];
+        var z = node[2] - center[2];
+        var y = node[1] - center[1];
+        node[2] = z * cosAngle - y * sinAngle + center[2];
+        node[1] = y * cosAngle + z * sinAngle + center[1];
+    }
+    
+    face.z -= center[2];
+    face.z = face.z * cosAngle - face.y * sinAngle + center[2];
+    
+    if (face.drawStyle === 'text') {
+        var direction = dirVector(face.nodes[0], [0, 0, 0], [0, 0, 0]);
+        face.size = (direction[2] + 2) * 10;
+    }
+};
+
+var maxArr = function(arr) {
+    var result = arr[0];
+    for (var i = 1; i < arr.length; i ++) {
+        result = max(result, arr[i]);
+    }
+    return result;
+};
+var drawer = function(faces) {
+    strokeWeight(1);
+    faces.sort(function(a, b) {
+        var aZs = [];
+        var bZs = [];
+        
+        for (var i = 0; i < a.nodes.length; i ++) {
+            aZs.push(a.nodes[i][2]);
+        }
+        for (var i = 0; i < b.nodes.length; i ++) {
+            bZs.push(b.nodes[i][2]);
+        }
+        return maxArr(aZs) - maxArr(bZs);
+    });
+    
+    if (faces) {
+        for (var i = 0; i < faces.length; i ++) {
+            var face = faces[i];
+            
+            switch (face.drawStyle) {
+                case 'shape':
+                    if (face.transparency === false) {
+                        var fnorm = normalOfPlane(face);
+                        var l = max(0, dotProduct(lightVector, normaliseVector(fnorm)));
+                        l = backgroundLight + (1 - backgroundLight) * l;
+                        stroke(lerpColor(color(0,0,0), face.color, l));
+                        fill(lerpColor(color(0,0,0), face.color, l));
+                    } else {
+                        noFill();
+                        stroke(face.color);
+                    }
+                    beginShape();
+                    for (var j = 0; j < face.nodes.length; j ++) {
+                        vertex(face.nodes[j][0], face.nodes[j][1]);
+                    }
+                    vertex(face.nodes[0][0], face.nodes[0][1]);
+                    endShape();
+                    break;
+                case 'text':
+                    fill(face.color);
+                    textSize(face.size);
+                    textAlign(CENTER, CENTER);
+                    text(face.text, face.nodes[0][0], face.nodes[0][1]);
+                    break;
+            }
+        }
+    }
+};
+
+var graphs = {};
+var graph2D = function(funcs, cols, vars, constraints, x, y, w, h) {
+    pushMatrix();
+    translate(x, y);
+    for (var v = 0; v < constraints.length; v ++) {
+        if (constraints[v][0] > constraints[v][1]) {
+            constraints[v][0] += constraints[v][1];
+            constraints[v][1] = constraints[v][0] - constraints[v][1];
+            constraints[v][0] -= constraints[v][1];
+        }
+    }
+    
+    var xInterval = (constraints[0][1] - constraints[0][0]) / w;
+    var yInterval = (constraints[1][1] - constraints[1][0]) / h;
+    stroke(0);
+    strokeWeight(1);
+    var xAxis = 0;
+    var yAxis = 0;
+    if (0 > constraints[0][1]) {
+        xAxis = w;
+    } else if (0 > constraints[0][0]) {
+        xAxis = -constraints[0][0] / xInterval;
+        line(xAxis, 0, xAxis, h);
+    } 
+    if (0 > constraints[0][1]) {
+        yAxis = h;
+    } else if (0 > constraints[1][0]) {
+        yAxis = h + constraints[1][0] / yInterval;
+        line(0, yAxis, w, yAxis);
+    }
+    var trueYAxis = h + constraints[1][0] / yInterval;
+    
+    textAlign(CENTER, CENTER);
+    fill(0, 0, 0);
+    if (xAxis > 0 && xAxis < w && yAxis > 0 && yAxis < h) {
+        text(0, xAxis + ((yAxis === 0 || yAxis === h) ? 0 : ((xAxis <= w / 2) ? 8 : -8)), yAxis + ((xAxis === 0 || xAxis === w) ? 0 : ((yAxis <= h / 2) ? 8 : -8)));
+    }
+    text(constraints[0][0], -8, yAxis + ((xAxis === 0 || xAxis === w) ? 0 : ((yAxis <= h / 2) ? 8 : -8)));
+    text(constraints[0][1], w + 8, yAxis + ((xAxis === 0 || xAxis === w) ? 0 : ((yAxis <= h / 2) ? 8 : -8)));
+    text(constraints[1][0], xAxis + ((yAxis === 0 || yAxis === h) ? 0 : ((xAxis <= w / 2) ? 8 : -8)), h + 8);
+    text(constraints[1][1], xAxis + ((yAxis === 0 || yAxis === h) ? 0 : ((xAxis <= w / 2) ? 8 : -8)), -8);
+    textAlign(LEFT, BASELINE);
+    for (var i = 0; i < funcs.length; i ++) {
+        var func = funcs[i];
+        if (func !== '') {
+            var id = func;
+            for (var j = 0; j < vars.length + 1; j ++) {
+                if (i < vars.length) {
+                    id += vars[j];
+                } else {
+                    id += 'res';
+                }
+                id += str(constraints[j]);
+            }
+        
+            if (!(id in graphs)) {
+                graphs[id] = [];
+                var func;
+                for (var i = constraints[0][0] + xInterval; i < constraints[0][1]; i += xInterval) {
+                    var res = evaluate(func, vars, [i]);
+                    if (res >= constraints[1][0] && res <= constraints[1][1]) {
+                        graphs[id].push([round((i - constraints[0][0])/xInterval), round(trueYAxis - (res/yInterval))]);
+                    }
+                }
+            }
+            var prev;
+            var curr;
+            stroke(cols[i]);
+            for (var j = 1; j < graphs[id].length; j ++) {
+                prev = graphs[id][j - 1];
+                curr = graphs[id][j];
+                if (prev[0] === curr[0] - 1) {
+                    line(prev[0], prev[1], curr[0], curr[1]);
+                }
+            }
+        }
+    }
+    
+    stroke(0, 0, 0);
+    line(0,0,0,h);
+    line(0,0,w,0);
+    line(w,0,w,h);
+    line(0,h,w,h);
+    popMatrix();
+};
+
+var graph3DCount = 0;
+var graph3DStructures = {};
+var graphInterval = 20;
+var xor = function(a, b) {
+    return (a || b) && (!a || !b);
+};
+var pointsAdjacent = function(p1, p2) {
+    return xor(abs(p1[0] - p2[0]) === 1, abs(p1[1] - p2[1]) === 1);
+};
+var inConstraints = function(val, min, max) {
+    return val >= min && val <= max;
+};
+
+var graph3D = function(funcs, colors, vars, constraints, x, y, w, h, d) {
+    var graphID = graph3DCount + funcs + constraints;
+    if (!(graphID in graph3DStructures)) {
+        var axisPos = [
+            map(0, constraints[0][0], constraints[0][1], -w/2, w/2), 
+            -map(0, constraints[2][0], constraints[2][1], -d/2, d/2), 
+            -map(0, constraints[1][0], constraints[1][1], -h/2, h/2)
+        ];
+        
+        graph3DStructures[graphID] = [];
+        var structure = graph3DStructures[graphID];
+        for (var i = 0; i < graphInterval; i ++) {
+            // x axis
+            if (inConstraints(axisPos[1], -h/2, h/2) && inConstraints(axisPos[2], -d/2, d/2)) {
+                structure.push(new Face(color(0, 0, 0), true, 'shape', [w/2 - w/graphInterval*i, axisPos[1], axisPos[2]], [w/2 - w/graphInterval*(i + 1), axisPos[1], axisPos[2]]));
+            } else {
+                structure.push(new Face(color(0, 0, 0), true, '', [w/2 - w/graphInterval*i, constrain(axisPos[1], -h/2, h/2), constrain(axisPos[2], -d/2, d/2)], [w/2 - w/graphInterval*(i + 1), constrain(axisPos[1], -h/2, h/2), constrain(axisPos[2], -d/2, d/2)]));
+            }
+            // z axis after rotation
+            if (inConstraints(axisPos[0], -w/2, w/2) && inConstraints(axisPos[2], -d/2, d/2)) {
+                structure.push(new Face(color(0, 0, 0), true, 'shape', [axisPos[0], -h/2 + h/graphInterval*i,  axisPos[2]], [axisPos[0], -h/2 + h/graphInterval*(i + 1), axisPos[2]]));
+            } else {
+                structure.push(new Face(color(0, 0, 0), true, '', [constrain(axisPos[0], -w/2, w/2), -h/2 + h/graphInterval*i,  constrain(axisPos[2], -d/2, d/2)], [constrain(axisPos[0], -w/2, w/2), -h/2 + h/graphInterval*(i + 1), constrain(axisPos[2], -d/2, d/2)]));
+            }
+            
+            // y axis after rotation
+            if (inConstraints(axisPos[0], -w/2, w/2) && inConstraints(axisPos[1], -h/2, h/2)) {
+                structure.push(new Face(color(0, 0, 0), true, 'shape', [axisPos[0], axisPos[1], -d/2 + d/graphInterval*i,], [axisPos[0], axisPos[1], -d/2 + d/graphInterval*(i + 1)]));
+            } else {
+                structure.push(new Face(color(0, 0, 0), true, '', [constrain(axisPos[0], -w/2, w/2), constrain(axisPos[1], -h/2, h/2), -d/2 + d/graphInterval*i,], [constrain(axisPos[0], -w/2, w/2), constrain(axisPos[1], -h/2, h/2), -d/2 + d/graphInterval*(i + 1)]));
+            }
+        }
+        
+        var pos;
+        axisPos = [
+            constrain(axisPos[0], -w/2 , w/2),
+            constrain(axisPos[1], -h/2, h/2),
+            constrain(axisPos[2], -d/2, d/2)
+        ];
+        structure.push(new Face(color(0, 0, 0), true, 'shape', [-w/2, -h/2, -d/2], [w/2, -h/2, -d/2], [w/2, h/2, -d/2], [-w/2, h/2, -d/2]));
+        structure.push(new Face(color(0, 0, 0), true, 'shape', [-w/2, -h/2, -d/2], [w/2, -h/2, -d/2], [w/2, -h/2, d/2], [-w/2, -h/2, d/2]));
+        structure.push(new Face(color(0, 0, 0), true, 'shape', [-w/2, h/2, -d/2], [w/2, h/2, -d/2], [w/2, h/2, d/2], [-w/2, h/2, d/2]));
+        structure.push(new Face(color(0, 0, 0), true, 'shape', [-w/2, -h/2, d/2], [w/2, -h/2, d/2], [w/2, h/2, d/2], [-w/2, h/2, d/2]));
+        for (var i = 0; i < 3; i ++) {
+            pos = [axisPos[0], axisPos[1], axisPos[2]];
+            pos[i] = [-w, d, h][i]/1.8;
+            
+            structure.push(new Face(color(0, 0, 0), false, 'text', [constraints[0], constraints[2], constraints[1]][i][0], map(pos[2], -d/2, d/2, 10, 30), pos));
+            pos[i] = -pos[i];
+            structure.push(new Face(color(0, 0, 0), false, 'text', [constraints[0], constraints[2], constraints[1]][i][1], map(pos[2], -d/2, d/2, 10, 30), pos));
+            
+            pos[i] *= 1.3;
+            structure.push(new Face(color(0, 0, 0), false, 'text', ['X', 'Z', 'Y'][i], map(pos[2], -d/2, d/2, 10, 30), pos));
+        }
+    }
+    var faces = graph3DStructures[graphID];
+    
+    var xInterval = (constraints[0][1] - constraints[0][0]) / graphInterval;
+    var yInterval = (constraints[1][1] - constraints[1][0]) / graphInterval;
+    var zInterval = (constraints[2][1] - constraints[2][0]) / graphInterval;
+    
+    for (var funcIdx = 0; funcIdx < funcs.length; funcIdx ++) {
+        var func = funcs[funcIdx];
+        var id = func;
+        for (var j = 0; j < vars.length + 1; j ++) {
+            if (j < vars.length) {
+                id += vars[j];
+            } else {
+                id += 'res';
+            }
+            id += str(constraints[j]);
+        }
+        id += colors[funcIdx];
+        id += graph3DCount;
+        if (!(id in graphs)) {
+            graphs[id] = { 'points': [], 'faces': [] };
+            var graph = graphs[id];
+            for (var i = constraints[0][0]; i <= constraints[0][1]; i += xInterval) {
+                graph.points.push([]);
+                var row = graphs[id].points[graphs[id].points.length - 1];
+                for (var j = constraints[1][0]; j <= constraints[1][1]; j += yInterval) {
+                    var res = evaluate(func, vars, [i, j]);
+                    
+                    row.push([
+                        round(map(i, constraints[0][0], constraints[0][1], -w/2, w/2)), 
+                        -round(map(j, constraints[1][0], constraints[1][1], -h/2, h/2)), 
+                        round(map(res, constraints[2][0], constraints[2][1], -d/2, d/2))
+                    ]);
+                }
+            }
+            
+            var points = graph.points;
+            var faces = graph.faces;
+            var faceArgs;
+            var potentialPoints;
+            for (var i = 0; i < points.length - 1; i ++) {
+                for (var j = 0; j < points[i].length - 1; j ++) {
+                    faceArgs = [colors[funcIdx], false, 'shape'];
+                    potentialPoints = [points[i][j], points[i + 1][j], points[i + 1][j + 1], points[i][j + 1]];
+                    for (var p = 0; p < potentialPoints.length; p ++) {
+                        if (inConstraints(potentialPoints[p][2], -d/2, d/2)) {
+                            faceArgs.push(potentialPoints[p]);
+                        } 
+                    }
+                    if (faceArgs.length >= 6) {
+                        graph.faces.push(new Face(faceArgs));
+                    }
+                } 
+            }
+            for (var i = 0; i < graph.faces.length; i ++) {
+                rotateXAxis(-90, graph.faces[i], [0, 0, 0]);
+            }
+        }
+        faces = faces.concat(graphs[id].faces);
+    }
+    pushMatrix();
+    translate(x + w/2, y + h/2);
+    scale(max(max(w, h), d) / sqrt(w * w + h * h + d * d));
+    drawer(faces);
+    popMatrix();
+    
+    
+    for (var i = 0; i < faces.length; i ++) {
+        if (mouseIsPressed) {
+            rotateXAxis(-(pmouseY - mouseY), faces[i], [0, 0, 0]);
+            rotateYAxis((pmouseX - mouseX), faces[i], [0, 0, 0]);
+        }
+    }
+};
+
+var graph = function(funcs, cols, vars, constraints, x, y, w, h) {
+    if (vars.length === 1) {
+        graph2D(funcs, cols, vars, constraints, x, y, w, h);
+    } else if (vars.length === 2) {
+        graph3D(funcs, cols, vars, constraints, x, y, w, h, (w + h) / 2);
+    } else {
+        throw 'Attempted to graph in more than 3 dimensions';
+    }
+};
+
+smooth();
+
+var grapphs = [];
+//global variables lmao
+var selected = {func: [], name: [], color: [], constraints:[[-10, 10], [-10, 10]], vars: []};
+var prevGraph = {};
+var constraintsub1 = "";
+var constraintsub2 = "";
+var constraintPos = "";
+var currCons = "startX";
+var consprevKey = "";
+var editCon = false;
+var aboutopen = false;
+var helpState = 1;
+var helpopen = false;
+var graphopen = false;
+width = 1000;
+height = 600;
+var wh = width/400;
+var ht = height/400;
+var translat = false;
+var titleScroll = 0;
+var titleOn = true;
+var deselect = true;
+var pscale = width/400;
+var funcs = [{"func": "", "name": "f1", "color": color(0, 0, 255)}];
+var currFuncs = [0, 1];
+var keyIsPresed = false;
+var prevKey = "";
+var keyIsReleased = false;
+var keyIsPressed = false;
+var mouseIsPressed = false;
+var sub1 = "";
+var sub2 = "";
+var pos = 0;
+var prevMouse = false;
+var currFunc = 0;
+var mouseIsPresed = false;
+var mouseIsReleased = false;
+var editOk = false;
+var renamePos = 0;
+var rensub1 = "";
+var rensub2 = "";
+var renprevKey = "";
+var funcLetts = ["f","g","h","a","b","c","d","e","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"];
+var letts = {};
+var menuTranslate = 300;
+var funcTranslate = 0;
+var dropFunc = true;
+var tSize = 40;
+var menuUp = false;
+var degRad = "rad";
+var graphSetting = "carte";
+var menuDown = false;
+var colpickCols = [color(255, 150, 0), color(255, 89, 0), color(255, 0, 0), color(255, 0, 102), color(255, 0, 150)];
+var colOn = false;
+var funcState = 0;
+
+textFont(createFont("monospace"));
+
+//union function
+var union = function(l1, l2) {
+    var together = [];
+    for (var i = 0; i < l1.length; i++) {
+        together.push(l1[i]);
+    }
+    for (var i = 0; i < l2.length;i++) {
+        var inarr = false;
+        for (var x = 0; x < together.length; x++) {
+            if (l2[i] === together[x]) {
+                inarr = true;
+            }
+        }
+        if (inarr === false) {
+            together.push(l2[i]);
+        }
+    }
+    return together;
+};
+
+//inarr function
+var inArr = function(o, l) {
+    var inarray = false;
+    for (var i = 0; i < l.length; i++) {
+        if (o === l[i]) {
+            inarray = true;
+        }
+    }
+    return inarray;
+};
+
+//button & edit functions
+var button = function(x, y, w, h, rad, r, g, b) {
+    popMatrix();
+    fill(r, g, b);
+    
+    
+    if (mouseX > x && mouseY > y && mouseX < x+w && mouseY < y+h) {
+
+        fill(r-15, g-15, b-15);
+
+        if (mouseIsPressed) {
+
+            fill(r-30, g-30, b-30);
+
+        }
+
+        if (mouseIsReleased) {
+            deselect = false;
+            return true;
+
+        }
+
+    }
+
+    rect(x, y, w, h, rad);
+    pushMatrix();
+    translate(0, funcTranslate);
+};
+var constraintedit = function(x, y, val, constraint, edited, indices) {
+    stroke(0, 0, 0);
+    strokeWeight(1);
+    if (currCons === constraint) {
+        strokeWeight(2);
+    }
+    fill(255, 255, 255);
+    rect(x, y, 100, 20);
+    fill(0, 0, 0);
+    textSize(12);
+    text(val, x+3, y+15);
+    if (mouseX > x && mouseX < x+100 && mouseY > y && mouseY < y+20 && mouseIsReleased && currCons !== constraint) {
+        currCons = constraint;
+        constraintPos = val.length;
+    }
+    if (currCons === constraint) {
+        constraintsub1 = val.substring(0, constraintPos);
+        constraintsub2 = val.substring(constraintPos, val.length);
+        if (frameCount %60 < 30 || keyIsPressed) {
+            stroke(0, 0, 0);
+            strokeWeight(1);
+            line(x+4+6.48*constraintPos, y+2, x+4+6.48*constraintPos, y+17);
+        }
+        if (keyIsPresed === true && keyCode === LEFT && constraintPos >= 1) {
+            constraintPos --;
+        }
+        if (keyIsPresed === true && keyCode === RIGHT && constraintPos <val.length) {
+            constraintPos++;
+        }
+        if (keyIsPresed === true && key.code >= 48 && key.code <=57 && val.length<=14) {
+            constraintsub1+=key.toString();
+            constraintPos++;
+        }
+        if (keyIsPresed === true && key.code === 8 && constraintPos >0) {
+            constraintsub1 = constraintsub1.substring(0, constraintsub1.length-1);
+            constraintPos--;
+        }
+        if (keyIsPresed === true && key.toString() === "-" && constraintPos === 0) {
+            constraintsub1+= key.toString();
+            constraintPos++;
+        }
+        edited.constraints[indices[0]][indices[1]] = constraintsub1+constraintsub2;
+    }
+};
+var editconstraints = function(func, old) {
+    resetMatrix();
+    noStroke();
+    fill(206, 207, 225);
+    rect(100, 100, min(width, height) -200, min(width, height)-200);
+    fill(0, 0, 0);
+    textSize(40*min(width,height)/600);
+    textAlign(CENTER);
+    text("Edit Constraints:", width/2, 140);
+    stroke(0, 0, 0);
+    strokeWeight(2);
+    line(100, 150*min(width,height)/600, min(width, height)-102, 150*min(width,height)/600);
+    textAlign(LEFT, BASELINE);
+    textSize(15*min(width,height)/600);
+    text("Minimum x-value:", min(width, height)/2-175, min(width,height)/2-120);
+    text("Maximum x-value:", min(width, height)/2+45, min(width,height)/2-120);
+    constraintedit(min(width, height)/2-160, min(width,height)/2-100, str(func.constraints[0][0]), "startX", func, [0, 0]);
+    constraintedit(min(width, height)/2+60, min(width,height)/2-100, str(func.constraints[0][1]), "endX", func, [0, 1]);
+    if (func.constraints.length === 2) {
+        text("Minimum y-value:", min(width, height)/2-175, min(width,height)/2+50);
+        text("Maximum y-value:", min(width, height)/2+45, min(width,height)/2+50);
+        constraintedit(min(width, height)/2-160, min(width,height)/2+70, str(func.constraints[1][0]), "startY", func, [1, 0]);
+        constraintedit(min(width, height)/2+60, min(width,height)/2+70, str(func.constraints[1][1]), "endY", func, [1, 1]);
+    }
+    else {
+        textSize(15);
+        text("Minimum y-value:", min(width, height)/2-175, min(width,height)/2-30);
+        text("Maximum y-value:", min(width, height)/2+45, min(width,height)/2-30);
+        constraintedit(min(width, height)/2-160, min(width,height)/2-10, str(func.constraints[1][0]), "startY", func, [1, 0]);
+        constraintedit(min(width, height)/2+60, min(width,height)/2-10, str(func.constraints[1][1]), "endY", func, [1, 1]);
+        textSize(15);
+        text("Minimum z-value:", min(width, height)/2-175, min(width,height)/2+60);
+        text("Maximum z-value:", min(width, height)/2+45, min(width,height)/2+60);
+        constraintedit(min(width, height)/2-160, min(width,height)/2+80, str(func.constraints[2][0]), "startZ", func, [2, 0]);
+        constraintedit(min(width, height)/2+60, min(width,height)/2+80, str(func.constraints[2][1]), "endZ", func, [2, 1]);
+    }
+    noStroke();
+    if (func.constraints[0][0] !== "" && func.constraints[0][1] !== "" && func.constraints[1][0] !== "" && func.constraints[1][1] !== "" && parseInt(func.constraints[0][0], 10) < parseInt(func.constraints[0][1], 10) && parseInt(func.constraints[1][0], 10) < parseInt(func.constraints[1][1], 10) && parseInt(func.constraints[2][0],10) < parseInt(func.constraints[2][1], 10)) {
+        if (button(min(width, height)/2-50, min(width,height)/2+140, 100, 40, 5, 206, 207, 225)) {
+            grapphs[old].constraints = [];
             for (var c = 0; c < prevGraph.constraints.length; c ++) {
                 grapphs[old].constraints.push([]);
                 for (var j = 0; j < prevGraph.constraints[c].length; j ++) {
@@ -89,7 +885,7 @@ var edit = function(func, i) {
 
     }
 
-    if (keyIsPresed && KeyboardEvent.key.code === 8 && renamePos >= 1) {
+    if (keyIsPresed && key.code === 8 && renamePos >= 1) {
 
         rensub1 = rensub1.substring(0, rensub1.length-1);
 
@@ -806,12 +1602,12 @@ var funcDropDown = function() {
     
             }
     
-            if (keyIsPresed && KeyboardEvent.key.code === 8 && pos >= 1) {
+            if (keyIsPresed && key.code === 8 && pos >= 1) {
     
                 sub1 = sub1.substring(0, sub1.length-1);
     
                 funcs[currFunc-currFuncs[0]].func = sub1 + sub2;
-   
+    
                 pos --;
     
             }
@@ -1208,7 +2004,6 @@ var addGraph = function() {
             }
             resetMatrix();
             fill(100, 100, 100);
-            textSize(15);
             text(funcs[i].name, width-106, floor(i/3)*30+50);
         }
         else if (i%3 === 1) {
@@ -1231,7 +2026,6 @@ var addGraph = function() {
             }
             resetMatrix();
             fill(100, 100, 100);
-            textSize(15);
             text(funcs[i].name, width-66, floor(i/3)*30+50);
         }
         else if (i%3 === 2) {
@@ -1254,7 +2048,7 @@ var addGraph = function() {
             }
             resetMatrix();
             fill(100, 100, 100);
-            textSize(15);
+            textSize(10);
             text(funcs[i].name, width-26, floor(i/3)*30+50);
         }
     }
@@ -1440,7 +2234,7 @@ void draw() {
             text(string, (i%floor(width/200))*200 + 100, 230*(floor(i/floor(width/200)))+40);
         }
         noStroke();
-        if (button((i%floor(width/200))*200 + 35, 230*(floor(i/floor(width/200)))+457+funcTranslate, 100, 20, 2, 226, 227, 245)&&editCon === false&&colOn === false && graphopen === false && helpopen === false) {
+        if (button((i%floor(width/200))*200 + 35, 230*(floor(i/floor(width/200)))+457+funcTranslate, 100, 20, 2, 226, 227, 245)&&editCon === false&&colOn === false && graphopen === false) {
             prevGraph = {'constraints': [], 'index': i};
             for (var c = 0; c < grapphs[i].constraints.length; c ++) {
                 prevGraph.constraints.push([]);
@@ -1452,7 +2246,7 @@ void draw() {
             constraintPos = str(prevGraph.constraints[0][0]).length;
             currCons = "startX";
         }
-        if (button((i%floor(width/200))*200 + 147, 230*(floor(i/floor(width/200)))+457+funcTranslate, 20, 20, 2, 226, 227, 245)&&editCon === false&&helpopen === false) {
+        if (button((i%floor(width/200))*200 + 147, 230*(floor(i/floor(width/200)))+457+funcTranslate, 20, 20, 2, 226, 227, 245)&&editCon === false) {
             grapphs.splice(i, 1);
             break;
         }
