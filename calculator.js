@@ -1524,7 +1524,7 @@ var titleScreen = function() {
     imageMode(CENTER);
     PImage b;
     b = loadImage("hpcubiccalcsmall.png");
-    image(b, 200*wh, 150*ht);
+    image(b, 200*wh, 200*ht);
     fill(77, 77, 77, 150);
     textSize(15*wh);
     text("Click to proceed", 200*wh, 250*ht);
