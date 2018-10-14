@@ -1,7 +1,7 @@
 //code
 import Math;
 void setup() {
-    size(1000, 600);
+    size(1800, 900);
 }
 
 //graphing functions
@@ -604,8 +604,8 @@ var aboutopen = false;
 var helpState = 1;
 var helpopen = false;
 var graphopen = false;
-width = 1000;
-height = 600;
+width = 1800;
+height = 900;
 var wh = width/400;
 var ht = height/400;
 var translat = false;
