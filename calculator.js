@@ -1524,8 +1524,7 @@ var titleScreen = function() {
     imageMode(CENTER);
     /* @pjs preload = "hpcubiccalc.png"; */
     PImage b;
-    b = loadImage("hpcubiccalc.png");
-    
+    b = loadImage("hpcubiccalc.png", 300*wh, 100*ht);
     image(b, 200*wh, 100*ht);
     fill(77, 77, 77, 150);
     textSize(15*wh);
