@@ -1525,10 +1525,10 @@ var titleScreen = function() {
     /* @pjs preload = "hpcubiccalc.png"; */
     PImage b;
     b = loadImage("hpcubiccalc.png");
-    image(b, width/2, height/2.4, 300*wh, 200*ht);
+    image(b, width/2, height/2.5, 300*wh, 200*ht);
     fill(77, 77, 77, 150);
     textSize(12*wh);
-    text("Click to proceed", 200*wh, 250*ht);
+    text("Click to proceed", 200*wh, 275*ht);
     textSize(10*wh);
     text("Andrew and Hazel Prasetya", 325*wh, 370*ht);
     textAlign(LEFT, BASELINE);
