@@ -609,7 +609,7 @@ var helpState = 1;
 var helpopen = false;
 var graphopen = false;
 var wh = width/400;
-var ht = width/400;
+var ht = height/400;
 println(wh);
 var translat = false;
 var titleScroll = 0;
