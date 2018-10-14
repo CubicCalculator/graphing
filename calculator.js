@@ -1,5 +1,7 @@
 //code
 import Math;
+width = 1900;
+height = 920;
 void setup() {
     size(1900, 920);
 }
@@ -603,8 +605,6 @@ var aboutopen = false;
 var helpState = 1;
 var helpopen = false;
 var graphopen = false;
-width = 1900;
-height = 920;
 var wh = width/400;
 var ht = height/400;
 var translat = false;
