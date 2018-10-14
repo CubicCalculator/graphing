@@ -621,7 +621,6 @@ var currFuncs = [0, 1];
 var keyIsPresed = false;
 var prevKey = "";
 var keyIsReleased = false;
-var keyIsPressed = false;
 var sub1 = "";
 var sub2 = "";
 var pos = 0;
@@ -727,7 +726,7 @@ var constraintedit = function(x, y, val, constraint, edited, indices) {
     if (currCons === constraint) {
         constraintsub1 = val.substring(0, constraintPos);
         constraintsub2 = val.substring(constraintPos, val.length);
-        if (frameCount %60 < 30 || keyIsPressed) {
+        if (frameCount %60 < 30 || keyPressed) {
             stroke(0, 0, 0);
             strokeWeight(1);
             line(x+4+6.48*constraintPos, y+2, x+4+6.48*constraintPos, y+17);
@@ -861,7 +860,7 @@ var edit = function(func, i) {
     rect(2, (i-currFuncs[0])*65+22,22,15);
 
     
-    if (frameCount % 60 < 30 || keyIsPressed) {
+    if (frameCount % 60 < 30 || keyPressed) {
 
         line(4+9 * renamePos, (i-currFuncs[0])*65+24, 4+9 * renamePos, (i-currFuncs[0])*65+35);
 
@@ -1926,7 +1925,7 @@ var funcDropDown = function() {
     //flashing line for function value
     if (!(deselect === true && mouseIsReleased === true)) {
         strokeWeight(1);
-        if (frameCount % 60 < 30 && editOk === false || keyIsPressed && editOk === false) {
+        if (frameCount % 60 < 30 && editOk === false || keyPressed && editOk === false) {
             if (tSize === 40) {
                 stroke(0, 0, 0);
                 strokeWeight(1);
@@ -2365,7 +2364,6 @@ void draw() {
     mouseIsPresed = false;
     keyIsPresed = false;
     keyIsReleased = false;
-    keyIsPressed = false;
     mouseIsReleased = false;
 };
 
@@ -2383,7 +2381,6 @@ void keyPressed() {
     if (key.toString() !== prevKey && key.toString() !== renprevKey && key.toString() !== consprevKey) {
         keyIsPresed = true;
     }
-    keyIsPressed = true;
 };
 void keyReleased() {
     keyIsReleased = true;
