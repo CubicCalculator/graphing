@@ -1,8 +1,18 @@
 //code
 
 void setup() {
-    size(1000, 500);
+    size(1000, 600);
 }
+
+void keyPressed() {
+    if (key.toString() !== prevKey && key.toString() !== renprevKey && key.toString() !== consprevKey) {
+        keyIsPresed = true;
+    }
+};
+void keyReleased() {
+    keyIsReleased = true;
+    consprevKey = false;
+};
 
 //graphing functions
 {
@@ -2386,15 +2396,6 @@ void mousePressed() {
 };
 void mouseReleased() {
     mouseIsReleased = true;
-};
-void keyPressed() {
-    if (key.toString() !== prevKey && key.toString() !== renprevKey && key.toString() !== consprevKey) {
-        keyIsPresed = true;
-    }
-};
-void keyReleased() {
-    keyIsReleased = true;
-    consprevKey = false;
 };
 }
 }
