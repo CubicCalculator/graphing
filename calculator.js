@@ -1525,7 +1525,7 @@ var titleScreen = function() {
     /* @pjs preload = "hpcubiccalc.png"; */
     PImage b;
     b = loadImage("hpcubiccalc.png");
-    image(b, 200, 100);
+    image(b, width/2, height/2-50, 300*wh, 100*ht);
     fill(77, 77, 77, 150);
     textSize(15*wh);
     text("Click to proceed", 200*wh, 250*ht);
