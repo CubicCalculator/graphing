@@ -744,7 +744,7 @@ var constraintedit = function(x, y, val, constraint, edited, indices) {
             constraintsub1+=key.toString();
             constraintPos++;
         }
-        if (keyIsPresed === true && key.code === 8 && constraintPos >0) {
+        if (keyIsPresed === true && KeyboardEvent.key.code === 8 && constraintPos >0) {
             constraintsub1 = constraintsub1.substring(0, constraintsub1.length-1);
             constraintPos--;
         }
@@ -885,7 +885,7 @@ var edit = function(func, i) {
 
     }
 
-    if (keyIsPresed && key.code === 8 && renamePos >= 1) {
+    if (keyIsPresed && KeyboardEvent.key.code === 8 && renamePos >= 1) {
 
         rensub1 = rensub1.substring(0, rensub1.length-1);
 
@@ -1529,12 +1529,12 @@ var titleScreen = function() {
     rect(0, 0, width, height);
     textSize(50*wh);
     fill(93, 148, 141);
-    text("Logo goes here", 200*wh, 125*ht);
+    text("Logo goes here", 200*wh, 50*ht);
     fill(77, 77, 77, 150);
     textSize(15*wh);
-    text("Click to proceed", 200*wh, 250*ht);
+    text("Click to proceed", 200*wh, 150*ht);
     textSize(10*wh);
-    text("Andrew and Hazel Prasetya", 325*wh, 390*ht);
+    text("Andrew and Hazel Prasetya", 325*wh, 290*ht);
     textAlign(LEFT, BASELINE);
     if (mouseIsReleased) {
         translat = true;
@@ -1602,12 +1602,12 @@ var funcDropDown = function() {
     
             }
     
-            if (keyIsPresed && key.code === 8 && pos >= 1) {
+            if (keyIsPresed && KeyboardEvent.key.code === 8 && pos >= 1) {
     
                 sub1 = sub1.substring(0, sub1.length-1);
     
                 funcs[currFunc-currFuncs[0]].func = sub1 + sub2;
-    
+   
                 pos --;
     
             }
@@ -2004,6 +2004,7 @@ var addGraph = function() {
             }
             resetMatrix();
             fill(100, 100, 100);
+            textSize(15);
             text(funcs[i].name, width-106, floor(i/3)*30+50);
         }
         else if (i%3 === 1) {
@@ -2026,6 +2027,7 @@ var addGraph = function() {
             }
             resetMatrix();
             fill(100, 100, 100);
+            textSize(15);
             text(funcs[i].name, width-66, floor(i/3)*30+50);
         }
         else if (i%3 === 2) {
@@ -2048,6 +2050,7 @@ var addGraph = function() {
             }
             resetMatrix();
             fill(100, 100, 100);
+            textSize(15);
             text(funcs[i].name, width-26, floor(i/3)*30+50);
         }
     }
@@ -2233,7 +2236,7 @@ void draw() {
             text(string, (i%floor(width/200))*200 + 100, 230*(floor(i/floor(width/200)))+40);
         }
         noStroke();
-        if (button((i%floor(width/200))*200 + 35, 230*(floor(i/floor(width/200)))+457+funcTranslate, 100, 20, 2, 226, 227, 245)&&editCon === false&&colOn === false && graphopen === false) {
+        if (button((i%floor(width/200))*200 + 35, 230*(floor(i/floor(width/200)))+457+funcTranslate, 100, 20, 2, 226, 227, 245)&&editCon === false&&colOn === false && graphopen === false && helpopen === false) {
             prevGraph = {'constraints': [], 'index': i};
             for (var c = 0; c < grapphs[i].constraints.length; c ++) {
                 prevGraph.constraints.push([]);
@@ -2245,7 +2248,7 @@ void draw() {
             constraintPos = str(prevGraph.constraints[0][0]).length;
             currCons = "startX";
         }
-        if (button((i%floor(width/200))*200 + 147, 230*(floor(i/floor(width/200)))+457+funcTranslate, 20, 20, 2, 226, 227, 245)&&editCon === false) {
+        if (button((i%floor(width/200))*200 + 147, 230*(floor(i/floor(width/200)))+457+funcTranslate, 20, 20, 2, 226, 227, 245)&&editCon === false&&helpopen === false) {
             grapphs.splice(i, 1);
             break;
         }
