@@ -746,6 +746,7 @@ var constraintedit = function(x, y, val, constraint, edited, indices) {
                     }
                     break;
 
+                case DELETE:
                 case BACKSPACE:
                     if (constraintPos > 0) {
                         constraintsub1 = constraintsub1.substring(0, constraintsub1.length-1);
@@ -917,6 +918,7 @@ var edit = function(func, i) {
                 }
                 break;
 
+            case DELETE:
             case BACKSPACE:
                 if (renamePos > 0) {
                     rensub1 = rensub1.substring(0, rensub1.length-1);
@@ -1676,6 +1678,7 @@ var funcDropDown = function() {
                         }
                         break;
 
+                    case DELETE:
                     case BACKSPACE:
                         if (pos > 0) {
                             sub1 = sub1.substring(0, sub1.length-1);
@@ -2437,7 +2440,6 @@ void mouseReleased() {
 };
 
 void keyPressed() {
-    console.log("keyPressed: keyCode=" + keyCode);
     myKey.keyCode = keyCode;
 };
 
