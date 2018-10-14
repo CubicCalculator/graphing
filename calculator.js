@@ -2383,7 +2383,7 @@ void mouseReleased() {
     mouseIsReleased = true;
 };
 
-void event.keydown() {
+void keyPressed() {
     if (key.toString() !== prevKey && key.toString() !== renprevKey && key.toString() !== consprevKey) {
         keyIsPresed = true;
     }
