@@ -104,7 +104,8 @@ var operate = function(func, idx, combine) {
     
     var res = {'num': total.toString(), 'newPos': idx - (first[1] - first[0]) + total.toString().length - 1, 'start': first[0], 'end': second[1]};
     return res;
-
+};
+    
 var add = function(a, b) { return a + b; };
 var subtract = function(a, b) { return a - b; };
 var multiply = function(a, b) { return a * b; };
