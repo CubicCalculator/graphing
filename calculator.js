@@ -744,7 +744,7 @@ var constraintedit = function(x, y, val, constraint, edited, indices) {
             constraintsub1+=key.toString();
             constraintPos++;
         }
-        if (keyIsPresed === true && key.code === 8 && constraintPos >0) {
+        if (keyIsPresed === true && keyCode === 8 && constraintPos >0) {
             constraintsub1 = constraintsub1.substring(0, constraintsub1.length-1);
             constraintPos--;
         }
@@ -885,7 +885,7 @@ var edit = function(func, i) {
 
     }
 
-    if (keyIsPresed && key.code === 8 && renamePos >= 1) {
+    if (keyIsPresed && keyCode === 8 && renamePos >= 1) {
 
         rensub1 = rensub1.substring(0, rensub1.length-1);
 
@@ -1602,7 +1602,7 @@ var funcDropDown = function() {
     
             }
     
-            if (keyIsPresed && key.code === 8 && pos >= 1) {
+            if (keyIsPresed && keyCode === 8 && pos >= 1) {
     
                 sub1 = sub1.substring(0, sub1.length-1);
     
@@ -2004,6 +2004,7 @@ var addGraph = function() {
             }
             resetMatrix();
             fill(100, 100, 100);
+            textSize(15);
             text(funcs[i].name, width-106, floor(i/3)*30+50);
         }
         else if (i%3 === 1) {
@@ -2026,6 +2027,7 @@ var addGraph = function() {
             }
             resetMatrix();
             fill(100, 100, 100);
+            textSize(15);
             text(funcs[i].name, width-66, floor(i/3)*30+50);
         }
         else if (i%3 === 2) {
@@ -2048,7 +2050,7 @@ var addGraph = function() {
             }
             resetMatrix();
             fill(100, 100, 100);
-            textSize(10);
+            textSize(15);
             text(funcs[i].name, width-26, floor(i/3)*30+50);
         }
     }
