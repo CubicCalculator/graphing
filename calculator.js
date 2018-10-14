@@ -1527,7 +1527,7 @@ var titleScreen = function() {
     textSize(15*wh);
     text("Click to proceed", 200*wh, 350*ht);
     textSize(10*wh);
-    text("Andrew and Hazel Prasetya", 325*wh, 350*ht);
+    text("Andrew and Hazel Prasetya", 325*wh, 450*ht);
     textAlign(LEFT, BASELINE);
     if (mouseIsReleased) {
         translat = true;
