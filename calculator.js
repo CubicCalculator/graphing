@@ -609,8 +609,7 @@ var helpState = 1;
 var helpopen = false;
 var graphopen = false;
 var wh = width/400;
-var ht = height/400;
-println(wh);
+var ht = width/400;
 var translat = false;
 var titleScroll = 0;
 var titleOn = true;
@@ -622,6 +621,7 @@ var keyIsPresed = false;
 var prevKey = "";
 var keyIsReleased = false;
 var keyIsPressed = false;
+var mouseIsPressed = false;
 var sub1 = "";
 var sub2 = "";
 var pos = 0;
@@ -2364,7 +2364,7 @@ void draw() {
     keyIsReleased = false;
     keyIsPressed = false;
     mouseIsReleased = false;
-    
+    mouseIsPressed = false;
 };
 
 //mouse and key functions
@@ -2372,6 +2372,7 @@ void mousePressed() {
     if (prevMouse !== true) {
         mouseIsPresed = true;
     }
+    mouseIsPressed = true;
 };
 void mouseReleased() {
     mouseIsReleased = true;
