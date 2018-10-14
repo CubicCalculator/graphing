@@ -598,7 +598,6 @@ var constraintsub1 = "";
 var constraintsub2 = "";
 var constraintPos = "";
 var currCons = "startX";
-var consprevKey = "";
 var editCon = false;
 var aboutopen = false;
 var helpState = 1;
@@ -615,9 +614,7 @@ var deselect = true;
 var pscale = width/400;
 var funcs = [{"func": "", "name": "f1", "color": color(0, 0, 255)}];
 var currFuncs = [0, 1];
-var keyIsPresed = false;
 var prevKey = "";
-var keyIsReleased = false;
 var sub1 = "";
 var sub2 = "";
 var pos = 0;
@@ -643,6 +640,12 @@ var menuDown = false;
 var colpickCols = [color(255, 150, 0), color(255, 89, 0), color(255, 0, 0), color(255, 0, 102), color(255, 0, 150)];
 var colOn = false;
 var funcState = 0;
+
+var myKey = {"lastKeyCode": 0, "keyCode": 0};
+myKey.reset = function() {
+    this.lastKeyCode = this.keyCode;
+    this.keyCode = 0;
+}
 
 textFont(createFont("monospace"));
 
@@ -705,6 +708,7 @@ var button = function(x, y, w, h, rad, r, g, b) {
     pushMatrix();
     translate(0, funcTranslate);
 };
+
 var constraintedit = function(x, y, val, constraint, edited, indices) {
     stroke(0, 0, 0);
     strokeWeight(1);
@@ -728,32 +732,52 @@ var constraintedit = function(x, y, val, constraint, edited, indices) {
             strokeWeight(1);
             line(x+4+6.48*constraintPos, y+2, x+4+6.48*constraintPos, y+17);
         }
-        if (keyIsPresed === true && keyCode === LEFT && constraintPos >= 1) {
-            constraintPos --;
+        if (myKey.keyCode != 0) {
+            switch (myKey.keyCode) {
+                case LEFT:
+                    if (constraintPos > 0) {
+                        constraintPos--;
+                    }
+                    break;
+
+                case RIGHT:
+                    if (constraintPos < val.length) {
+                        constraintPos++;
+                    }
+                    break;
+
+                case BACKSPACE:
+                    if (constraintPos > 0) {
+                        constraintsub1 = constraintsub1.substring(0, constraintsub1.length-1);
+                        constraintPos--;
+                    }
+                    break;
+
+                case 173:   // '-' key
+                    if (constraintPos === 0) {
+                        constraintsub1 += key.toString();
+                        constraintPos++;
+                    }
+                    break;
+
+                default:
+                    if ((myKey.keyCode >= 48) && (myKey.keyCode <= 57)) {
+                        constraintsub1 += key.toString();
+                        constraintPos++;
+                    }
+            }
+            myKey.reset();
         }
-        if (keyIsPresed === true && keyCode === RIGHT && constraintPos <val.length) {
-            constraintPos++;
-        }
-        if (keyIsPresed === true && key.code >= 48 && key.code <=57 && val.length<=14) {
-            constraintsub1+=key.toString();
-            constraintPos++;
-        }
-        if (keyIsPresed === true && key.code === 8 && constraintPos >0) {
-            constraintsub1 = constraintsub1.substring(0, constraintsub1.length-1);
-            constraintPos--;
-        }
-        if (keyIsPresed === true && key.toString() === "-" && constraintPos === 0) {
-            constraintsub1+= key.toString();
-            constraintPos++;
-        }
+
         edited.constraints[indices[0]][indices[1]] = constraintsub1+constraintsub2;
     }
 };
+
 var editconstraints = function(func, old) {
     resetMatrix();
     noStroke();
     fill(206, 207, 225);
-    rect(width/2-(min(width, height) -100), height/2-(min(width/height)-100), min(width, height) -200, min(width, height)-200);
+    rect(width/2-(min(width, height) -100), height/2-(min(width, height)-100), min(width, height) -200, min(width, height)-200);
     fill(0, 0, 0);
     textSize(40*min(width,height)/600);
     textAlign(CENTER);
@@ -786,7 +810,21 @@ var editconstraints = function(func, old) {
         constraintedit(min(width, height)/2+60, min(width,height)/2+80, str(func.constraints[2][1]), "endZ", func, [2, 1]);
     }
     noStroke();
-    if (func.constraints[0][0] !== "" && func.constraints[0][1] !== "" && func.constraints[1][0] !== "" && func.constraints[1][1] !== "" && parseInt(func.constraints[0][0], 10) < parseInt(func.constraints[0][1], 10) && parseInt(func.constraints[1][0], 10) < parseInt(func.constraints[1][1], 10) && parseInt(func.constraints[2][0],10) < parseInt(func.constraints[2][1], 10)) {
+    if (
+        func.constraints[0][0] !== "" &&
+        func.constraints[0][1] !== "" &&
+        func.constraints[1][0] !== "" &&
+        func.constraints[1][1] !== "" &&
+        parseInt(func.constraints[0][0], 10) < parseInt(func.constraints[0][1], 10) &&
+        parseInt(func.constraints[1][0], 10) < parseInt(func.constraints[1][1], 10)
+    ) {
+        /*
+        if (func.constraints.length > 2) {
+            if (parseInt(func.constraints[2][0],10) >= parseInt(func.constraints[2][1], 10)) {
+            }
+        }
+        */
+
         if (button(min(width, height)/2-50, min(width,height)/2+140, 100, 40, 5, 206, 207, 225)) {
             grapphs[old].constraints = [];
             for (var c = 0; c < prevGraph.constraints.length; c ++) {
@@ -847,6 +885,7 @@ var optionSelect = function(x, y, r) {
     }
     pushMatrix();
 };
+
 var edit = function(func, i) {
     fill(0, 0, 0, 0);
 
@@ -863,49 +902,49 @@ var edit = function(func, i) {
     rensub1 = func.name.substring(0, renamePos);
     rensub2 = func.name.substring(renamePos,func.name.length);
 
-    console.log("edit: key=" + key.code);
-    if (keyIsPresed && keyCode !== 16 && key.code !== 8 && keyCode !== UP && keyCode !== DOWN && keyCode !== LEFT && keyCode !== RIGHT && keyCode !== 18 && keyCode !== 17 && keyCode !== 20 && keyCode !== 157 && func.name.length <2) {
-        rensub1 += key.toString();
-        renprevKey = key.toString();
-        renamePos++;
+    console.log('edit:');
+    if (myKey.keyCode != 0) {
+        switch (myKey.keyCode) {
+            case LEFT:
+                if (renamePos > 0) {
+                    renamePos--;
+                }
+                break;
+
+            case RIGHT:
+                if (renamePos <= func.name.length - 1) {
+                    renamePos++;
+                }
+                break;
+
+            case BACKSPACE:
+                if (renamePos > 0) {
+                    rensub1 = rensub1.substring(0, rensub1.length-1);
+                    renamePos --;
+                }
+                break;
+
+            default:
+                rensub1 += key.toString();
+                renprevKey = key.toString();
+                renamePos++;
+
+        }
+        myKey.reset();
     }
 
-    if (keyIsPresed && key.code === 8 && renamePos >= 1) {
-        rensub1 = rensub1.substring(0, rensub1.length-1);
-        renamePos --;
-    }
-
-    if (keyIsPresed && keyCode === LEFT && renamePos >= 1) {
-        renamePos--;
-    }
-
-    if (keyIsPresed && keyCode === RIGHT && renamePos <= func.name.length-1) {
-        renamePos++;
-    }
-
-    if (keyIsReleased) {
-        renprevKey = "";
-    }
     func.name = rensub1 + rensub2;
-
-    
     funcs[i].name = func.name;
 
     if (mouseIsReleased) {
 
         if (mouseX < 2 || mouseX > 24 || mouseY < i*65+22+funcTranslate || mouseY > i*65+37+funcTranslate) {
             renprevKey = "";
-
             renamePos = 0;
-
             rensub1 = "";
-
             rensub2 = "";
-
             editOk = false;
-
             mouseIsReleased = false;
-
         }
 
     }
@@ -1332,11 +1371,8 @@ var colorpick = function(funcname) {
     
     //black
     if (hexagonbutton(325*min(width, height)/400+(width-min(width, height))/2, 315*min(width, height)/400, 45*min(width, height)/400, color(0, 0, 0), 15)) {
-
         funcs[funcname].color = color(0, 0, 0);
-
         colOn = false;
-
     }
     popMatrix();
     pushMatrix();
@@ -1624,81 +1660,65 @@ var funcDropDown = function() {
     
             strokeWeight(1);
             sub1 = funcs[currFunc-currFuncs[0]].func.substring(0, pos);
-    
             sub2 = funcs[currFunc-currFuncs[0]].func.substring(pos,funcs[currFunc].func.length);
-    
-            if (keyIsPresed && keyCode !== 16 && key.code !== 8 && keyCode !== UP && keyCode !== DOWN && keyCode !== LEFT && keyCode !== RIGHT && keyCode !== 18 && keyCode !== 17 && keyCode !== 20 && keyCode !== 157) {
-    
-                sub1 += key.toString();
-    
-                prevKey = key.toString();
-    
-                funcs[currFunc-currFuncs[0]].func = sub1 + sub2;
-    
-                pos++;
-    
-            }
-    
-            if (keyIsPresed && key.code === 8 && pos >= 1) {
-    
-                sub1 = sub1.substring(0, sub1.length-1);
-    
-                funcs[currFunc-currFuncs[0]].func = sub1 + sub2;
-   
-                pos --;
-    
-            }
-    
-            if (keyIsPresed && keyCode === LEFT && pos >= 1) {
-    
-                pos--;
-    
-            }
-    
-            if (keyIsPresed && keyCode === RIGHT && pos <= funcs[currFunc-currFuncs[0]].func.length-1) {
-    
-                pos++;
-    
-            }
-    
-            if (keyIsPresed && keyCode === UP && currFunc >= 1) {
-    
-                currFunc --;
-    
-                pos = funcs[currFunc-currFuncs[0]].func.length;
-    
-            }
-    
-            if (keyIsPresed && keyCode === DOWN && currFunc-currFuncs[0] <= funcs.length-1) {
-                
-                currFunc++;
-    
-                pos = funcs[currFunc-currFuncs[0]].func.length;
-    
-            }
-    
-            if (keyIsReleased) {
-    
-                prevKey = "";
-    
+
+            if (myKey.keyCode != 0) {
+                switch (myKey.keyCode) {
+                    case LEFT:
+                        if (pos > 0) {
+                            pos--;
+                        }
+                        break;
+
+                    case RIGHT:
+                        if (pos <= funcs[currFunc-currFuncs[0]].func.length-1) {
+                            pos++;
+                        }
+                        break;
+
+                    case BACKSPACE:
+                        if (pos > 0) {
+                            sub1 = sub1.substring(0, sub1.length-1);
+                            funcs[currFunc-currFuncs[0]].func = sub1 + sub2;
+                            pos --;
+                        }
+                        break;
+
+                    case UP:
+                        if (currFunc >= 1) {
+                            currFunc --;
+                            pos = funcs[currFunc-currFuncs[0]].func.length;
+                        }
+                        break;
+
+                    case DOWN:
+                        if (currFunc-currFuncs[0] <= funcs.length-1) {
+                            currFunc++;
+                            pos = funcs[currFunc-currFuncs[0]].func.length;
+                        }
+                        break;
+
+                    default:
+                        if ((myKey.keyCode == 32) || (myKey.keyCode >= 48)) {
+                            sub1 += key.toString();
+                            prevKey = key.toString();
+                            funcs[currFunc-currFuncs[0]].func = sub1 + sub2;
+                            pos++;
+                        }
+                }
+                myKey.reset();
             }
     
             if (mouseIsPresed && mouseY > currFunc*65+15+funcTranslate && mouseY < currFunc*65+60+funcTranslate && mouseX > 25 && mouseX < width-25) {
                 deselect = false;
+
                 if (round((mouseX-30)/(tSize/1.818)) > funcs[currFunc-currFuncs[0]].func.length) {
-    
                     pos = funcs[currFunc-currFuncs[0]].func.length;
-    
                 }
-    
                 else {
-    
                     pos = round((mouseX-35)/(tSize/1.818));
-    
                 }
-    
             }
-    
         }
         
         //drawing boxes and taking mouse input
@@ -2402,8 +2422,6 @@ void draw() {
     //handling mouse/key on/off
 
     mouseIsPresed = false;
-    keyIsPresed = false;
-    keyIsReleased = false;
     mouseIsReleased = false;
 };
 
@@ -2413,16 +2431,15 @@ void mousePressed() {
         mouseIsPresed = true;
     }
 };
+
 void mouseReleased() {
     mouseIsReleased = true;
 };
 
 void keyPressed() {
-    if (key.toString() !== prevKey && key.toString() !== renprevKey && key.toString() !== consprevKey) {
-        keyIsPresed = true;
-    }
+    myKey.keyCode = keyCode;
 };
+
 void keyReleased() {
-    keyIsReleased = true;
-    consprevKey = false;
+    myKey.reset();
 };
