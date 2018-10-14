@@ -1,7 +1,9 @@
 //code
 
+var width = 1000;
+var height = 600;
 void setup() {
-    size(1000, 600);
+    size(width, height);
 }
 println(width);
 println(height);
