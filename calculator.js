@@ -3,7 +3,8 @@
 void setup() {
     size(1000, 600);
 }
-
+println(width);
+println(height);
 //graphing functions
 noStroke();
 var dimensionsOfFunc = function(func) {
