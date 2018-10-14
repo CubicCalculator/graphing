@@ -2215,7 +2215,7 @@ void draw() {
             if (str(grapphs[i].name+"("+grapphs[i].vars+") = "  + grapphs[i].func).length > 18) {
                 textSize(15/(textWidth(str(grapphs[i].name+"("+grapphs[i].vars+") = "  + grapphs[i].func))/150));
             }
-            text(grapphs[i].name+"("+grapphs[i].vars+") = "  + grapphs[i].func, (i%floor(width/200))*min(width, height)/3 + 100, (min(width, height)/3 + 30)*(floor(i/floor(width/200)))+40);
+            text(grapphs[i].name+"("+grapphs[i].vars+") = "  + grapphs[i].func, ((i%floor(width/200))*min(width, height)/3 + 25)+min(width, height)/8, (min(width, height)/3 + 30)*(floor(i/floor(width/200)))+40);
         }
         else {
             fill(0, 0, 0);
