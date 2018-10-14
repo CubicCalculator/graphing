@@ -3,7 +3,7 @@ import Math;
 width = 1900;
 height = 920;
 void setup() {
-    size(1900, 920);
+    size(width, height);
 }
 
 //graphing functions
