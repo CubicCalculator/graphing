@@ -610,7 +610,7 @@ var helpopen = false;
 var graphopen = false;
 var wh = width/400;
 var ht = width/400;
-console.log(wh);
+println(wh);
 var translat = false;
 var titleScroll = 0;
 var titleOn = true;
