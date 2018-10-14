@@ -1522,12 +1522,12 @@ var titleScreen = function() {
     noStroke();
     rect(0, 0, width, height);
     imageMode(CENTER);
-    image(loadImage("hpcubiccalcsmall.png"), width/2, 100*ht);
+    image(loadImage("hpcubiccalcsmall.png"), width/2, 150*ht);
     fill(77, 77, 77, 150);
     textSize(15*wh);
-    text("Click to proceed", 200*wh, 150*ht);
+    text("Click to proceed", 200*wh, 250*ht);
     textSize(10*wh);
-    text("Andrew and Hazel Prasetya", 325*wh, 290*ht);
+    text("Andrew and Hazel Prasetya", 325*wh, 350*ht);
     textAlign(LEFT, BASELINE);
     if (mouseIsReleased) {
         translat = true;
