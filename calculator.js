@@ -2048,6 +2048,7 @@ var addGraph = function() {
             }
             resetMatrix();
             fill(100, 100, 100);
+            textSize(15);
             text(funcs[i].name, width-26, floor(i/3)*30+50);
         }
     }
