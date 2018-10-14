@@ -620,6 +620,7 @@ var currFuncs = [0, 1];
 var keyIsPresed = false;
 var prevKey = "";
 var keyIsReleased = false;
+var keyIsPressed = false;
 var sub1 = "";
 var sub2 = "";
 var pos = 0;
@@ -2360,6 +2361,7 @@ void draw() {
     mouseIsPresed = false;
     keyIsPresed = false;
     keyIsReleased = false;
+    keyIsPressed = false;
     mouseIsReleased = false;
     
 };
@@ -2378,6 +2380,7 @@ void keyPressed() {
     if (key.toString() !== prevKey && key.toString() !== renprevKey && key.toString() !== consprevKey) {
         keyIsPresed = true;
     }
+    keyIsPressed = true;
 };
 void keyReleased() {
     keyIsReleased = true;
