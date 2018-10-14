@@ -2232,7 +2232,7 @@ void draw() {
             text(string,  ((i%floor(width/200))*min(width, height)/3 + 25)+min(width, height)/8, (min(width, height)/3+30)*(floor(i/floor(width/200)))+40);
         }
         noStroke();
-        if (button((i%floor(width/200))*min(width, height)/3 + 35, (min(width, height)/3+30)*(floor(i/floor(width/200)))+457+funcTranslate, 100, 20, 2, 226, 227, 245)&&editCon === false&&colOn === false && graphopen === false && helpopen === false) {
+        if (button((i%floor(width/200))*min(width, height)/3 + 50, (min(width, height)/3+30)*(floor(i/floor(width/200)))+457+funcTranslate, 100, 20, 2, 226, 227, 245)&&editCon === false&&colOn === false && graphopen === false && helpopen === false) {
             prevGraph = {"constraints": [], "index": i};
             for (var c = 0; c < grapphs[i].constraints.length; c ++) {
                 prevGraph.constraints.push([]);
@@ -2244,7 +2244,7 @@ void draw() {
             constraintPos = str(prevGraph.constraints[0][0]).length;
             currCons = "startX";
         }
-        if (button((i%floor(width/200))*min(width, height)/3 + 147, (min(width, height)/3 + 30)*(floor(i/floor(width/200)))+457+funcTranslate, 20, 20, 2, 226, 227, 245)&&editCon === false&&helpopen === false) {
+        if (button((i%floor(width/200))*min(width, height)/3 + 162, (min(width, height)/3 + 30)*(floor(i/floor(width/200)))+457+funcTranslate, 20, 20, 2, 226, 227, 245)&&editCon === false&&helpopen === false) {
             grapphs.splice(i, 1);
             break;
         }
