@@ -13,11 +13,11 @@
 
 
 void setup() { 
-  size(400, 400); 
+  size(1000, 600); 
 } 
 
 var dnaSize = 1;
-var twistiness = 30;
+var twistiness = 10;
 
 var backgroundLight = 0.1;
 
@@ -53,10 +53,10 @@ var edgeColor = color(0, 0, 0);
 var nodeSize = 8;
 
 var keys = [];
-var keyPressed = function() {
+void keyPressed() {
     keys[keyCode] = true;
 };
-var keyReleased = function() {
+void keyReleased() {
     keys[keyCode] = false;
 };
 
@@ -299,22 +299,19 @@ var zSort = function(list){
 
 
 void draw() {
-    translate(200,200);
     background(backgroundColor);
     
     dnaCheck();
     legend();
     
     pushMatrix();
-    scale(0.25);
+    translate(width/2,height/2);
+    scale(height/400*0.25);
     scale(dnaSize);
     
     molecules.sort(function(a, b) {
         return b.z - a.z;
     });
-    //println("val:"+molecules[0].z + " " + molecules[molecules.length-1].z);
-    //molecules = zSort(molecules);
-    //molecules.reverse();
     
     for (var a = 0; a < molecules.length; a ++) {
         var nodes = molecules[a].nodes;
@@ -376,26 +373,24 @@ void draw() {
     stroke(0, 102, 7);
     strokeWeight(3);
     fill(82, 82, 82);
-    rect(90,-190, 100,60,8);
+    rect(width-110,10, 100,60,8);
     fill(0, 0, 0);
     textAlign(CENTER,CENTER);
-    text('Transparent\nor\nOpaque',140,-160);
+    text('Transparent\nor\nOpaque',width-60,40);
     strokeWeight(1);
     textAlign(LEFT,BASELINE);
 };
 
-//var mouseDragged = function() {
 void mouseDragged() {
     for (var a = 0; a < molecules.length; a ++) {
         var nodes = molecules[a].nodes;
-        rotateYSide((mouseX-pmouseX),nodes,molecules[a]);
-        rotateXSide(-(mouseY-pmouseY),nodes,molecules[a]);
+        rotateYSide((mouseX-pmouseX) / 16, nodes, molecules[a]);
+        rotateXSide(-(mouseY-pmouseY) / 16, nodes, molecules[a]);
     }
 };
 
-//var mouseReleased = function() {
-void mouseReleased() {
-    if (mouseX > 290 && mouseX < 390 && mouseY > 10 && mouseY < 70) {
+void mouseReleased = function() {
+    if (mouseX > width-110 && mouseX < width-10 && mouseY > 10 && mouseY < 70) {
         mode ++;
     }
 };
