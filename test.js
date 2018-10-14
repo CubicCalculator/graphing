@@ -13,15 +13,17 @@
 
 
 void setup() { 
-  size(1000, 600); 
+  size(1400, 700); 
 } 
 
 var dnaSize = 1;
-var twistiness = 10;
+var twistiness = 20/57;
 
 var backgroundLight = 0.1;
 
-var backgroundColor = color(255, 255, 255);
+var backgroundColor = color(250, 192, 243);
+var patternColor = color(255, 255, 255);
+
 var adenineColor = color(255, 0, 0);
 var thymineColor = color(255, 123, 0);
 var cytosineColor = color(0, 0, 255);
@@ -43,14 +45,14 @@ var dnaSetup = [
     ['c','g']
 ];
 
-//Non-user code can be accessed with the blue button. Be careful when editing, you could make a bug.
-
 smooth();
-var mode = 1;
+var mode = 0;
 
 var nodeColor = color(255, 0, 0);
 var edgeColor = color(0, 0, 0);
 var nodeSize = 8;
+
+var mouseIsClicked = false;
 
 var keys = [];
 void keyPressed() {
@@ -224,28 +226,85 @@ var dnaCheck = function() {
 var legend = function() {
     noStroke();
     fill(adenineColor);
-    rect(-190,-190,15,15);
-    text('Adenine',-170,-178);
+    rect(10,10,15,15);
+    text('Adenine',30,22);
     
     fill(thymineColor);
-    rect(-190,-170,15,15);
-    text('Thymine',-170,-158);
+    rect(10,30,15,15);
+    text('Thymine',30,42);
     
     fill(cytosineColor);
-    rect(-190,-150,15,15);
-    text('Cytosine',-170,-138);
+    rect(10,50,15,15);
+    text('Cytosine',30,62);
     
     fill(guanineColor);
-    rect(-190,-130,15,15);
-    text('Guanine',-170,-118);
+    rect(10,70,15,15);
+    text('Guanine',30,82);
     
     fill(deoxyriboseColor);
-    rect(-190,-110,15,15);
-    text('Deoxyribose',-170,-98);
+    rect(10,90,15,15);
+    text('Deoxyribose',30,102);
     
     fill(phosphateColor);
-    rect(-190,-90,15,15);
-    text('Phosphate',-170,-78);
+    rect(10,110,15,15);
+    text('Phosphate',30,122);
+    
+    stroke(173, 138, 0);
+    fill(242, 211, 119);
+    //adenine box
+    if (mouseIn(10,10,70,15)) {
+        rect(8,30,60,20);
+        fill(173, 138, 0);
+        text('C5H5N5',15,45);
+    }
+    //thymine box
+    if (mouseIn(10,30,70,15)) {
+        rect(8,50,60,20);
+        fill(173, 138, 0);
+        text('C5H6N2O2',10,65);
+    }
+    //cytosine box
+    if (mouseIn(10,50,72,15)) {
+        rect(8,70,60,20);
+        fill(173, 138, 0);
+        text('C4H5N3O',10,85);
+    }
+    //guanine box
+    if (mouseIn(10,70,70,15)) {
+        rect(8,90,60,20);
+        fill(173, 138, 0);
+        text('C5H5N5O',10,105);
+    }
+    //deoxyribose box
+    if (mouseIn(10,90,90,15)) {
+        rect(8,110,60,20);
+        fill(173, 138, 0);
+        text('C5H10O4',10,125);
+    }
+    //phosphate box
+    if (mouseIn(10,110,80,15)) {
+        rect(8,130,60,20);
+        fill(173, 138, 0);
+        text('PO43-',10,145);
+    }
+};
+
+var pattern = function() {
+    stroke(patternColor);
+    for (var x = 0; x < width/144; x ++) {
+        for (var i = 0; i < 144; i ++) {
+            for (var a = 0; a < height/100; a ++) {
+                if (i % 5 === 0) {
+                    strokeWeight(3);
+                    point(i + sin(i*10*57.2958)*10 + x * 144,100 - i + sin(i*10*57.2958)*10 + a * 144);
+                    point(i + -sin(i*10*57.2958)*10 + x * 144,100 - i + -sin(i*10*57.2958)*10 + a * 144);
+                    strokeWeight(1);
+                    line(i + sin(i*10*57.2958)*10 + x * 144,100 - i + sin(i*10*57.2958)*10 + a * 144, i + -sin(i*10*57.2958)*10 + x * 144,100 - i + -sin(i*10*57.2958)*10 + a * 144);
+                }
+            }
+        }
+    }
+    strokeWeight(1);
 };
 
 for (var i = 0; i < dnaSetup.length; i ++) {
@@ -296,10 +355,218 @@ var zSort = function(list){
     return alist;
 };
 
+var mouseIn = function(x,y,w,h) {
+    if (mouseX >= x && mouseX <= x + w && mouseY >= y && mouseY <= y + h) { return true; }
+    return false;
+};
+var button = function(x,y,w,h,drawButton) {
+    drawButton(x,y,w,h);
+    if (mouseIn(x,y,w,h) && mouseIsClicked) { return true; }
+    
+    return false;
+};
+var menuButton = function(x,y,fn) {
+    var display = function(x,y,w,h) {
+        noStroke();
+        fill(82, 82, 82);
+        rect(x,y,w + 5,h + 5, 5);
+        fill(255, 255, 255);
+        rect(x + 6, y + 1 + 5  ,13,2,5);
+        rect(x + 6, y + 1 + 5*2,13,2,5);
+        rect(x + 6, y + 1 + 5*3,13,2,5);
+    };
+    if (button(x,y,20,25,display)) { fn(); }
+};
 
+var menuOut = false; //in
+var menuX = 0;
+var menuY = 0;
+var menuMode = 'dna';
+var menuMessage = 'DNA, or DeoxyriboNucleic Acid, is the main form that genetic material takes in your body, like your body’s own instruction manual. All living spicies on Earth have DNA, but no person has exact same version as another. With DNA, all of the cells in your body get the same copy. However, not all of your cells share the same purpose. For example, your stomach cells don’t do the same thing as your heart cells. DNA doesn’t care. Think of your DNA as a large book of instructions, your body as a large corporation whose job is to survive, and your cells as individual workers. The same book is given to all of them, but when a worker receives it, they don’t need to read the instructions for everyone else. They simply flip to their chapter, and read what they have to do.';
+var menu = function() {
+    if (menuY > 0) {
+        fill(138, 138, 138);
+        rect(width - 600,height - menuY,610,menuY,5);
+        
+        fill(0, 0, 0);
+        text(menuMessage,width-500,height-menuY+10,500,Infinity);
+        
+        fill(102, 102, 102);
+        strokeWeight(2);
+        stroke(0, 0, 0);
+        rect(width-598,height-menuY+28,80,40);
+        rect(width-598,height-menuY+68,80,40);
+        rect(width-598,height-menuY+108,80,40);
+        strokeWeight(1);
+        noStroke();
+        
+        textAlign(CENTER,CENTER);
+        fill(0, 0, 0);
+        textSize(14);
+        text('What is\nDNA?',width-560,height-menuY+48);
+        text('Storage',width-560,height-menuY+88);
+        text('How is it\nread?',width-560,height-menuY+128);
+        textSize(12);
+        textAlign(LEFT,BASELINE);
+        
+        fill(0, 0, 0, 20);
+        if (mouseIn(width-598,height-menuY+28,80,40)) {
+            rect(width-598,height-menuY+28,80,40);
+            if (mousePressed) {
+                rect(width-598,height-menuY+28,80,40);
+            }
+            if (mouseIsClicked) {
+                menuMode = 'dna';
+                menuMessage = 'DNA, or DeoxyriboNucleic Acid, is the main form that genetic material takes in your body, like your body’s own instruction manual. All living spicies on Earth have DNA, but no person has exact same version as another. With DNA, all of the cells in your body get the same copy. However, not all of your cells share the same purpose. For example, your stomach cells don’t do the same thing as your heart cells. DNA doesn’t care. Think of your DNA as a large book of instructions, your body as a large corporation whose job is to survive, and your cells as individual workers. The same book is given to all of them, but when a worker receives it, they don’t need to read the instructions for everyone else. They simply flip to their chapter, and read what they have to do.';
+            }
+        }
+        if (mouseIn(width-598,height-menuY+68,80,40)) {
+            rect(width-598,height-menuY+68,80,40);
+            if (mousePressed) {
+                rect(width-598,height-menuY+68,80,40);
+            }
+            if (mouseIsClicked) {
+                menuMode = 'chromosomes';
+                menuMessage = 'As you can see, in order to have enough information to instruct an entire living object, you would need a whole lot of DNA, especially since each cell needs all the information for each of the other cells, as well. In fact, if you were to line up all of the DNA in your whole body from each of your cells combined end to end, you would end up with a string so long, it could go from the Earth to the Sun 100 times! So how does your body store it? Actually, it’s a lot like making rope.  A strand of DNA twirls itself in a spiral, making a slightly thicker but a lot shorter “string”. The “string” repeats that process to make itself even shorter and thicker. Repeat this process several times, and you’re left over with a chromosome, a strand of DNA that’s been compressed using that process. The human body has 23 pairs of chromosomes adding up to 46. The amount of chromosomes differs from each species.';
+            }
+        }
+        if (mouseIn(width-598,height-menuY+108,80,40)) {
+            rect(width-598,height-menuY+108,80,40);
+            if (mousePressed) {
+                rect(width-598,height-menuY+108,80,40);
+            }
+            if (mouseIsClicked) {
+                menuMode = 'rna';
+                menuMessage = 'Your DNA is stored in chromosomes in your nucleus, but it can’t read itself. Ten million ribosomes wait outside of the nucleus to do this for you. However, you have lots of DNA, so it can’t all go outside of the nucleus. Your cell makes a copy of the gene it wants to use, called mRNA, standing for messenger RiboNucleic Acid. The only difference is the nucleotide Thymine, in DNA, which gets turned into Uracil in the mRNA. The mRNA leaves the nucleus, now small enough to do so, and finds its way to a ribosome to begin translation. During translation, “codons”, or groups of 3 nucleotides, are read by tRNA, standing for transfer RNA, to be translated into amino acids, which are then made by the ribosomes to be used. Refer to the codon table for the various codons and amino acids that can be used in translation.';
+            }
+        }
+        
+        fill(0, 0, 0, 60);
+        if (menuMode === 'dna') {
+            rect(width-598,height-menuY+28,80,40);
+        }
+        if (menuMode === 'chromosomes') {
+            rect(width-598,height-menuY+68,80,40);
+        }
+        if (menuMode === 'rna') {
+            rect(width-598,height-menuY+108,80,40);
+        }
+    }
+};
+
+var helpIcon = function(x,y,txt) {
+    fill(87, 87, 87);
+    ellipse(x,y,15,15);
+    
+    textAlign(CENTER,CENTER);
+    textSize(10);
+    fill(255, 255, 255);
+    text('?',x,y);
+    textAlign(LEFT,BASELINE);
+    textSize(12);
+    
+    if (dist(x,y,mouseX,mouseY) < 7.5) {
+        stroke(173, 138, 0);
+        fill(242, 211, 119);
+        beginShape();
+        vertex(mouseX,mouseY);
+        vertex(mouseX + 15,mouseY - 5);
+        vertex(mouseX + 15,mouseY - 8);
+        vertex(mouseX + 275,mouseY - 8);
+        vertex(mouseX + 275,mouseY + 125);
+        vertex(mouseX + 15,mouseY + 125);
+        vertex(mouseX + 15,mouseY + 5);
+        vertex(mouseX,mouseY);
+        endShape();
+        noStroke();
+        
+        fill(173, 138, 0);
+        text(txt, mouseX + 20, mouseY - 3, 250, Infinity);
+    }
+};
+
+var codon;
+var codons = [
+    [
+        ['UUU','UUC','UUA','UUG'],
+        ['UCU','UCC','UCA','UCG'],
+        ['UAU','UAC','UAA','UAG'],
+        ['UGU','UGC','UGA','UGG']
+    ],
+    [
+        ['CUU','CUC','CUA','CUG'],
+        ['CCU','CCC','CCA','CCG'],
+        ['CAU','CAC','CAA','CAG'],
+        ['CGU','CGC','CGA','CGG']
+    ],
+    [
+        ['AUU','AUC','AUA','AUG'],
+        ['ACU','ACC','ACA','ACG'],
+        ['AAU','AAC','AAA','AAG'],
+        ['AGU','AGC','AGA','AGG']
+    ],
+    [
+        ['GUU','GUC','GUA','GUG'],
+        ['GCU','GCC','GCA','GCG'],
+        ['GAU','GAC','GAA','GAG'],
+        ['GGU','GGC','GGA','GGG']
+    ]
+];
+var acid;
+var aPos;
+var aAcids = [
+    [
+        [['Phenylalanine',0,1],['Leucine',2,3]],
+        [['Serine',0,3]],
+        [['Tyrosine',0,1],['Stop Copying',2,3]],
+        [['Cysteine',0,1],['Stop Copying',2,2],['Tryptonphan',3,3]]
+    ],
+    [
+        [['Leucine',0,3]],
+        [['Proline',0,3]],
+        [['Histidine',0,1],['Glutamine',2,3]],
+        [['Arginine',0,3]]
+    ],
+    [
+        [['Isoleucine',0,1],['Methionine (start)',2,3]],
+        [['Threonine',0,3]],
+        [['Asparagine',0,1],['Lysine',2,3]],
+        [['Serine',0,1],['Arginine',2,3]]
+    ],
+    [
+        [['Valine',0,3]],
+        [['Alanine',0,3]],
+        [['Aspartic Acid',0,1],['Glutamic Acid',2,3]],
+        [['Glycine',0,3]]
+    ]
+];
+var tableOut = false;
+var codonTable = function(x,y) {
+    stroke(0, 0, 0);
+    fill(74, 74, 74, 200);
+    rect(x - 10,y - 20,440,315);
+    noStroke();
+    fill(0, 0, 0);
+    textSize(10);
+    for (var first = 0; first < codons.length; first ++) {
+        for (var second = 0; second < codons[first].length; second ++) {
+            for (var third = 0; third < codons[first][second].length; third ++) {
+                codon = codons[first][second][third];
+                text(codon,x + second * 110,y + first * 80 + third * 15);
+            }
+            for (var a = 0; a < aAcids[first][second].length; a ++) {
+                acid = aAcids[first][second][a][0];
+                aPos = aAcids[first][second][a][1] + (aAcids[first][second][a][2] - aAcids[first][second][a][1])/2;
+                text(acid,x + second * 110 + 25,y + first * 80 + aPos * 15);
+            }
+        }
+    }
+    textSize(12);
+};
 
 void draw() {
     background(backgroundColor);
+    pattern();
     
     dnaCheck();
     legend();
@@ -349,16 +616,16 @@ void draw() {
         }
     
         if (keys[LEFT]) {
-            rotateYSide(-1,nodes,molecules[a]);
+            rotateYSide(-0.05,nodes,molecules[a]);
         }
         if (keys[RIGHT]) {
-            rotateYSide(1, nodes,molecules[a]);
+            rotateYSide(0.05, nodes,molecules[a]);
         }
         if (keys[UP]) {
-            rotateXSide(1, nodes,molecules[a]);
+            rotateXSide(0.05, nodes,molecules[a]);
         }
         if (keys[DOWN]) {
-            rotateXSide(-1, nodes,molecules[a]);
+            rotateXSide(-0.05, nodes,molecules[a]);
         }
     }
     popMatrix();
@@ -379,18 +646,41 @@ void draw() {
     text('Transparent\nor\nOpaque',width-60,40);
     strokeWeight(1);
     textAlign(LEFT,BASELINE);
+    
+    //codon table
+    if (button(0,(tableOut) ? height-348 : height-30,80,30, function(x,y) {
+        fill(135, 135, 135);
+        rect(0,y,80,30);
+        fill(0, 0, 0);
+        text('Codon Table',5,y + 18);
+    })) {
+        tableOut = !tableOut;
+    }
+    if (tableOut) {
+        codonTable(10,height - 297);
+    }
+    
+    menuButton(width-25,height-25-menuY,function() {menuOut = !menuOut;});
+    menu();
+    
+    helpIcon(120,20,'DNA is written in a code. The \'language\' of DNA is written with four nucleotides, Adenine, Thymine, Cytosine, and Guanine, commonly abbreviated to A T C G. A nucleotide is always paired up in a base-pair in the double-stranded DNA. Adenine always goes with Thymine, and Cytosine with Guanine, and vice-versa. The base-pairs are held together using Deoxyribose and Phosphate.');
+    
+    if (menuOut && menuY < 150) { menuY += (sq(((150-menuY)/30)) + 1)*2; }
+    if (!menuOut && menuY > 0) { menuY -= (sq(menuY/30) + 1)*2; }
+    mouseIsClicked = false;
+};
+
+void mouseClicked() {
+    mouseIsClicked = true;
+    if (mouseX > width-110 && mouseX < width-10 && mouseY > 10 && mouseY < 70) {
+        mode ++;
+    }
 };
 
 void mouseDragged() {
     for (var a = 0; a < molecules.length; a ++) {
         var nodes = molecules[a].nodes;
-        rotateYSide((mouseX-pmouseX) / 16, nodes, molecules[a]);
-        rotateXSide(-(mouseY-pmouseY) / 16, nodes, molecules[a]);
-    }
-};
-
-void mouseReleased = function() {
-    if (mouseX > width-110 && mouseX < width-10 && mouseY > 10 && mouseY < 70) {
-        mode ++;
+        rotateYSide((mouseX-pmouseX) / 64, nodes, molecules[a]);
+        rotateXSide(-(mouseY-pmouseY) / 64, nodes, molecules[a]);
     }
 };
