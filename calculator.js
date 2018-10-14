@@ -851,64 +851,45 @@ var edit = function(func, i) {
     fill(0, 0, 0, 0);
 
     stroke(func.color);
-
     strokeWeight(1);
 
     rect(2, (i-currFuncs[0])*65+22,22,15);
 
-    
     if (frameCount % 60 < 30 || keyPressed) {
-
         line(4+9 * renamePos, (i-currFuncs[0])*65+24, 4+9 * renamePos, (i-currFuncs[0])*65+35);
-
     }
 
     strokeWeight(1);
-
     rensub1 = func.name.substring(0, renamePos);
-
     rensub2 = func.name.substring(renamePos,func.name.length);
 
+    console.log("edit: key=" + key.code);
     if (keyIsPresed && keyCode !== 16 && key.code !== 8 && keyCode !== UP && keyCode !== DOWN && keyCode !== LEFT && keyCode !== RIGHT && keyCode !== 18 && keyCode !== 17 && keyCode !== 20 && keyCode !== 157 && func.name.length <2) {
-
         rensub1 += key.toString();
-
         renprevKey = key.toString();
-
         renamePos++;
-
     }
 
     if (keyIsPresed && key.code === 8 && renamePos >= 1) {
-
         rensub1 = rensub1.substring(0, rensub1.length-1);
-
         renamePos --;
-
     }
 
     if (keyIsPresed && keyCode === LEFT && renamePos >= 1) {
-
         renamePos--;
-
     }
 
     if (keyIsPresed && keyCode === RIGHT && renamePos <= func.name.length-1) {
-
         renamePos++;
-
     }
 
     if (keyIsReleased) {
-
         renprevKey = "";
-
     }
-
     func.name = rensub1 + rensub2;
 
     
-funcs[i].name = func.name;
+    funcs[i].name = func.name;
 
     if (mouseIsReleased) {
 
@@ -1055,6 +1036,7 @@ if (inTri1 || inTri2 || inRect) {
     pushMatrix();
     translate(0, funcTranslate);
 };
+
 var colorpick = function(funcname) {
     resetMatrix();
     pushMatrix();
@@ -1109,187 +1091,246 @@ var colorpick = function(funcname) {
     }
 
     
-colpickCols = [color(102, 153, 153),color(0, 153, 153),color(51, 204, 204),color(0, 204, 255),color(0, 153, 255),color(0, 102, 255),color(51, 102, 255),color(51, 51, 204),color(102, 102, 153)];
-
+    colpickCols = [
+        color(102, 153, 153),
+        color(0, 153, 153),
+        color(51, 204, 204),
+        color(0, 204, 255),
+        color(0, 153, 255),
+        color(0, 102, 255),
+        color(51, 102, 255),
+        color(51, 51, 204),
+        color(102, 102, 153)
+    ];
     for (var i = 120; i < 290; i+=20) {
 
         if (hexagonbutton(i*min(width, height)/400+(width-min(width, height))/2,147*min(width, height)/400, 20*min(width, height)/400, colpickCols[(i-120)/20], 10)) {
-
             funcs[funcname].color = colpickCols[(i-120)/20];
-
             colOn = false;
-
             return;
-
         }
-
     }
 
-    
-colpickCols = [color(51, 153, 102),color(0, 204, 153),color(0, 255, 204),color(0, 255, 255),color(51, 204, 255),color(51, 153, 255),color(102, 153, 255),color(102, 102, 255),color(102, 0, 255), color(102, 0, 204)];
+
+    colpickCols = [
+        color(51, 153, 102),
+        color(0, 204, 153),
+        color(0, 255, 204),
+        color(0, 255, 255),
+        color(51, 204, 255),
+        color(51, 153, 255),
+        color(102, 153, 255),
+        color(102, 102, 255),
+        color(102, 0, 255),
+        color(102, 0, 204)
+    ];
 
     for (var i = 110; i < 300; i+=20) {
 
         if (hexagonbutton(i*min(width, height)/400+(width-min(width, height))/2,165*min(width, height)/400, 20*min(width, height)/400, colpickCols[(i-110)/20], 10)) {
-
             funcs[funcname].color = colpickCols[(i-110)/20];
-
             colOn = false;
-
             return;
-
         }
-
     }
 
-    colpickCols = [color(51, 153, 51),color(0, 204, 102),color(0, 255, 153),color(102, 255, 204),color(102, 255, 255),color(102, 204, 255),color(153, 204, 255),color(153, 153, 255),color(153, 102, 255),color(153, 51, 255),color(153, 0, 255)];
+    colpickCols = [
+        color(51, 153, 51),
+        color(0, 204, 102),
+        color(0, 255, 153),
+        color(102, 255, 204),
+        color(102, 255, 255),
+        color(102, 204, 255),
+        color(153, 204, 255),
+        color(153, 153, 255),
+        color(153, 102, 255),
+        color(153, 51, 255),
+        color(153, 0, 255)
+    ];
 
     for (var i = 100; i < 310; i+=20) {
 
         if (hexagonbutton(i*min(width, height)/400+(width-min(width, height))/2,183*min(width, height)/400, 20*min(width, height)/400, colpickCols[(i-100)/20], 10)) {
-
             funcs[funcname].color = colpickCols[(i-100)/20];
-
             colOn = false;
-
             return;
-
         }
-
     }
 
-    
-colpickCols = [color(0, 102, 0),color(0, 204, 0),color(0, 255, 0),color(102, 255, 153),color(153, 255, 204),color(204, 255, 255),color(204, 204, 255),color(204, 153, 255),color(204, 102, 255),color(204, 51, 255),color(204, 0, 255),color(153, 0, 204)];
-
+    colpickCols = [
+        color(0, 102, 0),
+        color(0, 204, 0),
+        color(0, 255, 0),
+        color(102, 255, 153),
+        color(153, 255, 204),
+        color(204, 255, 255),
+        color(204, 204, 255),
+        color(204, 153, 255),
+        color(204, 102, 255),
+        color(204, 51, 255),
+        color(204, 0, 255),
+        color(153, 0, 204)
+    ];
     for (var i = 90; i < 320; i+=20) {
 
         if (hexagonbutton(i*min(width, height)/400+(width-min(width, height))/2,201*min(width, height)/400, 20*min(width, height)/400, colpickCols[(i-90)/20], 10)) {
-
             funcs[funcname].color = colpickCols[(i-90)/20];
-
             colOn = false;
-
             return;
-
         }
-
     }
 
-    colpickCols = [color(0, 51, 0),color(0, 153, 51),color(51, 204, 51),color(102, 255, 102),color(153, 255, 153),color(204, 255, 204),color(235, 235, 235),color(255, 204, 255),color(255, 153, 255),color(255, 102, 255),color(255, 0, 255),color(204, 0, 204),color(102, 0, 102)];
-
+    colpickCols = [
+        color(0, 51, 0),
+        color(0, 153, 51),
+        color(51, 204, 51),
+        color(102, 255, 102),
+        color(153, 255, 153),
+        color(204, 255, 204),
+        color(235, 235, 235),
+        color(255, 204, 255),
+        color(255, 153, 255),
+        color(255, 102, 255),
+        color(255, 0, 255),
+        color(204, 0, 204),
+        color(102, 0, 102)
+    ];
     for (var i = 80; i < 330; i+=20) {
 
         if (hexagonbutton(i*min(width, height)/400+(width-min(width, height))/2,219*min(width, height)/400, 20*min(width, height)/400, colpickCols[(i-80)/20], 10)) {
-
             funcs[funcname].color = colpickCols[(i-80)/20];
-
             colOn = false;
-
             return;
-
         }
-
     }
 
-
-    colpickCols = [color(51, 102, 0),color(0, 153, 0),color(102, 255, 51),color(153, 255, 102),color(204, 255, 153),color(255, 255, 204),color(255, 204, 204),color(255, 153, 204),color(255, 102, 204),color(255, 51, 204),color(204, 0, 153),color(153, 51, 153)];
+    colpickCols = [
+        color(51, 102, 0),
+        color(0, 153, 0),
+        color(102, 255, 51),
+        color(153, 255, 102),
+        color(204, 255, 153),
+        color(255, 255, 204),
+        color(255, 204, 204),
+        color(255, 153, 204),
+        color(255, 102, 204),
+        color(255, 51, 204),
+        color(204, 0, 153),
+        color(153, 51, 153)
+    ];
 
     for (var i = 90; i < 320; i+=20) {
 
         if (hexagonbutton(i*min(width, height)/400+(width-min(width, height))/2,237*min(width, height)/400, 20*min(width, height)/400, colpickCols[(i-90)/20], 10)) {
-
             funcs[funcname].color = colpickCols[(i-90)/20];
-
             colOn = false;
-
             return;
-
         }
-
     }
 
-    
-colpickCols = [color(51, 51, 0),color(102, 153, 0),color(153, 255, 51),color(204, 255, 102),color(255, 255, 153),color(255, 204, 153),color(255, 153, 153),color(255, 102, 153),color(255, 51, 153),color(204, 51, 153),color(153, 0, 153)];
+    colpickCols = [
+        color(51, 51, 0),
+        color(102, 153, 0),
+        color(153, 255, 51),
+        color(204, 255, 102),
+        color(255, 255, 153),
+        color(255, 204, 153),
+        color(255, 153, 153),
+        color(255, 102, 153),
+        color(255, 51, 153),
+        color(204, 51, 153),
+        color(153, 0, 153)
+    ];
     for (var i = 100; i < 310; i+=20) {
 
         if (hexagonbutton(i*min(width, height)/400+(width-min(width, height))/2,255*min(width, height)/400, 20*min(width, height)/400, colpickCols[(i-100)/20], 10)) {
-
             funcs[funcname].color = colpickCols[(i-100)/20];
-
             colOn = false;
-
             return;
-
         }
-
     }
 
-    colpickCols = [color(102, 102, 51),color(153, 204, 0),color(204, 255, 51),color(255, 255, 102),color(255, 204, 102),color(255, 153, 102),color(255, 102, 102),color(255, 0, 102),color(204, 102, 153),color(153, 51, 102)];
-
+    colpickCols = [
+        color(102, 102, 51),
+        color(153, 204, 0),
+        color(204, 255, 51),
+        color(255, 255, 102),
+        color(255, 204, 102),
+        color(255, 153, 102),
+        color(255, 102, 102),
+        color(255, 0, 102),
+        color(204, 102, 153),
+        color(153, 51, 102)
+    ];
     for (var i = 110; i < 300; i+=20) {
 
         if (hexagonbutton(i*min(width, height)/400+(width-min(width, height))/2,273*min(width, height)/400, 20*min(width, height)/400, colpickCols[(i-110)/20], 10)) {
-
             funcs[funcname].color = colpickCols[(i-110)/20];
-
             colOn = false;
-
             return;
-
         }
-
     }
 
 
-    colpickCols = [color(153, 153, 102), color(204, 204, 0), color(255, 255, 0), color(255, 204, 0), color(255, 153, 51), color(255, 102, 0), color(255, 80, 80), color(204, 0, 102), color(102, 0, 51)];
+    colpickCols = [
+        color(153, 153, 102),
+        color(204, 204, 0),
+        color(255, 255, 0),
+        color(255, 204, 0),
+        color(255, 153, 51),
+        color(255, 102, 0),
+        color(255, 80, 80),
+        color(204, 0, 102),
+        color(102, 0, 51)
+    ];
     for (var i = 120; i < 290; i+=20) {
 
         if (hexagonbutton(i*min(width, height)/400+(width-min(width, height))/2,291*min(width, height)/400, 20*min(width, height)/400, colpickCols[(i-120)/20], 10)) {
-
             funcs[funcname].color = colpickCols[(i-120)/20];
-
             colOn = false;
-
             return;
-
         }
-
     }
 
-    colpickCols = [color(153, 102, 51), color(204, 153, 0), color(255, 153, 0), color(204, 102, 0), color(255, 51, 0), color(255, 0, 0), color(204, 0, 0), color(153, 0, 51)];
-
+    colpickCols = [
+        color(153, 102, 51),
+        color(204, 153, 0),
+        color(255, 153, 0),
+        color(204, 102, 0),
+        color(255, 51, 0),
+        color(255, 0, 0),
+        color(204, 0, 0),
+        color(153, 0, 51)
+    ];
     for (var i = 130; i < 280; i+=20) {
 
         if (hexagonbutton(i*min(width, height)/400+(width-min(width, height))/2,309*min(width, height)/400, 20*min(width, height)/400, colpickCols[(i-130)/20], 10)) {
-
             funcs[funcname].color = colpickCols[(i-130)/20];
-
             colOn = false;
-
             return;
-
         }
-
     }
 
-    colpickCols = [color(102, 51, 0), color(153, 102, 0), color(204, 51, 0), color(153, 51, 0), color(153, 0, 0), color(128, 0, 0), color(153, 51, 51)];
-
+    colpickCols = [
+        color(102, 51, 0),
+        color(153, 102, 0),
+        color(204, 51, 0),
+        color(153, 51, 0),
+        color(153, 0, 0),
+        color(128, 0, 0),
+        color(153, 51, 51)
+    ];
     for (var i = 140; i < 270; i+=20) {
 
         if (hexagonbutton(i*min(width, height)/400+(width-min(width, height))/2,327*min(width, height)/400, 20*min(width, height)/400, colpickCols[(i-140)/20], 10)) {
-
             funcs[funcname].color = colpickCols[(i-140)/20];
-
             colOn = false;
-
             return;
-
         }
     }
 
     
-//black
-
+    //black
     if (hexagonbutton(325*min(width, height)/400+(width-min(width, height))/2, 315*min(width, height)/400, 45*min(width, height)/400, color(0, 0, 0), 15)) {
 
         funcs[funcname].color = color(0, 0, 0);
