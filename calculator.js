@@ -2229,7 +2229,7 @@ void draw() {
             if (string.length > 18) {
                 textSize(15/(textWidth(string)/150));
             }
-            text(string, (i%floor(width/200))*min(width, height)/3 + 100, (min(width, height)/3+30)*(floor(i/floor(width/200)))+40);
+            text(string,  ((i%floor(width/200))*min(width, height)/3 + 25)+min(width, height)/8, (min(width, height)/3+30)*(floor(i/floor(width/200)))+40);
         }
         noStroke();
         if (button((i%floor(width/200))*min(width, height)/3 + 35, (min(width, height)/3+30)*(floor(i/floor(width/200)))+457+funcTranslate, 100, 20, 2, 226, 227, 245)&&editCon === false&&colOn === false && graphopen === false && helpopen === false) {
