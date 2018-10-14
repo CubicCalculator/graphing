@@ -15,7 +15,6 @@ void keyReleased() {
 };
 
 //graphing functions
-{
 noStroke();
 var dimensionsOfFunc = function(func) {
     if (func.indexOf('x') > -1 && func.indexOf('y') > -1) {
@@ -601,14 +600,11 @@ var graph = function(funcs, cols, vars, constraints, x, y, w, h) {
         throw 'Attempted to graph in more than 3 dimensions';
     }
 };
-}
 
-{
 smooth();
 
 var grapphs = [];
 //global variables lmao
-{
 var selected = {func: [], name: [], color: [], constraints:[[-10, 10], [-10, 10]], vars: []};
 var prevGraph = {};
 var constraintsub1 = "";
@@ -658,7 +654,6 @@ var menuDown = false;
 var colpickCols = [color(255, 150, 0), color(255, 89, 0), color(255, 0, 0), color(255, 0, 102), color(255, 0, 150)];
 var colOn = false;
 var funcState = 0;
-}
 
 textFont(createFont("monospace"));
 
@@ -694,7 +689,6 @@ var inArr = function(o, l) {
 };
 
 //button & edit functions
-{
 var button = function(x, y, w, h, rad, r, g, b) {
     popMatrix();
     fill(r, g, b);
@@ -1092,7 +1086,6 @@ var colorpick = function(funcname) {
     textAlign(LEFT, BASELINE);
 
     //hexagonal color picker
-    {
     colpickCols = [color(0, 51, 102), color(51, 102, 153), color(51, 102, 204), color(0, 51, 153), color(0, 0, 153), color(0, 0, 204), color(0, 0, 102)];
 
     for (var i = 140; i < 275; i+=20) {
@@ -1304,7 +1297,6 @@ colpickCols = [color(51, 51, 0),color(102, 153, 0),color(153, 255, 51),color(204
 
         }
     }
-    }
 
     
 //black
@@ -1498,11 +1490,9 @@ var optMenu = function() {
 
 
 };
-}
 
 
 //menus and dropdowns
-{
 var about = function() {
     resetMatrix();
     noStroke();
@@ -2142,13 +2132,11 @@ var help = function() {
     }
     textAlign(LEFT, BASELINE);
 };
-}
 
 //draw loop, makes program actually function and enables interaction
 void draw() {
     background(255, 255, 255);
     //functions menu
-    {
     if (titleOn === false && editCon === false) {
         resetMatrix();
         funcDropDown();
@@ -2218,7 +2206,6 @@ void draw() {
         text("Add Graph", width-40, 413);
         textAlign(LEFT, BASELINE);
         popMatrix();
-    }
     }
     
     //drawing graphs
@@ -2387,8 +2374,6 @@ void draw() {
 };
 
 //mouse and key functions
-
-{
 void mousePressed() {
     if (prevMouse !== true) {
         mouseIsPresed = true;
@@ -2397,5 +2382,3 @@ void mousePressed() {
 void mouseReleased() {
     mouseIsReleased = true;
 };
-}
-}
