@@ -779,7 +779,7 @@ var editconstraints = function(func, old) {
     resetMatrix();
     noStroke();
     fill(206, 207, 225);
-    rect(width/2-(min(width, height) -100), height/2-(min(width, height)-100), min(width, height) -200, min(width, height)-200);
+    rect(width/2-(min(width, height) -100)/2, height/2-(min(width, height)-100), min(width, height) -200, min(width, height)-200);
     fill(0, 0, 0);
     textSize(40*min(width,height)/600);
     textAlign(CENTER);
