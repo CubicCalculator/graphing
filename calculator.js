@@ -789,8 +789,8 @@ var editconstraints = function(func, old) {
     line(width/2-(min(width, height) -200)/2, height/2-(min(width, height) -200)/2.5, width/2+(min(width, height) -200)/2, height/2-(min(width, height) -200)/2.5);
     textAlign(LEFT, BASELINE);
     textSize(15*min(width,height)/600);
-    text("Minimum x-value:", width/2-(min(width, height) -200)/2, 150+(min(width, height)-200)/4);
-    text("Maximum x-value:", width/2+(min(width, height) -200)/2, 150+(min(width, height)-200)/4);
+    text("Minimum x-value:", width/2-(min(width, height) -200)*5/8, 150+(min(width, height)-200)/4);
+    text("Maximum x-value:", width/2+(min(width, height) -200)*5/8, 150+(min(width, height)-200)/4);
     constraintedit(min(width, height)/2-160, min(width,height)/2-100, str(func.constraints[0][0]), "startX", func, [0, 0]);
     constraintedit(min(width, height)/2+60, min(width,height)/2-100, str(func.constraints[0][1]), "endX", func, [0, 1]);
     if (func.constraints.length === 2) {
