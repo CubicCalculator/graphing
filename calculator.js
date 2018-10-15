@@ -789,7 +789,7 @@ var editconstraints = function(func, old) {
     line(width/2-(min(width, height) -200)/2, height/2-(min(width, height) -200)/2.5, width/2+(min(width, height) -200)/2, height/2-(min(width, height) -200)/2.5);
     textSize(15*min(width,height)/600);
     text("Minimum x-value:", width/2-((min(width, height) -200)/4), height/2-((min(width, height) -200)/3));
-    text("Maximum x-value:", width/2+((min(width, height) -200)/4), height/2((min(width, height) -200)/3));
+    text("Maximum x-value:", width/2+((min(width, height) -200)/4), height/2-((min(width, height) -200)/3));
     textAlign(LEFT, BASELINE);
     constraintedit(min(width, height)/2-160, min(width,height)/2-100, str(func.constraints[0][0]), "startX", func, [0, 0]);
     constraintedit(min(width, height)/2+60, min(width,height)/2-100, str(func.constraints[0][1]), "endX", func, [0, 1]);
