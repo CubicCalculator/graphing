@@ -786,7 +786,7 @@ var editconstraints = function(func, old) {
     text("Edit Constraints:", width/2, 150);
     stroke(0, 0, 0);
     strokeWeight(2);
-    line(width/2-(min(width, height) -200)/2, height/2-(min(width, height) -200)/2.5, width/2-(min(width, height) -200)/2+min(width, height)-200/2.5, width/2-(min(width, height) -200)/2.5);
+    line(width/2-(min(width, height) -200)/2, height/2-(min(width, height) -200)/2.5, width/2-(min(width, height) -200)/2+(min(width, height)-200)/2.5, width/2-(min(width, height) -200)/2.5);
     textAlign(LEFT, BASELINE);
     textSize(15*min(width,height)/600);
     text("Minimum x-value:", min(width, height)/2-175, min(width,height)/2-120);
