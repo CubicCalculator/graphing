@@ -779,14 +779,14 @@ var editconstraints = function(func, old) {
     resetMatrix();
     noStroke();
     fill(206, 207, 225);
-    rect(width/2-(min(width, height) -100)/2, height/2-(min(width, height)-100), min(width, height) -200, min(width, height)-200);
+    rect(width/2-(min(width, height) -100)/2, height/2-(min(width, height)-100)/2, min(width, height) -200, min(width, height)-200);
     fill(0, 0, 0);
     textSize(40*min(width,height)/600);
     textAlign(CENTER);
     text("Edit Constraints:", width/2, 140);
     stroke(0, 0, 0);
     strokeWeight(2);
-    line(100, 150*min(width,height)/600, min(width, height)-102, 150*min(width,height)/600);
+    line(width/2-(min(width, height) -100)/2, 150*min(width,height)/600, width/2-(min(width, height) -100)/2+min(width, height)-200, 150*min(width,height)/600);
     textAlign(LEFT, BASELINE);
     textSize(15*min(width,height)/600);
     text("Minimum x-value:", min(width, height)/2-175, min(width,height)/2-120);
