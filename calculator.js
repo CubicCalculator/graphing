@@ -776,58 +776,48 @@ var constraintedit = function(x, y, val, constraint, edited, indices) {
 };
 
 var editconstraints = function(func, old) {
+    wh = width/2-(min(width, height)-100)/2;
+    ht = height/2-(min(width,height)-100)/2;
+    var socm = (min(width,height)-100);
     resetMatrix();
     noStroke();
     fill(206, 207, 225);
-    rect(width/2-(min(width, height) -200)/2, height/2-(min(width, height)-200)/2, min(width, height) -200, min(width, height)-200);
+    rect(wh, ht, socm, socm);
     fill(0, 0, 0);
     textSize(40*min(width,height)/600);
     textAlign(CENTER);
-    text("Edit Constraints:", width/2, 155);
+    text("Edit Constraints:", width/2, height/2-(min(width,height)-100)/2.4);
     stroke(0, 0, 0);
     strokeWeight(2);
-    line(width/2-(min(width, height) -200)/2, height/2-(min(width, height) -200)/2.5, width/2+(min(width, height) -200)/2, height/2-(min(width, height) -200)/2.5);
-    textSize(15*min(width,height)/600);
-    text("Minimum x-value:", width/2-((min(width, height) -200)/4), height/2-((min(width, height) -200)/3));
-    text("Maximum x-value:", width/2+((min(width, height) -200)/4), height/2-((min(width, height) -200)/3));
+    line(wh, ht+socm/8.5, wh+socm, ht+socm/8.5);
     textAlign(LEFT, BASELINE);
-    constraintedit(width/2-((min(width, height) -200)/4)-50, height/2-((min(width, height) -200)/3)+50, str(func.constraints[0][0]), "startX", func, [0, 0]);
-    constraintedit(width/2-((min(width, height) -200)/4)-50, height/2-((min(width, height) -200)/3)+50, str(func.constraints[0][1]), "endX", func, [0, 1]);
+    textSize(18*min(width,height)/600);
+    text("Minimum x-value:", wh+socm/15, ht+socm/5);
+    text("Maximum x-value:", wh+socm*8.5/15, ht+socm/5);
+    constraintedit(wh+socm/9, ht+socm/3.9, str(func.constraints[0][0]), "startX", func, [0, 0]);
+    constraintedit(wh+socm/1.63, ht+socm/3.9, str(func.constraints[0][1]), "endX", func, [0, 1]);
     if (func.constraints.length === 2) {
-        text("Minimum y-value:", min(width, height)/2-175, min(width,height)/2+50);
-        text("Maximum y-value:", min(width, height)/2+45, min(width,height)/2+50);
-        constraintedit(min(width, height)/2-160, min(width,height)/2+70, str(func.constraints[1][0]), "startY", func, [1, 0]);
-        constraintedit(min(width, height)/2+60, min(width,height)/2+70, str(func.constraints[1][1]), "endY", func, [1, 1]);
+        textSize(18*min(width,height)/600);
+        text("Minimum y-value:", wh+socm/15, ht+socm/1.6);
+        text("Maximum y-value:", wh+socm*8.5/15, ht+socm/1.6);
+        constraintedit(wh+socm/9, ht+socm/1.45, str(func.constraints[1][0]), "startY", func, [1, 0]);
+        constraintedit(wh+socm/1.63, ht+socm/1.45, str(func.constraints[1][1]), "endY", func, [1, 1]);
     }
     else {
-        textSize(15);
-        text("Minimum y-value:", min(width, height)/2-175, min(width,height)/2-30);
-        text("Maximum y-value:", min(width, height)/2+45, min(width,height)/2-30);
-        constraintedit(min(width, height)/2-160, min(width,height)/2-10, str(func.constraints[1][0]), "startY", func, [1, 0]);
-        constraintedit(min(width, height)/2+60, min(width,height)/2-10, str(func.constraints[1][1]), "endY", func, [1, 1]);
-        textSize(15);
-        text("Minimum z-value:", min(width, height)/2-175, min(width,height)/2+60);
-        text("Maximum z-value:", min(width, height)/2+45, min(width,height)/2+60);
-        constraintedit(min(width, height)/2-160, min(width,height)/2+80, str(func.constraints[2][0]), "startZ", func, [2, 0]);
-        constraintedit(min(width, height)/2+60, min(width,height)/2+80, str(func.constraints[2][1]), "endZ", func, [2, 1]);
+        textSize(18*min(width,height)/600);
+        text("Minimum y-value:", wh+socm/15, ht+socm/2.4);
+        text("Maximum y-value:", wh+socm*8.5/15, ht+socm/2.4);
+        constraintedit(wh+socm/9, ht+socm/2.1, str(func.constraints[1][0]), "startY", func, [1, 0]);
+        constraintedit(wh+socm/1.63, ht+socm/2.1, str(func.constraints[1][1]), "endY", func, [1, 1]);
+        textSize(18*min(width,height)/600);
+        text("Minimum z-value:", wh+socm/15, ht+socm/1.55);
+        text("Maximum z-value:", wh+socm*8.5/15, ht+socm/1.55);
+        constraintedit(wh+socm/9, ht+socm/1.42, str(func.constraints[2][0]), "startZ", func, [2, 0]);
+        constraintedit(wh+socm/1.63, ht+socm/1.42, str(func.constraints[2][1]), "endZ", func, [2, 1]);
     }
     noStroke();
-    if (
-        func.constraints[0][0] !== "" &&
-        func.constraints[0][1] !== "" &&
-        func.constraints[1][0] !== "" &&
-        func.constraints[1][1] !== "" &&
-        parseInt(func.constraints[0][0], 10) < parseInt(func.constraints[0][1], 10) &&
-        parseInt(func.constraints[1][0], 10) < parseInt(func.constraints[1][1], 10)
-    ) {
-        /*
-        if (func.constraints.length > 2) {
-            if (parseInt(func.constraints[2][0],10) >= parseInt(func.constraints[2][1], 10)) {
-            }
-        }
-        */
-
-        if (button(min(width, height)/2-50, min(width,height)/2+140, 100, 40, 5, 206, 207, 225)) {
+    if (func.constraints[0][0] !== "" && func.constraints[0][1] !== "" && func.constraints[1][0] !== "" && func.constraints[1][1] !== "" && parseInt(func.constraints[0][0], 10) < parseInt(func.constraints[0][1], 10) && parseInt(func.constraints[1][0], 10) < parseInt(func.constraints[1][1], 10) && parseInt(func.constraints[2][0],10) < parseInt(func.constraints[2][1], 10)) {
+        if (button(width/2-50, ht+socm/1.17, 100, 40, 5, 206, 207, 225)) {
             grapphs[old].constraints = [];
             for (var c = 0; c < prevGraph.constraints.length; c ++) {
                 grapphs[old].constraints.push([]);
@@ -841,7 +831,7 @@ var editconstraints = function(func, old) {
         textAlign(CENTER, CENTER);
         textSize(30);
         fill(0, 0, 0);
-        text("Done", width/2, min(width,height)/2+160);
+        text("Done", width/2, ht+socm/1.115);
         textAlign(LEFT, BASELINE);
     }
 };
