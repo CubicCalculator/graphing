@@ -817,7 +817,7 @@ var editconstraints = function(func, old) {
     }
     noStroke();
     if (func.constraints[0][0] !== "" && func.constraints[0][1] !== "" && func.constraints[1][0] !== "" && func.constraints[1][1] !== "" && parseInt(func.constraints[0][0], 10) < parseInt(func.constraints[0][1], 10) && parseInt(func.constraints[1][0], 10) < parseInt(func.constraints[1][1], 10) && (func.constraints.length < 3 || parseInt(func.constraints[2][0],10) < parseInt(func.constraints[2][1], 10))) {
-        if (button(width/2-50, ht+socm/1.17, 100, 40, 5, 206, 207, 225)) {
+        if (button(width/2-50, ht+socm/1.17-20, 100, 40, 5, 206, 207, 225)) {
             grapphs[old].constraints = [];
             for (var c = 0; c < prevGraph.constraints.length; c ++) {
                 grapphs[old].constraints.push([]);
