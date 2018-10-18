@@ -831,7 +831,7 @@ var editconstraints = function(func, old) {
         textAlign(CENTER, CENTER);
         textSize(30);
         fill(0, 0, 0);
-        text("Done", width/2, ht+socm/1.115);
+        text("Done", width/2, ht+socm/1.17);
         textAlign(LEFT, BASELINE);
     }
 };
