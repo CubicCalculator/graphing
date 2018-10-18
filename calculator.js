@@ -761,12 +761,17 @@ var constraintedit = function(x, y, val, constraint, edited, indices) {
                         constraintPos++;
                     }
                     break;
-
+		case 190:
+	            if (constraintPos !== 0) {
+			constraintsub1 += key.toString();
+			constraintPos++;
+		    }
                 default:
                     if ((myKey.keyCode >= 48) && (myKey.keyCode <= 57)) {
                         constraintsub1 += key.toString();
                         constraintPos++;
                     }
+	        
             }
             myKey.reset();
         }
