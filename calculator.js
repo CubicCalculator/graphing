@@ -755,7 +755,7 @@ var constraintedit = function(x, y, val, constraint, edited, indices) {
                     }
                     break;
 
-                case 173:   // '-' key
+                case 179:   // '-' key
                     if (constraintPos === 0) {
                         constraintsub1 += key.toString();
                         constraintPos++;
@@ -763,8 +763,8 @@ var constraintedit = function(x, y, val, constraint, edited, indices) {
                     break;
 		case 190:
 	            var inArrayxd = false;
-	            for (var z = 0; z < edited.constraints[indices[0]][indices[1]]; z++) {
-		        if (edit.constraints[indices[0]][indices[1]][z] === ".") {
+	            for (var z = 0; z < str(edited.constraints[indices[0]][indices[1]]).length; z++) {
+		        if (str(edited.constraints[indices[0]][indices[1]][z]) === ".") {
 			    inArrayxd = true;
 			}
 		    }
