@@ -806,25 +806,25 @@ var editconstraints = function(func, old) {
     text("Minimum x-value:", wh+socm/15, ht+socm/5);
     text("Maximum x-value:", wh+socm*8/13, ht+socm/5);
     constraintedit(wh+socm/9, ht+socm/3.9, str(func.constraints[0][0]), "startX", func, [0, 0]);
-    constraintedit(wh+socm/1.5, ht+socm/3.9, str(func.constraints[0][1]), "endX", func, [0, 1]);
+    constraintedit(wh+socm/1.4, ht+socm/3.9, str(func.constraints[0][1]), "endX", func, [0, 1]);
     if (func.constraints.length === 2) {
         textSize(18*min(width,height)/600);
         text("Minimum y-value:", wh+socm/15, ht+socm/1.6);
         text("Maximum y-value:", wh+socm*8/13, ht+socm/1.6);
         constraintedit(wh+socm/9, ht+socm/1.45, str(func.constraints[1][0]), "startY", func, [1, 0]);
-        constraintedit(wh+socm/1.5, ht+socm/1.45, str(func.constraints[1][1]), "endY", func, [1, 1]);
+        constraintedit(wh+socm/1.4, ht+socm/1.45, str(func.constraints[1][1]), "endY", func, [1, 1]);
     }
     else {
         textSize(18*min(width,height)/600);
         text("Minimum y-value:", wh+socm/15, ht+socm/2.4);
         text("Maximum y-value:", wh+socm*8/13, ht+socm/2.4);
         constraintedit(wh+socm/9, ht+socm/2.1, str(func.constraints[1][0]), "startY", func, [1, 0]);
-        constraintedit(wh+socm/1.5, ht+socm/2.1, str(func.constraints[1][1]), "endY", func, [1, 1]);
+        constraintedit(wh+socm/1.4, ht+socm/2.1, str(func.constraints[1][1]), "endY", func, [1, 1]);
         textSize(18*min(width,height)/600);
         text("Minimum z-value:", wh+socm/15, ht+socm/1.55);
         text("Maximum z-value:", wh+socm*8/13, ht+socm/1.55);
         constraintedit(wh+socm/9, ht+socm/1.42, str(func.constraints[2][0]), "startZ", func, [2, 0]);
-        constraintedit(wh+socm/1.5, ht+socm/1.42, str(func.constraints[2][1]), "endZ", func, [2, 1]);
+        constraintedit(wh+socm/1.4, ht+socm/1.42, str(func.constraints[2][1]), "endZ", func, [2, 1]);
     }
     noStroke();
     if (func.constraints[0][0] !== "" && func.constraints[0][1] !== "" && func.constraints[1][0] !== "" && func.constraints[1][1] !== "" && parseInt(func.constraints[0][0], 10) < parseInt(func.constraints[0][1], 10) && parseInt(func.constraints[1][0], 10) < parseInt(func.constraints[1][1], 10) && (func.constraints.length < 3 || parseInt(func.constraints[2][0],10) < parseInt(func.constraints[2][1], 10))) {
