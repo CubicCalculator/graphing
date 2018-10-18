@@ -816,7 +816,7 @@ var editconstraints = function(func, old) {
         constraintedit(wh+socm/1.63, ht+socm/1.42, str(func.constraints[2][1]), "endZ", func, [2, 1]);
     }
     noStroke();
-    if (func.constraints[0][0] !== "" && func.constraints[0][1] !== "" && func.constraints[1][0] !== "" && func.constraints[1][1] !== "" && parseInt(func.constraints[0][0], 10) < parseInt(func.constraints[0][1], 10) && parseInt(func.constraints[1][0], 10) < parseInt(func.constraints[1][1], 10) && parseInt(func.constraints[2][0],10) < parseInt(func.constraints[2][1], 10)) {
+    if (func.constraints[0][0] !== "" && func.constraints[0][1] !== "" && func.constraints[1][0] !== "" && func.constraints[1][1] !== "" && parseInt(func.constraints[0][0], 10) < parseInt(func.constraints[0][1], 10) && parseInt(func.constraints[1][0], 10) < parseInt(func.constraints[1][1], 10) && (func.constraints.length < 3 || parseInt(func.constraints[2][0],10) < parseInt(func.constraints[2][1], 10))) {
         if (button(width/2-50, ht+socm/1.17, 100, 40, 5, 206, 207, 225)) {
             grapphs[old].constraints = [];
             for (var c = 0; c < prevGraph.constraints.length; c ++) {
@@ -1595,7 +1595,11 @@ var titleScreen = function() {
     /* @pjs preload = "hpcubiccalc.png"; */
     PImage b;
     b = loadImage("hpcubiccalc.png");
-    image(b, width/2, height/2.5, 300*wh, 200*ht);
+    if (wh >= ht * 2.8) {
+        image(b, width/2, height/2.5, 300*wh, 107*wh);
+    } else {
+        image(b, width/2, height/2.5, 560*ht, 200*ht);
+    }
     fill(77, 77, 77, 150);
     textSize(12*wh);
     text("Click to proceed", 200*wh, 275*ht);
