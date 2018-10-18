@@ -755,7 +755,7 @@ var constraintedit = function(x, y, val, constraint, edited, indices) {
                     }
                     break;
 
-                case 179:   // '-' key
+                case 189:   // '-' key
                     if (constraintPos === 0) {
                         constraintsub1 += key.toString();
                         constraintPos++;
