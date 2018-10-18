@@ -762,7 +762,13 @@ var constraintedit = function(x, y, val, constraint, edited, indices) {
                     }
                     break;
 		case 190:
-	            if (constraintPos !== 0) {
+	            var inArrayxd = false;
+	            for (var z = 0; z < edited.constraints[indices[0]][indices[1]]; z++) {
+		        if (edit.constraints[indices[0]][indices[1]][z] === ".") {
+			    inArrayxd = true;
+			}
+		    }
+	            if (constraintPos !== 0 && inArrayxd === false) {
 			constraintsub1 += key.toString();
 			constraintPos++;
 		    }
