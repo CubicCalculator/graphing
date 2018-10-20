@@ -2285,7 +2285,7 @@ void draw() {
             if (str(grapphs[i].name+"("+grapphs[i].vars+") = "  + grapphs[i].func).length > 18) {
                 textSize(15/(textWidth(str(grapphs[i].name+"("+grapphs[i].vars+") = "  + grapphs[i].func))/150));
             }
-            text(grapphs[i].name+"("+grapphs[i].vars+") = "  + grapphs[i].func, ((i%floor(width/200))*min(width, height)/1.5)+min(width, height)/4, (min(width, height)/3 + 30)*(floor(i/floor(width/200)))+40);
+            text(grapphs[i].name+"("+grapphs[i].vars+") = "  + grapphs[i].func, ((i%floor(width/200))*min(width, height)/1.5)+min(width, height)/4+25, (min(width, height)/3 + 30)*(floor(i/floor(width/200)))+40);
         }
         else {
             fill(0, 0, 0);
@@ -2299,7 +2299,7 @@ void draw() {
             if (string.length > 18) {
                 textSize(15/(textWidth(string)/150));
             }
-            text(string,  ((i%floor(width/200))*min(width, height)/1.5) +min(width, height)/4, (min(width, height)/1.5+30)*(floor(i/floor(width/200)))+40);
+            text(string,  ((i%floor(width/200))*min(width, height)/1.5) +min(width, height)/4+25, (min(width, height)/1.5+30)*(floor(i/floor(width/200)))+40);
         }
         noStroke();
         if (button((i%floor(width/200))*min(width, height)/1.5 + min(width,height)/4-50, (min(width, height)/1.5+30)*(floor(i/floor(width/200)))+457+funcTranslate, 100, 20, 2, 226, 227, 245)&&editCon === false&&colOn === false && graphopen === false && helpopen === false) {
@@ -2320,8 +2320,8 @@ void draw() {
         }
         stroke(255, 0, 0);
         strokeWeight(3);
-        line(i%floor(width/200)*min(width, height)/1.5 + min(width,height)/4+70, (min(width, height)/1.5+30)*(floor(i/floor(width/200)))+472,i%floor(width/200)*min(width, height)/1.5 + min(width,height)/4+80, (min(width, height)/1.5 + 30)*(floor(i/floor(width/200)))+462);
-        line(i%floor(width/200)*min(width, height)/1.5 + min(width,height)/4+70, (min(width, height)/1.5+30)*(floor(i/floor(width/200)))+462,i%floor(width/200)*min(width, height)/1.5 + min(width,height)/4+80, (min(width, height)/1.5 + 30)*(floor(i/floor(width/200)))+472);
+        line(i%floor(width/200)*min(width, height)/1.5 + min(width,height)/4+65, (min(width, height)/1.5+30)*(floor(i/floor(width/200)))+472,i%floor(width/200)*min(width, height)/1.5 + min(width,height)/4+75, (min(width, height)/1.5 + 30)*(floor(i/floor(width/200)))+462);
+        line(i%floor(width/200)*min(width, height)/1.5 + min(width,height)/4+65, (min(width, height)/1.5+30)*(floor(i/floor(width/200)))+462,i%floor(width/200)*min(width, height)/1.5 + min(width,height)/4+75, (min(width, height)/1.5 + 30)*(floor(i/floor(width/200)))+472);
         fill(0, 0, 0);
         textSize(10);
         text("Edit Constraints", min(width, height)/1.5*(i%floor(width/200)) + min(width,height)/4, (min(width, height)/1.5 + 30)*(floor(i/floor(width/200)))+467);
