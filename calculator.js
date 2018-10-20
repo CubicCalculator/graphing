@@ -2320,11 +2320,11 @@ void draw() {
         }
         stroke(255, 0, 0);
         strokeWeight(3);
-        line(i%floor(width/200)*min(width, height)/3 + 182, (min(width, height)/3+30)*(floor(i/floor(width/200)))+472,i%floor(width/200)*min(width, height)/3 + 192, (min(width, height)/3 + 30)*(floor(i/floor(width/200)))+462);
-        line(i%floor(width/200)*min(width, height)/3 + 182, (min(width, height)/3+30)*(floor(i/floor(width/200)))+462,i%floor(width/200)*min(width, height)/3 + 192, (min(width, height)/3 + 30)*(floor(i/floor(width/200)))+472);
+        line(i%floor(width/200)*min(width, height)/1.5 + 182, (min(width, height)/1.5+30)*(floor(i/floor(width/200)))+472,i%floor(width/200)*min(width, height)/3 + 192, (min(width, height)/3 + 30)*(floor(i/floor(width/200)))+462);
+        line(i%floor(width/200)*min(width, height)/1.5 + 182, (min(width, height)/1.5+30)*(floor(i/floor(width/200)))+462,i%floor(width/200)*min(width, height)/3 + 192, (min(width, height)/3 + 30)*(floor(i/floor(width/200)))+472);
         fill(0, 0, 0);
         textSize(10);
-        text("Edit Constraints", min(width, height)/3*(i%floor(width/200)) + 115, (min(width, height)/3 + 30)*(floor(i/floor(width/200)))+467);
+        text("Edit Constraints", min(width, height)/1.5*(i%floor(width/200)) + 115, (min(width, height)/1.5 + 30)*(floor(i/floor(width/200)))+467);
         textAlign(LEFT, BASELINE);
         textSize(13);
         resetMatrix();
