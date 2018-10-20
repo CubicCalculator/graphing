@@ -2328,7 +2328,7 @@ void draw() {
         textAlign(LEFT, BASELINE);
         textSize(13);
         resetMatrix();
-        graph(grapphs[i].func, grapphs[i].color, grapphs[i].vars, grapphs[i].constraints, (i%floor(width/200))*min(width, height)/1.5 + 25, (min(width, height)/1.5 + 30)*(floor(i/floor(width/200)))+495 + funcTranslate, min(width, height)/2, min(width, height)/2);
+        graph(grapphs[i].func, grapphs[i].color, grapphs[i].vars, grapphs[i].constraints, (i%floor(width/200))*min(width, height)/1.5 + 25, (min(width, height)/1.5 + 30)*(floor(i/floor(width/200)*min(width,height)/1.5))+495 + funcTranslate, min(width, height)/2, min(width, height)/2);
     }
     
     //color menu
