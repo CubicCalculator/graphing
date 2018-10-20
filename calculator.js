@@ -2299,10 +2299,10 @@ void draw() {
             if (string.length > 18) {
                 textSize(15/(textWidth(string)/150));
             }
-            text(string,  ((i%floor(width/200))*min(width, height)/3 + 25)+min(width, height)/8, (min(width, height)/3+30)*(floor(i/floor(width/200)))+40);
+            text(string,  ((i%floor(width/200))*min(width, height)/1.5 + 225)+min(width, height)/8, (min(width, height)/1.5+30)*(floor(i/floor(width/200)))+40);
         }
         noStroke();
-        if (button((i%floor(width/200))*min(width, height)/3 + 65, (min(width, height)/3+30)*(floor(i/floor(width/200)))+457+funcTranslate, 100, 20, 2, 226, 227, 245)&&editCon === false&&colOn === false && graphopen === false && helpopen === false) {
+        if (button((i%floor(width/200))*min(width, height)/1.5 + 265, (min(width, height)/1.5+30)*(floor(i/floor(width/200)))+457+funcTranslate, 100, 20, 2, 226, 227, 245)&&editCon === false&&colOn === false && graphopen === false && helpopen === false) {
             prevGraph = {"constraints": [], "index": i};
             for (var c = 0; c < grapphs[i].constraints.length; c ++) {
                 prevGraph.constraints.push([]);
@@ -2314,17 +2314,17 @@ void draw() {
             constraintPos = str(prevGraph.constraints[0][0]).length;
             currCons = "startX";
         }
-        if (button((i%floor(width/200))*min(width, height)/3 + 177, (min(width, height)/3 + 30)*(floor(i/floor(width/200)))+457+funcTranslate, 20, 20, 2, 226, 227, 245)&&editCon === false&&helpopen === false) {
+        if (button((i%floor(width/200))*min(width, height)/1.5 + 377, (min(width, height)/1.5 + 30)*(floor(i/floor(width/200)))+457+funcTranslate, 20, 20, 2, 226, 227, 245)&&editCon === false&&helpopen === false) {
             grapphs.splice(i, 1);
             break;
         }
         stroke(255, 0, 0);
         strokeWeight(3);
-        line(i%floor(width/200)*min(width, height)/1.5 + 182, (min(width, height)/1.5+30)*(floor(i/floor(width/200)))+472,i%floor(width/200)*min(width, height)/3 + 192, (min(width, height)/3 + 30)*(floor(i/floor(width/200)))+462);
-        line(i%floor(width/200)*min(width, height)/1.5 + 182, (min(width, height)/1.5+30)*(floor(i/floor(width/200)))+462,i%floor(width/200)*min(width, height)/3 + 192, (min(width, height)/3 + 30)*(floor(i/floor(width/200)))+472);
+        line(i%floor(width/200)*min(width, height)/1.5 + 382, (min(width, height)/1.5+30)*(floor(i/floor(width/200)))+472,i%floor(width/200)*min(width, height)/1.5 + 392, (min(width, height)/1.5 + 30)*(floor(i/floor(width/200)))+462);
+        line(i%floor(width/200)*min(width, height)/1.5 + 382, (min(width, height)/1.5+30)*(floor(i/floor(width/200)))+462,i%floor(width/200)*min(width, height)/1.5 + 392, (min(width, height)/1.5 + 30)*(floor(i/floor(width/200)))+472);
         fill(0, 0, 0);
         textSize(10);
-        text("Edit Constraints", min(width, height)/1.5*(i%floor(width/200)) + 115, (min(width, height)/1.5 + 30)*(floor(i/floor(width/200)))+467);
+        text("Edit Constraints", min(width, height)/1.5*(i%floor(width/200)) + 315, (min(width, height)/1.5 + 30)*(floor(i/floor(width/200)))+467);
         textAlign(LEFT, BASELINE);
         textSize(13);
         resetMatrix();
