@@ -118,30 +118,30 @@ var operations = [
     new Operation('nroot', 2, function() { return pow(arguments[0][0], 1/arguments[0][1]);}),
     
     
-    new Operation('sin', 1, function() { return Math.sin(arguments[0][0]); }),
-    new Operation('cos', 1, function() { return Math.cos(arguments[0][0]); }),
-    new Operation('tan', 1, function() { return Math.tan(arguments[0][0]); }),
-    new Operation('csc', 1, function() { return 1/Math.sin(arguments[0][0]); }),
-    new Operation('sec', 1, function() { return 1/Math.cos(arguments[0][0]); }),
-    new Operation('cot', 1, function() { return 1/Math.tan(arguments[0][0]); }),
-    new Operation('asin', 1, function() { return Math.asin(arguments[0][0]); }),
-    new Operation('acos', 1, function() { return Math.acos(arguments[0][0]); }),
-    new Operation('atan', 1, function() { return Math.atan(arguments[0][0]); }),
-    new Operation('acsc', 1, function() { return 1/Math.asin(arguments[0][0]); }),
-    new Operation('asec', 1, function() { return 1/Math.acos(arguments[0][0]); }),
-    new Operation('acot', 1, function() { return 1/Math.atan(arguments[0][0]); }),
-    new Operation('sinh', 1, function() { return Math.sinh(arguments[0][0]); }),
-    new Operation('cosh', 1, function() { return Math.cosh(arguments[0][0]); }),
-    new Operation('tanh', 1, function() { return Math.tanh(arguments[0][0]); }),
-    new Operation('csch', 1, function() { return Math.csch(arguments[0][0]); }),
-    new Operation('sech', 1, function() { return Math.sech(arguments[0][0]); }),
-    new Operation('coth', 1, function() { return Math.coth(arguments[0][0]); }),
-    new Operation('asinh', 1, function() { return Math.asinh(arguments[0][0]); }),
-    new Operation('acosh', 1, function() { return Math.acosh(arguments[0][0]); }),
-    new Operation('atanh', 1, function() { return Math.atanh(arguments[0][0]); }),
-    new Operation('acsch', 1, function() { return Math.acsch(arguments[0][0]); }),
-    new Operation('asech', 1, function() { return Math.asech(arguments[0][0]); }),
-    new Operation('acoth', 1, function() { return Math.acoth(arguments[0][0]); }),
+    new Operation('sin', 1, function() { return sin(arguments[0][0]); }),
+    new Operation('cos', 1, function() { return cos(arguments[0][0]); }),
+    new Operation('tan', 1, function() { return tan(arguments[0][0]); }),
+    new Operation('csc', 1, function() { return 1/sin(arguments[0][0]); }),
+    new Operation('sec', 1, function() { return 1/cos(arguments[0][0]); }),
+    new Operation('cot', 1, function() { return 1/tan(arguments[0][0]); }),
+    new Operation('asin', 1, function() { return asin(arguments[0][0]); }),
+    new Operation('acos', 1, function() { return acos(arguments[0][0]); }),
+    new Operation('atan', 1, function() { return atan(arguments[0][0]); }),
+    new Operation('acsc', 1, function() { return 1/asin(arguments[0][0]); }),
+    new Operation('asec', 1, function() { return 1/acos(arguments[0][0]); }),
+    new Operation('acot', 1, function() { return 1/atan(arguments[0][0]); }),
+    new Operation('sinh', 1, function() { return sinh(arguments[0][0]); }),
+    new Operation('cosh', 1, function() { return cosh(arguments[0][0]); }),
+    new Operation('tanh', 1, function() { return tanh(arguments[0][0]); }),
+    new Operation('csch', 1, function() { return csch(arguments[0][0]); }),
+    new Operation('sech', 1, function() { return sech(arguments[0][0]); }),
+    new Operation('coth', 1, function() { return coth(arguments[0][0]); }),
+    new Operation('asinh', 1, function() { return asinh(arguments[0][0]); }),
+    new Operation('acosh', 1, function() { return acosh(arguments[0][0]); }),
+    new Operation('atanh', 1, function() { return atanh(arguments[0][0]); }),
+    new Operation('acsch', 1, function() { return acsch(arguments[0][0]); }),
+    new Operation('asech', 1, function() { return asech(arguments[0][0]); }),
+    new Operation('acoth', 1, function() { return acoth(arguments[0][0]); }),
     
     new Operation('abs', 1, function() { return abs(arguments[0][0]); }),
     new Operation('floor', 1, function() { return floor(arguments[0][0]); }),
@@ -149,12 +149,12 @@ var operations = [
     new Operation ('round', 1, function() { return round(arguments[0][0]); }),
     new Operation('sq', 1, function() {return sq(arguments[0][0]);}),
     new Operation('pow', 2, function() {return pow(arguments[0][0], arguments[0][1]);}),
-    new Operation('log', 2, function() {return Math.log(arguments[0][0], arguments[0][1]);}),
-    new Operation('ln', 1, function() {return Math.log(arguments[0][0], Math.e);}),
+    new Operation('log', 2, function() {return log(arguments[0][0], arguments[0][1]);}),
+    new Operation('ln', 1, function() {return log(arguments[0][0], e);}),
     new Operation('min', -1, function() {
         var result = arguments[0][0];
         for (var i = 1; i < arguments[0].length; i ++) {
-            result = Math.min(result, arguments[0][i]);
+            result = min(result, arguments[0][i]);
         }
         //println(result);
         return result;
@@ -162,7 +162,7 @@ var operations = [
     new Operation('max', -1, function() {
         var result = arguments[0][0];
         for (var i = 1; i < arguments[0].length; i ++) {
-            result = Math.max(result, arguments[0][i]);
+            result = max(result, arguments[0][i]);
         }
         return result;
     }),
