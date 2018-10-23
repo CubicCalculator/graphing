@@ -170,7 +170,7 @@ var operations = [];
     
 ];*/
 
-var evaluate = function(func, vars, values) {
+var evaluate = function(func, vars, values) {/*
     if (func[0] === "-") {
         func = "0" + func;
     } else {
@@ -245,7 +245,7 @@ var evaluate = function(func, vars, values) {
     
     // multiplication/division
     for (var i = 0; i < func.length; i ++) {
-        if ('*/'.split('').indexOf(func[i]) > -1) {
+        if ('*//*'.split('').indexOf(func[i]) > -1) {
             var total = operate(func, i, (func[i] === '*') ? multiply : divide);
             
             func = func.substring(0, total.start) + total.num + func.substring(total.end, func.length);
@@ -264,7 +264,7 @@ var evaluate = function(func, vars, values) {
         }
     }
     
-    return parseFloat(func);
+    return parseFloat(func);*/
 };
 
 var backgroundLight = 0.4;
