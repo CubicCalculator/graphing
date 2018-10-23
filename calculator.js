@@ -112,7 +112,7 @@ var Operation = function(name, para, f) {
     this.para = para;
     this.func = f;
 };
-var operations = [
+var operations = [];
 	/*
     // sqrt(4) ==> 2
     new Operation('sqrt', 1, function() { return sqrt(arguments[0][0]); }),
@@ -167,8 +167,8 @@ var operations = [
         }
         return result;
     }),
-    */
-];
+    
+];*/
 
 var evaluate = function(func, vars, values) {
     if (func[0] === "-") {
