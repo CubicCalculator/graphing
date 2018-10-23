@@ -113,6 +113,7 @@ var Operation = function(name, para, f) {
     this.func = f;
 };
 var operations = [
+	/*
     // sqrt(4) ==> 2
     new Operation('sqrt', 1, function() { return sqrt(arguments[0][0]); }),
     new Operation('nroot', 2, function() { return pow(arguments[0][0], 1/arguments[0][1]);}),
@@ -166,6 +167,7 @@ var operations = [
         }
         return result;
     }),
+    */
 ];
 
 var evaluate = function(func, vars, values) {
