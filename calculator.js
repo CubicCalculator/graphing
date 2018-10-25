@@ -2131,16 +2131,16 @@ var funcDropDown = function() {
 };
 
 var addGraph = function() {
-    
+    translate(0, funcTranslate);
     noStroke();
     fill(205, 206, 225);
     rect(width-130, 0, 130, ceil(funcs.length/3)*30+85);
     noStroke();
-    if (button(width-120, floor((funcs.length-1)/3)*30+80, 60, 25, 5, 205, 206, 225)) {
+    if (button(width-120, floor((funcs.length-1)/3)*30+80+funcTranslate, 60, 25, 5, 205, 206, 225)) {
         graphopen = false;
         selected = {func: [], name: [], color: [], constraints:[[-10, 10], [-10, 10]], vars: []};
     }
-    if (button(width-50, floor((funcs.length-1)/3)*30+80, 40, 25, 5, 205, 206, 225)) {
+    if (button(width-50, floor((funcs.length-1)/3)*30+80+funcTranslate, 40, 25, 5, 205, 206, 225)) {
         if (selected.func !== []) {
             grapphs.push(selected);
         }
@@ -2148,6 +2148,7 @@ var addGraph = function() {
         graphopen = false;
     }
     resetMatrix();
+    translate(0, funcTranslate);
     fill(100, 100, 100);
     textSize(15);
     textAlign(CENTER, CENTER);
@@ -2166,7 +2167,7 @@ var addGraph = function() {
                 stroke(0, 0, 0);
                 strokeWeight(1);
             }
-            if (button(width-120, floor(i/3)*30 +40, 30, 20, 3, 205, 206, 225)) {
+            if (button(width-120, floor(i/3)*30 +40+funcTranslate, 30, 20, 3, 205, 206, 225)) {
                 if (inArr(funcs[i].func, selected.func) === false) {
                     selected.func.push(funcs[i].func);
                     selected.name.push(funcs[i].name);
@@ -2179,6 +2180,7 @@ var addGraph = function() {
                 }
             }
             resetMatrix();
+	    translate(0, funcTranslate);
             fill(100, 100, 100);
             textSize(15);
             text(funcs[i].name, width-106, floor(i/3)*30+50);
@@ -2189,7 +2191,7 @@ var addGraph = function() {
                 stroke(0, 0, 0);
                 strokeWeight(1);
             }
-            if (button(width-80, floor(i/3)*30+40, 30, 20, 3, 205, 206, 225)) {
+            if (button(width-80, floor(i/3)*30+40+funcTranslate, 30, 20, 3, 205, 206, 225)) {
                 if (inArr(funcs[i].func, selected.func) === false) {
                     selected.func.push(funcs[i].func);
                     selected.name.push(funcs[i].name);
@@ -2202,6 +2204,7 @@ var addGraph = function() {
                 }
             }
             resetMatrix();
+            translate(0, funcTranslate);
             fill(100, 100, 100);
             textSize(15);
             text(funcs[i].name, width-66, floor(i/3)*30+50);
@@ -2212,7 +2215,7 @@ var addGraph = function() {
                 stroke(0, 0, 0);
                 strokeWeight(1);
             }
-            if (button(width-40, floor(i/3)*30+40, 30, 20, 3, 205, 206, 225)) {
+            if (button(width-40, floor(i/3)*30+40+funcTranslate, 30, 20, 3, 205, 206, 225)) {
                 if (inArr(funcs[i].func, selected.func) === false) {
                     selected.func.push(funcs[i].func);
                     selected.name.push(funcs[i].name);
@@ -2225,6 +2228,7 @@ var addGraph = function() {
                 }
             }
             resetMatrix();
+            translate(0, funcTranslate);
             fill(100, 100, 100);
             textSize(15);
             text(funcs[i].name, width-26, floor(i/3)*30+50);
