@@ -63,6 +63,9 @@ var numTrackBack = function(func, pos) {
             end = pos;
         }
         if (func[pos] === "-" && numFound) {
+	    if (pos > 0 && "0123456789.".split("").indexOf(func[pos - 1]) > -1) {		
+	        break;		
+	    }
             negative = true;
         }
         
@@ -105,6 +108,68 @@ var subtract = function(a, b) { return a - b; };
 var multiply = function(a, b) { return a * b; };
 var divide = function(a, b) { return a / b; };
 
+var Operation = function(name, para, f) {
+    this.name = name;
+    this.para = para;
+    this.func = f;
+};
+var operations = [
+    // sqrt(4) ==> 2
+    new Operation('sqrt', 1, function() { return sqrt(arguments[0][0]); }),
+    new Operation('nroot', 2, function() { return pow(arguments[0][0], 1/arguments[0][1]);}),
+    
+    
+    new Operation('sin', 1, function() { return sin(arguments[0][0]); }),
+    new Operation('cos', 1, function() { return cos(arguments[0][0]); }),
+    new Operation('tan', 1, function() { return tan(arguments[0][0]); }),
+    new Operation('csc', 1, function() { return 1/sin(arguments[0][0]); }),
+    new Operation('sec', 1, function() { return 1/cos(arguments[0][0]); }),
+    new Operation('cot', 1, function() { return 1/tan(arguments[0][0]); }),
+    new Operation('asin', 1, function() { return asin(arguments[0][0]); }),
+    new Operation('acos', 1, function() { return acos(arguments[0][0]); }),
+    new Operation('atan', 1, function() { return atan(arguments[0][0]); }),
+    new Operation('acsc', 1, function() { return 1/asin(arguments[0][0]); }),
+    new Operation('asec', 1, function() { return 1/acos(arguments[0][0]); }),
+    new Operation('acot', 1, function() { return 1/atan(arguments[0][0]); }),
+    new Operation('sinh', 1, function() { return sinh(arguments[0][0]); }),
+    new Operation('cosh', 1, function() { return cosh(arguments[0][0]); }),
+    new Operation('tanh', 1, function() { return tanh(arguments[0][0]); }),
+    new Operation('csch', 1, function() { return csch(arguments[0][0]); }),
+    new Operation('sech', 1, function() { return sech(arguments[0][0]); }),
+    new Operation('coth', 1, function() { return coth(arguments[0][0]); }),
+    new Operation('asinh', 1, function() { return asinh(arguments[0][0]); }),
+    new Operation('acosh', 1, function() { return acosh(arguments[0][0]); }),
+    new Operation('atanh', 1, function() { return atanh(arguments[0][0]); }),
+    new Operation('acsch', 1, function() { return acsch(arguments[0][0]); }),
+    new Operation('asech', 1, function() { return asech(arguments[0][0]); }),
+    new Operation('acoth', 1, function() { return acoth(arguments[0][0]); }),
+    
+    new Operation('abs', 1, function() { return abs(arguments[0][0]); }),
+    new Operation('floor', 1, function() { return floor(arguments[0][0]); }),
+    new Operation('ceil', 1, function() { return ceil(arguments[0][0]); }),
+    new Operation ('round', 1, function() { return round(arguments[0][0]); }),
+    new Operation('sq', 1, function() {return sq(arguments[0][0]);}),
+    new Operation('pow', 2, function() {return pow(arguments[0][0], arguments[0][1]);}),
+    new Operation('log', 2, function() {return log(arguments[0][0], arguments[0][1]);}),
+    new Operation('ln', 1, function() {return log(arguments[0][0], e);}),
+    new Operation('min', -1, function() {
+        var result = arguments[0][0];
+        for (var i = 1; i < arguments[0].length; i ++) {
+            result = min(result, arguments[0][i]);
+        }
+        //println(result);
+        return result;
+    }),
+    new Operation('max', -1, function() {
+        var result = arguments[0][0];
+        for (var i = 1; i < arguments[0].length; i ++) {
+            result = max(result, arguments[0][i]);
+        }
+        return result;
+    }),
+    
+];
+
 var evaluate = function(func, vars, values) {
     func = "0+" + func;
     func = func.toLowerCase();
@@ -122,15 +187,45 @@ var evaluate = function(func, vars, values) {
         }
     }
     func = func.replace(/--/g, "");
-
     var result = 0;
     
     // find parentheses and handle them
     while (!isEqual(findGroup(func), [-1, -1])) {
         var currGroup = findGroup(func);
-        func = func.substring(0, currGroup[0]) + 
-            evaluate(func.substring(currGroup[0] + 1, currGroup[1]), [], []) +
-            func.substring(currGroup[1] + 1, func.length);
+        if (currGroup[0] > 0 && 'abcdefghijklmnopqrstuvwxyz'.indexOf(func[currGroup[0] - 1]) > -1) {
+            var word = '';
+            for (var i = currGroup[0] - 1; i >= 0; i --) {
+                if ('abcdefghijklmnopqrstuvwxyz'.indexOf(func[i]) > -1) {
+                    word = func[i] + word;
+                } else {
+                    break;
+                }
+            }
+            
+            for (var i = 0; i < operations.length; i ++) {
+                if (word === operations[i].name) {
+                    var args = [];
+                    var start = currGroup[0] + 1;
+                    for (var idx = start; idx < currGroup[1]; idx ++) {
+                        if (func[idx] === ",") {
+                            args.push(evaluate(func.substring(start, idx), [], []));
+                            start = idx + 1;
+                        }
+                    }
+                    args.push(evaluate(func.substring(start, idx), [], []));
+                    start = idx + 1;
+                    
+                    func = func.substring(0, currGroup[0]) + 
+                        evaluate(operations[i].func(args), [], []) +
+                        func.substring(currGroup[1] + 1, func.length);
+                    break;
+                }
+            }
+        } else {
+            func = func.substring(0, currGroup[0]) + 
+                evaluate(func.substring(currGroup[0] + 1, currGroup[1]), [], []) +
+                func.substring(currGroup[1] + 1, func.length);
+        }
     }
     
     // exponents
@@ -354,6 +449,10 @@ var drawer = function(faces) {
     }
 };
 
+var inConstraints = function(val, min, max) {
+    return val >= min && val <= max;
+};
+
 var graphs = {};
 var graph2D = function(funcs, cols, vars, constraints, x, y, w, h) {
     pushMatrix();
@@ -365,11 +464,11 @@ var graph2D = function(funcs, cols, vars, constraints, x, y, w, h) {
             constraints[v][0] -= constraints[v][1];
         }
     }
-    
     var xInterval = (constraints[0][1] - constraints[0][0]) / w;
     var yInterval = (constraints[1][1] - constraints[1][0]) / h;
     stroke(0);
     strokeWeight(1);
+    
     var xAxis = 0;
     var yAxis = 0;
     if (0 > constraints[0][1]) {
@@ -386,45 +485,47 @@ var graph2D = function(funcs, cols, vars, constraints, x, y, w, h) {
     }
     var trueYAxis = h + constraints[1][0] / yInterval;
     
-    textAlign(CENTER, CENTER);
-    fill(0, 0, 0);
-    if (xAxis > 0 && xAxis < w && yAxis > 0 && yAxis < h) {
-        text(0, xAxis + ((yAxis === 0 || yAxis === h) ? 0 : ((xAxis <= w / 2) ? 8 : -8)), yAxis + ((xAxis === 0 || xAxis === w) ? 0 : ((yAxis <= h / 2) ? 8 : -8)));
-    }
-    text(constraints[0][0], -8, yAxis + ((xAxis === 0 || xAxis === w) ? 0 : ((yAxis <= h / 2) ? 8 : -8)));
-    text(constraints[0][1], w + 8, yAxis + ((xAxis === 0 || xAxis === w) ? 0 : ((yAxis <= h / 2) ? 8 : -8)));
-    text(constraints[1][0], xAxis + ((yAxis === 0 || yAxis === h) ? 0 : ((xAxis <= w / 2) ? 8 : -8)), h + 8);
-    text(constraints[1][1], xAxis + ((yAxis === 0 || yAxis === h) ? 0 : ((xAxis <= w / 2) ? 8 : -8)), -8);
-    textAlign(LEFT, BASELINE);
-    for (var funcIdx = 0; funcIdx < funcs.length; funcIdx ++) {
-        var func = funcs[funcIdx];
-        if (func !== "") {
+    for (var i = 0; i < funcs.length; i ++) {
+        var func = funcs[i];
+        if (func !== '') {
             var id = func;
             for (var j = 0; j < vars.length + 1; j ++) {
                 if (i < vars.length) {
                     id += vars[j];
                 } else {
-                    id += "res";
+                    id += 'res';
                 }
                 id += str(constraints[j]);
             }
-        
             if (!(id in graphs)) {
                 graphs[id] = [];
+                var res;
+                var x;
+                var y;
+
                 for (var i = constraints[0][0] + xInterval; i < constraints[0][1]; i += xInterval) {
-                    var res = evaluate(func, vars, [i]);
-                    if (res >= constraints[1][0] && res <= constraints[1][1]) {
-                        graphs[id].push([Math.round((i - constraints[0][0])/xInterval), Math.round(trueYAxis - (res/yInterval))]);
+                    res = evaluate(func, vars, [i]);
+                    x = round((i - constraints[0][0])/xInterval);
+                    y = round(trueYAxis - (res/yInterval));
+                    if (inConstraints(res, constraints[1][0], constraints[1][1])) {
+                        graphs[id].push([x, y]);
+                    } else if (graphs[id].length > 0 && graphs[id][graphs[id].length - 1][0] === x - 1 && inConstraints(graphs[id][graphs[id].length - 1][1], 1, h - 1)) {
+                        graphs[id].push([x, constrain(y, 0, h)]);
+                    } else {
+                        var nextY = round(trueYAxis - (evaluate(func, vars, [i + xInterval])/yInterval));
+                        if (inConstraints(nextY, 1, h - 1)) {
+                            graphs[id].push([x, constrain(y, 0, h)]);
+                        }
                     }
                 }
             }
             var prev;
             var curr;
-            stroke(cols[funcIdx]);
+            stroke(cols[i]);
             for (var j = 1; j < graphs[id].length; j ++) {
                 prev = graphs[id][j - 1];
                 curr = graphs[id][j];
-                if (prev[0] === curr[0] - 1) {
+                if (prev[0] === curr[0] - 1 && abs(prev[1] - curr[1]) < h) {
                     line(prev[0], prev[1], curr[0], curr[1]);
                 }
             }
@@ -436,6 +537,18 @@ var graph2D = function(funcs, cols, vars, constraints, x, y, w, h) {
     line(0,0,w,0);
     line(w,0,w,h);
     line(0,h,w,h);
+    
+    textAlign(CENTER, CENTER);
+    textSize(15);
+    fill(0, 0, 0);
+    if (xAxis > 0 && xAxis < w && yAxis > 0 && yAxis < h) {
+        text(0, xAxis + ((yAxis === 0 || yAxis === h) ? 0 : ((xAxis <= w / 2) ? 8 : -8)), yAxis + ((xAxis === 0 || xAxis === w) ? 0 : ((yAxis <= h / 2) ? 8 : -8)));
+    }
+    text(constraints[0][0], -8, yAxis + ((xAxis === 0 || xAxis === w) ? 0 : ((yAxis <= h / 2) ? 8 : -8)));
+    text(constraints[0][1], w + 8, yAxis + ((xAxis === 0 || xAxis === w) ? 0 : ((yAxis <= h / 2) ? 8 : -8)));
+    text(constraints[1][0], xAxis + ((yAxis === 0 || yAxis === h) ? 0 : ((xAxis <= w / 2) ? 8 : -8)), h + 8);
+    text(constraints[1][1], xAxis + ((yAxis === 0 || yAxis === h) ? 0 : ((xAxis <= w / 2) ? 8 : -8)), -8);
+    textAlign(LEFT, BASELINE);
     popMatrix();
 };
 
@@ -447,9 +560,6 @@ var xor = function(a, b) {
 };
 var pointsAdjacent = function(p1, p2) {
     return xor(abs(p1[0] - p2[0]) === 1, abs(p1[1] - p2[1]) === 1);
-};
-var inConstraints = function(val, min, max) {
-    return val >= min && val <= max;
 };
 
 var graph3D = function(funcs, colors, vars, constraints, x, y, w, h, d) {
@@ -613,8 +723,8 @@ var titleScroll = 0;
 var titleOn = true;
 var deselect = true;
 var pscale = width/400;
-var funcs = [{"func": "", "name": "f1", "color": color(0, 0, 255)}];
-var currFuncs = [0, 1];
+var funcs = [{"func": "sin(x) + cos(y)", "name": "f1", "color": color(0, 0, 204)}, {"func": "(x^2 + y^2)/20", "name": "f2", "color": color(51, 204, 204)}];
+var currFuncs = [0, 2];
 var prevKey = "";
 var sub1 = "";
 var sub2 = "";
