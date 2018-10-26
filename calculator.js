@@ -723,8 +723,8 @@ var titleScroll = 0;
 var titleOn = true;
 var deselect = true;
 var pscale = width/400;
-var funcs = [{"func": "sin(x) + cos(y)", "name": "f1", "color": color(0, 0, 204)}, {"func": "(x^2 + y^2)/20", "name": "f2", "color": color(51, 204, 204)}];
-var currFuncs = [0, 2];
+var funcs = [{"func": "", "name": "f1", "color": color(0, 0, 204)}];
+var currFuncs = [0, 1];
 var prevKey = "";
 var sub1 = "";
 var sub2 = "";
@@ -758,7 +758,7 @@ myKey.reset = function() {
     this.keyCode = 0;
 }
 
-textFont(createFont("monospace"));
+textFont(createFont("courier new"));
 
 //union function
 var union = function(l1, l2) {
@@ -2131,16 +2131,16 @@ var funcDropDown = function() {
 };
 
 var addGraph = function() {
-    translate(0, funcTranslate);
+    translate(0, 400+funcTranslate);
     noStroke();
     fill(205, 206, 225);
     rect(width-130, 0, 130, ceil(funcs.length/3)*30+85);
     noStroke();
-    if (button(width-120, floor((funcs.length-1)/3)*30+80+funcTranslate, 60, 25, 5, 205, 206, 225)) {
+    if (button(width-120, floor((funcs.length-1)/3)*30+480+funcTranslate, 60, 25, 5, 205, 206, 225)) {
         graphopen = false;
         selected = {func: [], name: [], color: [], constraints:[[-10, 10], [-10, 10]], vars: []};
     }
-    if (button(width-50, floor((funcs.length-1)/3)*30+80+funcTranslate, 40, 25, 5, 205, 206, 225)) {
+    if (button(width-50, floor((funcs.length-1)/3)*30+480+funcTranslate, 40, 25, 5, 205, 206, 225)) {
         if (selected.func !== []) {
             grapphs.push(selected);
         }
@@ -2148,7 +2148,7 @@ var addGraph = function() {
         graphopen = false;
     }
     resetMatrix();
-    translate(0, funcTranslate);
+    translate(0, 400+funcTranslate);
     fill(100, 100, 100);
     textSize(15);
     textAlign(CENTER, CENTER);
@@ -2167,7 +2167,7 @@ var addGraph = function() {
                 stroke(0, 0, 0);
                 strokeWeight(1);
             }
-            if (button(width-120, floor(i/3)*30 +40+funcTranslate, 30, 20, 3, 205, 206, 225)) {
+            if (button(width-120, floor(i/3)*30 +440+funcTranslate, 30, 20, 3, 205, 206, 225)) {
                 if (inArr(funcs[i].func, selected.func) === false) {
                     selected.func.push(funcs[i].func);
                     selected.name.push(funcs[i].name);
@@ -2180,7 +2180,7 @@ var addGraph = function() {
                 }
             }
             resetMatrix();
-	    translate(0, funcTranslate);
+	    translate(0, 400+funcTranslate);
             fill(100, 100, 100);
             textSize(15);
             text(funcs[i].name, width-106, floor(i/3)*30+50);
@@ -2191,7 +2191,7 @@ var addGraph = function() {
                 stroke(0, 0, 0);
                 strokeWeight(1);
             }
-            if (button(width-80, floor(i/3)*30+40+funcTranslate, 30, 20, 3, 205, 206, 225)) {
+            if (button(width-80, floor(i/3)*30+440+funcTranslate, 30, 20, 3, 205, 206, 225)) {
                 if (inArr(funcs[i].func, selected.func) === false) {
                     selected.func.push(funcs[i].func);
                     selected.name.push(funcs[i].name);
@@ -2204,7 +2204,7 @@ var addGraph = function() {
                 }
             }
             resetMatrix();
-            translate(0, funcTranslate);
+            translate(0, 400+funcTranslate);
             fill(100, 100, 100);
             textSize(15);
             text(funcs[i].name, width-66, floor(i/3)*30+50);
@@ -2215,7 +2215,7 @@ var addGraph = function() {
                 stroke(0, 0, 0);
                 strokeWeight(1);
             }
-            if (button(width-40, floor(i/3)*30+40+funcTranslate, 30, 20, 3, 205, 206, 225)) {
+            if (button(width-40, floor(i/3)*30+440+funcTranslate, 30, 20, 3, 205, 206, 225)) {
                 if (inArr(funcs[i].func, selected.func) === false) {
                     selected.func.push(funcs[i].func);
                     selected.name.push(funcs[i].name);
@@ -2228,7 +2228,7 @@ var addGraph = function() {
                 }
             }
             resetMatrix();
-            translate(0, funcTranslate);
+            translate(0, 400+funcTranslate);
             fill(100, 100, 100);
             textSize(15);
             text(funcs[i].name, width-26, floor(i/3)*30+50);
@@ -2335,7 +2335,7 @@ void draw() {
         textSize(28);
         text("i", width-20, height-60);
         textAlign(LEFT, BASELINE);
-        textFont(createFont("monospace"));
+        textFont(createFont("courier new"));
         fill(255, 255, 255);
         textFont(createFont("arial"));
         textAlign(CENTER, CENTER);
@@ -2343,7 +2343,7 @@ void draw() {
         text("?", width-20, height-20);
         translate(0, funcTranslate);
         textAlign(LEFT, BASELINE);
-        textFont(createFont("monospace"));
+        textFont(createFont("courier new"));
         stroke(0, 0, 0);
         strokeWeight(3);
         rect(30, 15, width-75, 50);
@@ -2399,7 +2399,7 @@ void draw() {
             if (str(grapphs[i].name+"("+grapphs[i].vars+") = "  + grapphs[i].func).length > 18) {
                 textSize(15/(textWidth(str(grapphs[i].name+"("+grapphs[i].vars+") = "  + grapphs[i].func))/150));
             }
-            text(grapphs[i].name+"("+grapphs[i].vars+") = "  + grapphs[i].func, ((i%floor(width/200))*min(width, height)/1.5)+min(width, height)/4+25, (min(width, height)/3 + 30)*(floor(i/floor(width/200)))+40);
+            text(grapphs[i].name+"("+grapphs[i].vars+") = "  + grapphs[i].func, ((i%3)*min(width, height)/1.5)+min(width, height)/4+25, (floor(i/3) * min(width, height)/1.5)+40);
         }
         else {
             fill(0, 0, 0);
@@ -2413,10 +2413,10 @@ void draw() {
             if (string.length > 18) {
                 textSize(15/(textWidth(string)/150));
             }
-            text(string,  ((i%floor(width/200))*min(width, height)/1.5) +min(width, height)/4+25, (min(width, height)/1.5+30)*(floor(i/floor(width/200)))+40);
+            text(string,  ((i%3)*min(width, height)/1.5) +min(width, height)/4+25, (floor(i/3) * min(width, height)/1.5)+40);
         }
         noStroke();
-        if (button((i%floor(width/200))*min(width, height)/1.5 + min(width,height)/4-50, (min(width, height)/1.5+30)*(floor(i/floor(width/200)))+457+funcTranslate, 100, 20, 2, 226, 227, 245)&&editCon === false&&colOn === false && graphopen === false && helpopen === false) {
+        if (button((i%3)*min(width, height)/1.5 + min(width,height)/4-50, (floor(i/3) * min(width, height)/1.5)+457+funcTranslate, 100, 20, 2, 226, 227, 245)&&editCon === false&&colOn === false && graphopen === false && helpopen === false) {
             prevGraph = {"constraints": [], "index": i};
             for (var c = 0; c < grapphs[i].constraints.length; c ++) {
                 prevGraph.constraints.push([]);
@@ -2428,21 +2428,21 @@ void draw() {
             constraintPos = str(prevGraph.constraints[0][0]).length;
             currCons = "startX";
         }
-        if (button((i%floor(width/200))*min(width, height)/1.5 + min(width,height)/4+60, (min(width, height)/1.5 + 30)*(floor(i/floor(width/200)))+457+funcTranslate, 20, 20, 2, 226, 227, 245)&&editCon === false&&helpopen === false) {
+        if (button((i%3)*min(width, height)/1.5 + min(width,height)/4+60, (floor(i/3) * min(width, height)/1.5)+457+funcTranslate, 20, 20, 2, 226, 227, 245)&&editCon === false&&helpopen === false) {
             grapphs.splice(i, 1);
             break;
         }
         stroke(255, 0, 0);
         strokeWeight(3);
-        line(i%floor(width/200)*min(width, height)/1.5 + min(width,height)/4+65, (min(width, height)/1.5+30)*(floor(i/floor(width/200)))+472,i%floor(width/200)*min(width, height)/1.5 + min(width,height)/4+75, (min(width, height)/1.5 + 30)*(floor(i/floor(width/200)))+462);
-        line(i%floor(width/200)*min(width, height)/1.5 + min(width,height)/4+65, (min(width, height)/1.5+30)*(floor(i/floor(width/200)))+462,i%floor(width/200)*min(width, height)/1.5 + min(width,height)/4+75, (min(width, height)/1.5 + 30)*(floor(i/floor(width/200)))+472);
+        line((i%3)*min(width, height)/1.5 + min(width,height)/4+65, (floor(i/3) * min(width, height)/1.5)+472,(i%3)*min(width, height)/1.5 + min(width,height)/4+75, (floor(i/3) * min(width, height)/1.5)+462);
+        line((i%3)*min(width, height)/1.5 + min(width,height)/4+65, (floor(i/3) * min(width, height)/1.5)+462,(i%3)*min(width, height)/1.5 + min(width,height)/4+75, (floor(i/3) * min(width, height)/1.5)+472);
         fill(0, 0, 0);
         textSize(10);
-        text("Edit Constraints", min(width, height)/1.5*(i%floor(width/200)) + min(width,height)/4, (min(width, height)/1.5 + 30)*(floor(i/floor(width/200)))+467);
+        text("Edit Constraints", (i%3)*min(width, height)/1.5 + min(width,height)/4, (floor(i/3) * min(width, height)/1.5)+467);
         textAlign(LEFT, BASELINE);
         textSize(13);
         resetMatrix();
-        graph(grapphs[i].func, grapphs[i].color, grapphs[i].vars, grapphs[i].constraints, (i%floor(width/200))*min(width, height)/1.5 + 25, (floor(i/floor(width/200)))+495 + funcTranslate, min(width, height)/2, min(width, height)/2);
+	graph(grapphs[i].func, grapphs[i].color, grapphs[i].vars, grapphs[i].constraints, (i%3)*min(width, height)/1.5+25, (floor(i/3) * min(width, height)/1.5)+ 495+funcTranslate, min(width, height)/2, min(width, height)/2);
     }
     
     //color menu
@@ -2514,7 +2514,7 @@ void draw() {
         textSize(23);
         text("?", width-20, height-20);
         textAlign(LEFT, BASELINE);
-        textFont(createFont("monospace"));
+        textFont(createFont("courier new"));
         if (helpopen === true) {
             help();
         }
@@ -2538,7 +2538,7 @@ void draw() {
             textSize(28);
             text("i", width-20, height-60);
             textAlign(LEFT, BASELINE);
-            textFont(createFont("monospace"));
+            textFont(createFont("courier new"));
         }
     }
     
