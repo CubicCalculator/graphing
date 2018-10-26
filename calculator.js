@@ -723,7 +723,7 @@ var titleScroll = 0;
 var titleOn = true;
 var deselect = true;
 var pscale = width/400;
-var funcs = [];
+var funcs = [{"func": "sin(x) + cos(y)", "name": "f1", "color": color(0, 0, 204)}, {"func": "(x^2 + y^2)/20", "name": "f2", "color": color(51, 204, 204)}];
 var currFuncs = [0, 2];
 var prevKey = "";
 var sub1 = "";
@@ -2335,7 +2335,7 @@ void draw() {
         textSize(28);
         text("i", width-20, height-60);
         textAlign(LEFT, BASELINE);
-        textFont(createFont("monospace"/*"courier new"*/));
+        textFont(createFont("monospace"));
         fill(255, 255, 255);
         textFont(createFont("arial"));
         textAlign(CENTER, CENTER);
@@ -2442,7 +2442,7 @@ void draw() {
         textAlign(LEFT, BASELINE);
         textSize(13);
         resetMatrix();
-	graph(grapphs[i].func, grapphs[i].color, grapphs[i].vars, grapphs[i].constraints, i*min(width, height)/1.5+25, /*(floor(i/3) * min(width, height)/3)+ */495+funcTranslate, min(width, height)/2, min(width, height)/2);
+	graph(grapphs[i].func, grapphs[i].color, grapphs[i].vars, grapphs[i].constraints, i*min(width, height)/1.5+25, (i*floor(min(width,height)/1.5/3))+ 495+funcTranslate, min(width, height)/2, min(width, height)/2);
     }
     
     //color menu
