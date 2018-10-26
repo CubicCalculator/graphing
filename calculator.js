@@ -2335,7 +2335,7 @@ void draw() {
         textSize(28);
         text("i", width-20, height-60);
         textAlign(LEFT, BASELINE);
-        textFont(createFont("courier new"));
+        textFont(createFont("monospace"/*"courier new"*/));
         fill(255, 255, 255);
         textFont(createFont("arial"));
         textAlign(CENTER, CENTER);
