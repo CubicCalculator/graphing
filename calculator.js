@@ -2458,7 +2458,7 @@ void draw() {
     }
     
     //options menu
-    optMenu();
+    //optMenu();
     
     //add graph button
     noStroke();
