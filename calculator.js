@@ -2387,11 +2387,18 @@ void draw() {
     }
     
     //drawing graphs
+    var count = 3;
+    var widthDivisor = 4;
+    var w = width/widthDivisor;
     for (var i = 0; i < grapphs.length; i++) {
         resetMatrix();
         textSize(15);
         pushMatrix();
         translate(0, funcTranslate+400);
+        
+        var x = (i%count)*width/widthDivisor + (i%count+1)*width/((count + 1)*widthDivisor/(widthDivisor - count));
+        var y = floor(i/count) * width/(widthDivisor/1.3);
+
         fill(grapphs[i].color[0]);
         textAlign(CENTER, CENTER);
         textSize(15);
@@ -2399,7 +2406,7 @@ void draw() {
             if (str(grapphs[i].name+"("+grapphs[i].vars+") = "  + grapphs[i].func).length > 18) {
                 textSize(15/(textWidth(str(grapphs[i].name+"("+grapphs[i].vars+") = "  + grapphs[i].func))/150));
             }
-            text(grapphs[i].name+"("+grapphs[i].vars+") = "  + grapphs[i].func, ((i%3)*min(width, height)/1.5)+min(width, height)/4+25, (floor(i/3) * min(width, height)/1.5)+40);
+            text(grapphs[i].name+"("+grapphs[i].vars+") = "  + grapphs[i].func, x + w/2, y + 40);
         }
         else {
             fill(0, 0, 0);
@@ -2413,10 +2420,10 @@ void draw() {
             if (string.length > 18) {
                 textSize(15/(textWidth(string)/150));
             }
-            text(string,  ((i%3)*min(width, height)/1.5) +min(width, height)/4+25, (floor(i/3) * min(width, height)/1.5)+40);
+            text(string, x + w/2, y + 40);
         }
         noStroke();
-        if (button((i%3)*min(width, height)/1.5 + min(width,height)/4-50, (floor(i/3) * min(width, height)/1.5)+457+funcTranslate, 100, 20, 2, 226, 227, 245)&&editCon === false&&colOn === false && graphopen === false && helpopen === false) {
+        if (button(x + w/2 - 65, y + 457 + funcTranslate, 100, 20, 2, 226, 227, 245) && editCon === false && colOn === false && graphopen === false && helpopen === false) {
             prevGraph = {"constraints": [], "index": i};
             for (var c = 0; c < grapphs[i].constraints.length; c ++) {
                 prevGraph.constraints.push([]);
@@ -2428,21 +2435,21 @@ void draw() {
             constraintPos = str(prevGraph.constraints[0][0]).length;
             currCons = "startX";
         }
-        if (button((i%3)*min(width, height)/1.5 + min(width,height)/4+60, (floor(i/3) * min(width, height)/1.5)+457+funcTranslate, 20, 20, 2, 226, 227, 245)&&editCon === false&&helpopen === false) {
+        if (button(x + w/2 + 45, y + 457 + funcTranslate, 20, 20, 2, 226, 227, 245) && editCon === false && helpopen === false) {
             grapphs.splice(i, 1);
             break;
         }
         stroke(255, 0, 0);
         strokeWeight(3);
-        line((i%3)*min(width, height)/1.5 + min(width,height)/4+65, (floor(i/3) * min(width, height)/1.5)+472,(i%3)*min(width, height)/1.5 + min(width,height)/4+75, (floor(i/3) * min(width, height)/1.5)+462);
-        line((i%3)*min(width, height)/1.5 + min(width,height)/4+65, (floor(i/3) * min(width, height)/1.5)+462,(i%3)*min(width, height)/1.5 + min(width,height)/4+75, (floor(i/3) * min(width, height)/1.5)+472);
+        line(x + w/2 + 50, y + 472, x + w/2 + 60, y + 462);
+        line(x + w/2 + 50, y + 462, x + w/2 + 60, y + 472);
         fill(0, 0, 0);
         textSize(10);
-        text("Edit Constraints", (i%3)*min(width, height)/1.5 + min(width,height)/4, (floor(i/3) * min(width, height)/1.5)+467);
+        text("Edit Constraints", x + w/2 - 15, y + 467);
         textAlign(LEFT, BASELINE);
         textSize(13);
         resetMatrix();
-	graph(grapphs[i].func, grapphs[i].color, grapphs[i].vars, grapphs[i].constraints, (i%3)*min(width, height)/1.5+25, (floor(i/3) * min(width, height)/1.5)+ 495+funcTranslate, min(width, height)/2, min(width, height)/2);
+	graph(grapphs[i].func, grapphs[i].color, grapphs[i].vars, grapphs[i].constraints, x, y + 495 + funcTranslate, w, w);
     }
     
     //color menu
@@ -2458,7 +2465,7 @@ void draw() {
     }
     
     //options menu
-    //optMenu();
+    optMenu();
     
     //add graph button
     noStroke();
@@ -2560,10 +2567,6 @@ void mouseReleased() {
 };
 
 void keyPressed() {
-    myKey.keyCode = keyCode;
-};
-
-void keyPressedExternal(keyCode) {
     myKey.keyCode = keyCode;
 };
 
