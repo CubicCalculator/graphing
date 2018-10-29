@@ -688,6 +688,7 @@ var graph3D = function(funcs, colors, vars, constraints, x, y, w, h, d) {
             rotateYAxis((pmouseX - mouseX)/20, faces[i], [0, 0, 0]);
         }
     }
+    textAlign(LEFT, BASELINE);
 };
 
 var graph = function(funcs, cols, vars, constraints, x, y, w, h) {
