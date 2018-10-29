@@ -2603,6 +2603,10 @@ void keyPressed() {
     myKey.keyCode = keyCode;
 };
 
+void keyPressedExternal(keyCode) {
+    myKey.keyCode = keyCode;
+};
+
 void keyReleased() {
     myKey.reset();
 };
