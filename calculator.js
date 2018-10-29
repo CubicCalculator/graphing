@@ -214,9 +214,8 @@ var evaluate = function(func, vars, values) {
                     }
                     args.push(evaluate(func.substring(start, idx), [], []));
                     start = idx + 1;
-                    
-                    func = func.substring(0, currGroup[0]) + 
-                        evaluate(operations[i].func(args), [], []) +
+                    func = func.substring(0, currGroup[0] - word.length) + 
+                        operations[i].func(args) +
                         func.substring(currGroup[1] + 1, func.length);
                     break;
                 }
