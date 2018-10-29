@@ -2027,7 +2027,7 @@ var funcDropDown = function() {
                             }
                         }
                         else if (i === 1 && funcLetts[x] !== "f") {
-                            funcs.push({"func":"","name":funcLetts[x] + str(i),"color":color(255, 0, 0)});
+                            funcs.push({"func":"","name":funcLetts[x] + str(i),"color":color(0, 0, 255)});
                             decided = true;
                             break;
                         }
@@ -2327,6 +2327,72 @@ var help = function() {
 //draw loop, makes program actually function and enables interaction
 void draw() {
     background(255, 255, 255);
+    
+    //drawing graphs
+    var count = 3;
+    var widthDivisor = 4;
+    var w = width/widthDivisor;
+    for (var i = 0; i < grapphs.length; i++) {
+        resetMatrix();
+        textSize(15);
+        pushMatrix();
+        translate(0, funcTranslate+400);
+        
+        var x = (i%count)*width/widthDivisor + (i%count+1)*width/((count + 1)*widthDivisor/(widthDivisor - count));
+        var y = floor(i/count) * width/(widthDivisor/1.3);
+
+        fill(grapphs[i].color[0]);
+        textAlign(CENTER, CENTER);
+        textSize(15);
+        if (grapphs[i].func.length === 1) {
+            if (str(grapphs[i].name+"("+grapphs[i].vars+") = "  + grapphs[i].func).length > 18) {
+                textSize(15/(textWidth(str(grapphs[i].name+"("+grapphs[i].vars+") = "  + grapphs[i].func))/150));
+            }
+            text(grapphs[i].name+"("+grapphs[i].vars+") = "  + grapphs[i].func, x + w/2, y + 40);
+        }
+        else {
+            fill(0, 0, 0);
+            var string = "";
+            for (var x = 0; x < grapphs[i].name.length; x++) {
+                string+=grapphs[i].name[x];
+                if (x !== grapphs[i].name.length-1) {
+                    string+=", ";
+                }
+            }
+            if (string.length > 18) {
+                textSize(15/(textWidth(string)/150));
+            }
+            text(string, x + w/2, y + 40);
+        }
+        noStroke();
+        if (button(x + w/2 - 65, y + 457 + funcTranslate, 100, 20, 2, 226, 227, 245) && editCon === false && colOn === false && graphopen === false && helpopen === false) {
+            prevGraph = {"constraints": [], "index": i};
+            for (var c = 0; c < grapphs[i].constraints.length; c ++) {
+                prevGraph.constraints.push([]);
+                for (var j = 0; j < grapphs[i].constraints[c].length; j ++) {
+                    prevGraph.constraints[c].push(grapphs[i].constraints[c][j]);
+                }
+            }
+            editCon = [prevGraph, i];
+            constraintPos = str(prevGraph.constraints[0][0]).length;
+            currCons = "startX";
+        }
+        if (button(x + w/2 + 45, y + 457 + funcTranslate, 20, 20, 2, 226, 227, 245) && editCon === false && helpopen === false) {
+            grapphs.splice(i, 1);
+            break;
+        }
+        stroke(255, 0, 0);
+        strokeWeight(3);
+        line(x + w/2 + 50, y + 472, x + w/2 + 60, y + 462);
+        line(x + w/2 + 50, y + 462, x + w/2 + 60, y + 472);
+        fill(0, 0, 0);
+        textSize(10);
+        text("Edit Constraints", x + w/2 - 15, y + 467);
+        textAlign(LEFT, BASELINE);
+        textSize(13);
+        resetMatrix();
+	graph(grapphs[i].func, grapphs[i].color, grapphs[i].vars, grapphs[i].constraints, x, y + 495 + funcTranslate, w, w);
+    }
     //functions menu
     if (titleOn === false && editCon === false) {
         resetMatrix();
@@ -2399,75 +2465,17 @@ void draw() {
         popMatrix();
     }
     
-    //drawing graphs
-    var count = 3;
-    var widthDivisor = 4;
-    var w = width/widthDivisor;
-    for (var i = 0; i < grapphs.length; i++) {
-        resetMatrix();
-        textSize(15);
-        pushMatrix();
-        translate(0, funcTranslate+400);
-        
-        var x = (i%count)*width/widthDivisor + (i%count+1)*width/((count + 1)*widthDivisor/(widthDivisor - count));
-        var y = floor(i/count) * width/(widthDivisor/1.3);
-
-        fill(grapphs[i].color[0]);
-        textAlign(CENTER, CENTER);
-        textSize(15);
-        if (grapphs[i].func.length === 1) {
-            if (str(grapphs[i].name+"("+grapphs[i].vars+") = "  + grapphs[i].func).length > 18) {
-                textSize(15/(textWidth(str(grapphs[i].name+"("+grapphs[i].vars+") = "  + grapphs[i].func))/150));
-            }
-            text(grapphs[i].name+"("+grapphs[i].vars+") = "  + grapphs[i].func, x + w/2, y + 40);
-        }
-        else {
-            fill(0, 0, 0);
-            var string = "";
-            for (var x = 0; x < grapphs[i].name.length; x++) {
-                string+=grapphs[i].name[x];
-                if (x !== grapphs[i].name.length-1) {
-                    string+=", ";
-                }
-            }
-            if (string.length > 18) {
-                textSize(15/(textWidth(string)/150));
-            }
-            text(string, x + w/2, y + 40);
-        }
-        noStroke();
-        if (button(x + w/2 - 65, y + 457 + funcTranslate, 100, 20, 2, 226, 227, 245) && editCon === false && colOn === false && graphopen === false && helpopen === false) {
-            prevGraph = {"constraints": [], "index": i};
-            for (var c = 0; c < grapphs[i].constraints.length; c ++) {
-                prevGraph.constraints.push([]);
-                for (var j = 0; j < grapphs[i].constraints[c].length; j ++) {
-                    prevGraph.constraints[c].push(grapphs[i].constraints[c][j]);
-                }
-            }
-            editCon = [prevGraph, i];
-            constraintPos = str(prevGraph.constraints[0][0]).length;
-            currCons = "startX";
-        }
-        if (button(x + w/2 + 45, y + 457 + funcTranslate, 20, 20, 2, 226, 227, 245) && editCon === false && helpopen === false) {
-            grapphs.splice(i, 1);
-            break;
-        }
-        stroke(255, 0, 0);
-        strokeWeight(3);
-        line(x + w/2 + 50, y + 472, x + w/2 + 60, y + 462);
-        line(x + w/2 + 50, y + 462, x + w/2 + 60, y + 472);
-        fill(0, 0, 0);
-        textSize(10);
-        text("Edit Constraints", x + w/2 - 15, y + 467);
-        textAlign(LEFT, BASELINE);
-        textSize(13);
-        resetMatrix();
-	graph(grapphs[i].func, grapphs[i].color, grapphs[i].vars, grapphs[i].constraints, x, y + 495 + funcTranslate, w, w);
-    }
+    
     
     //buttons to scroll through graphs
-    graphScroll(width-30, 430+funcTranslate, 30, 170, 170, 170);
-    graphScroll(width-30, 470+funcTranslate, 30, 170, 170, 170);
+    graphScroll(width-30, 460+funcTranslate, 30, 170, 170, 170);
+    graphScroll(width-30, 500+funcTranslate, 30, 170, 170, 170);
+    
+    //signification of meaning for graph buttons
+    line(width-26, 473+funcTranslate, width-35, 483);
+    line(width-26, 473+funcTranslate, width-17, 483);
+    line(width-26, 528+funcTranslate, width-35, 518);
+    line(width-26, 528+funcTranslate, width-17, 518);
     
     //color menu
     if (colOn !== false && editOk === false && menuUp === false && helpopen === false) {
