@@ -957,6 +957,19 @@ var editconstraints = function(func, old) {
     }
 };
 
+var graphScroll = function(x, y, d, r, g, b) {
+    noStroke();
+    fill(r, g, b);
+    if (dist(mouseX, mouseY, x, y) < d/2) {
+        fill(r-20, g-20, b-20);
+	if (mousePressed) {
+	    fill(r-40, g-40, b-40);
+	    return true;
+	}
+    }
+    ellipse(x, y, d, d);
+}
+
 var circButton = function(x, y, d, r, g, b) {
     resetMatrix();
     noStroke();
@@ -2451,6 +2464,10 @@ void draw() {
         resetMatrix();
 	graph(grapphs[i].func, grapphs[i].color, grapphs[i].vars, grapphs[i].constraints, x, y + 495 + funcTranslate, w, w);
     }
+    
+    //buttons to scroll through graphs
+    graphScroll(width-30, 430+funcTranslate, 30, 170, 170, 170);
+    graphScroll(width-30, 470+funcTranslate, 30, 170, 170, 170);
     
     //color menu
     if (colOn !== false && editOk === false && menuUp === false && helpopen === false) {
