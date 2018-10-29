@@ -705,6 +705,7 @@ smooth();
 
 var grapphs = [];
 //global variables lmao
+var graphscrolling = 0;
 var selected = {func: [], name: [], color: [], constraints:[[-10, 10], [-10, 10]], vars: []};
 var prevGraph = {};
 var constraintsub1 = "";
@@ -2348,7 +2349,7 @@ void draw() {
             if (str(grapphs[i].name+"("+grapphs[i].vars+") = "  + grapphs[i].func).length > 18) {
                 textSize(15/(textWidth(str(grapphs[i].name+"("+grapphs[i].vars+") = "  + grapphs[i].func))/150));
             }
-            text(grapphs[i].name+"("+grapphs[i].vars+") = "  + grapphs[i].func, x + w/2, y + 40);
+            text(grapphs[i].name+"("+grapphs[i].vars+") = "  + grapphs[i].func, x + w/2, y + 40+graphscrolling);
         }
         else {
             fill(0, 0, 0);
@@ -2362,10 +2363,10 @@ void draw() {
             if (string.length > 18) {
                 textSize(15/(textWidth(string)/150));
             }
-            text(string, x + w/2, y + 40);
+            text(string, x + w/2, y + 40+graphscrolling);
         }
         noStroke();
-        if (button(x + w/2 - 65, y + 457 + funcTranslate, 100, 20, 2, 226, 227, 245) && editCon === false && colOn === false && graphopen === false && helpopen === false) {
+        if (button(x + w/2 - 65, y + 457 + funcTranslate+graphscrolling, 100, 20, 2, 226, 227, 245) && editCon === false && colOn === false && graphopen === false && helpopen === false) {
             prevGraph = {"constraints": [], "index": i};
             for (var c = 0; c < grapphs[i].constraints.length; c ++) {
                 prevGraph.constraints.push([]);
@@ -2377,22 +2378,23 @@ void draw() {
             constraintPos = str(prevGraph.constraints[0][0]).length;
             currCons = "startX";
         }
-        if (button(x + w/2 + 45, y + 457 + funcTranslate, 20, 20, 2, 226, 227, 245) && editCon === false && helpopen === false) {
+        if (button(x + w/2 + 45, y + 457 + funcTranslate+graphscrolling, 20, 20, 2, 226, 227, 245) && editCon === false && helpopen === false) {
             grapphs.splice(i, 1);
             break;
         }
         stroke(255, 0, 0);
         strokeWeight(3);
-        line(x + w/2 + 50, y + 472, x + w/2 + 60, y + 462);
-        line(x + w/2 + 50, y + 462, x + w/2 + 60, y + 472);
+        line(x + w/2 + 50, y + 472+graphscrolling, x + w/2 + 60, y + 462+graphscrolling);
+        line(x + w/2 + 50, y + 462+graphscrolling, x + w/2 + 60, y + 472+graphscrolling);
         fill(0, 0, 0);
         textSize(10);
-        text("Edit Constraints", x + w/2 - 15, y + 467);
+        text("Edit Constraints", x + w/2 - 15, y + 467+graphscrolling);
         textAlign(LEFT, BASELINE);
         textSize(13);
         resetMatrix();
-	graph(grapphs[i].func, grapphs[i].color, grapphs[i].vars, grapphs[i].constraints, x, y + 495 + funcTranslate, w, w);
+	graph(grapphs[i].func, grapphs[i].color, grapphs[i].vars, grapphs[i].constraints, x, y + 495 + funcTranslate+graphscrolling, w, w);
     }
+
     //functions menu
     if (titleOn === false && editCon === false) {
         resetMatrix();
@@ -2468,14 +2470,21 @@ void draw() {
     
     
     //buttons to scroll through graphs
-    graphScroll(width-30, 460+funcTranslate, 30, 170, 170, 170);
-    graphScroll(width-30, 500+funcTranslate, 30, 170, 170, 170);
+    if (graphScroll(width-30, 460+funcTranslate, 30, 170, 170, 170)) {
+	graphscrolling-=2;
+    }
+    if (graphScroll(width-30, 500+funcTranslate, 30, 170, 170, 170)) {
+	graphscrolling+=2;
+    }
+
     
     //signification of meaning for graph buttons
-    line(width-26, 473+funcTranslate, width-35, 483);
-    line(width-26, 473+funcTranslate, width-17, 483);
-    line(width-26, 528+funcTranslate, width-35, 518);
-    line(width-26, 528+funcTranslate, width-17, 518);
+    stroke(255, 255, 255);
+    strokeWeight(3);
+    line(width-30, 453+funcTranslate, width-39, 463+funcTranslate);
+    line(width-30, 453+funcTranslate, width-21, 463+funcTranslate);
+    line(width-30, 508+funcTranslate, width-39, 498+funcTranslate);
+    line(width-30, 508+funcTranslate, width-21, 498+funcTranslate);
     
     //color menu
     if (colOn !== false && editOk === false && menuUp === false && helpopen === false) {
@@ -2592,10 +2601,6 @@ void mouseReleased() {
 };
 
 void keyPressed() {
-    myKey.keyCode = keyCode;
-};
-
-void keyPressedExternal(keyCode) {
     myKey.keyCode = keyCode;
 };
 
