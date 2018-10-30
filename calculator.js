@@ -11,7 +11,7 @@ void setup() {
 
 noStroke();
 var dimensionsOfFunc = function(func) {
-    if (func.indexOf("x") > -1 && func.indexOf("y") > -1) {
+    if (func.indexOf("y") > -1) {
         return ["x", "y"];
     }
     return ["x"];
