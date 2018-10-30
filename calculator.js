@@ -560,7 +560,7 @@ var graph2D = function(funcs, cols, vars, constraints, x, y, w, h) {
 
 var graph3DCount = 0;
 var graph3DStructures = {};
-var graphInterval = 40;
+var graphInterval = 30;
 var xor = function(a, b) {
     return (a || b) && (!a || !b);
 };
