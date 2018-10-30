@@ -170,6 +170,7 @@ var operations = [
     
 ];
 
+
 var evaluate = function(func, vars, values) {
     func = "0+" + func;
     func = func.toLowerCase();
@@ -186,8 +187,10 @@ var evaluate = function(func, vars, values) {
             func = func.replace(vars[i], values[i]);
         }
     }
-    func = func.replace(/--/g, "");
     var result = 0;
+    /*if (values[0] < 0 && values[1] < 0) {
+        println(func);
+    }*/
     
     // find parentheses and handle them
     while (!isEqual(findGroup(func), [-1, -1])) {
@@ -238,6 +241,7 @@ var evaluate = function(func, vars, values) {
         }
     }
     
+    func = func.replace(/--/g, "+");
     // multiplication/division
     for (var i = 0; i < func.length; i ++) {
         if ("*/".split("").indexOf(func[i]) > -1) {
@@ -248,6 +252,9 @@ var evaluate = function(func, vars, values) {
         }
     }
     
+    /*if (values[0] < 0 && values[1] < 0) {
+        println(func);
+    }*/
     // addition/subtraction
     for (var i = 0; i < func.length; i ++) {
         if ("+-".split("").indexOf(func[i]) > -1) {
