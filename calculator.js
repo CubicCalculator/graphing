@@ -2478,11 +2478,11 @@ void draw() {
     
     
     //buttons to scroll through graphs
-    if (graphScroll(width-30, 460+funcTranslate, 30, 170, 170, 170)) {
-	graphscrolling+=2;
+    if (graphscrolling > 0 && graphScroll(width-30, 460+funcTranslate, 30, 170, 170, 170)) {
+	graphscrolling += 2;
     }
     if (graphScroll(width-30, 500+funcTranslate, 30, 170, 170, 170)) {
-	graphscrolling-=2;
+	graphscrolling -= 2;
     }
 
     
