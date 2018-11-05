@@ -972,6 +972,7 @@ var graphScroll = function(x, y, d, r, g, b) {
         fill(r-20, g-20, b-20);
 	if (mousePressed) {
 	    fill(r-40, g-40, b-40);
+	    ellipse(x, y, d, d);
 	    return true;
 	}
     }
