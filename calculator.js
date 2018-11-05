@@ -2478,10 +2478,10 @@ void draw() {
     
     
     //buttons to scroll through graphs
-    if (graphscrolling > 0 && graphScroll(width-30, 460+funcTranslate, 30, 170, 170, 170)) {
+    if (graphscrolling < floor((grapphs.length - 1)/count) * width/(widthDivisor/1.3) + w - height + 50 && graphScroll(width-30, 460+funcTranslate, 30, 170, 170, 170)) {
 	graphscrolling += 2;
     }
-    if (graphScroll(width-30, 500+funcTranslate, 30, 170, 170, 170)) {
+    if (graphscrolling > 0 && graphScroll(width-30, 500+funcTranslate, 30, 170, 170, 170)) {
 	graphscrolling -= 2;
     }
 
