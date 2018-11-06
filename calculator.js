@@ -766,6 +766,8 @@ myKey.reset = function() {
     this.keyCode = 0;
 }
 
+
+var main2dContext = document.getElementById("main").getContext("2d");
 textFont(createFont("courier new"));
 
 //union function
@@ -1877,24 +1879,16 @@ var funcDropDown = function() {
     
             if (i === currFunc) {
                 strokeWeight(2);
-    
             }
     
             rect(30, (i-currFuncs[0])*65 + 15, width-75, 50, 3);
             if (funcs[i].func.length < (width-60)/23.214) {
-    
                 tSize = 40;
-    
                 textSize(tSize);
-    
             }
-    
             else {
-    
                 tSize = 40/(funcs[i].func.length/((width-60)/23.214));
-    
                 textSize(tSize);
-    
             }
     
             fill(0, 0, 0);
@@ -1938,11 +1932,9 @@ var funcDropDown = function() {
             strokeWeight(1);
     
             noFill();
-    
         }
-    
-        
-        
+
+
         //buttons to shift viewing window
         if (funcs.length > 6) {
             if (colOn === false && menuUp === false && editOk === false && helpopen === false) {
@@ -2059,13 +2051,10 @@ var funcDropDown = function() {
         else {
     
             fill(175, 175, 175);
-    
             noStroke();
     
             ellipse(width-22, 360+funcTranslate, 30, 30);
-    
             ellipse(width-22, 320+funcTranslate, 30, 30);
-    
         }
     
         //lines drawn over function buttons to signify meaning
@@ -2127,18 +2116,24 @@ var funcDropDown = function() {
     if (!(deselect === true && mouseIsReleased === true)) {
         strokeWeight(1);
         if (frameCount % 60 < 30 && editOk === false || keyPressed && editOk === false) {
+            var fontWidthSize = main2dContext.measureText("a").width + 15;
             if (tSize === 40) {
                 stroke(0, 0, 0);
                 strokeWeight(1);
-                line(35 + 0.55*tSize * (pos), (currFunc-currFuncs[0])*65+20, 35 + 0.55*tSize * pos, (currFunc-currFuncs[0])*65+59);
+
+                line(
+                    35 + fontWidthSize * pos, (currFunc-currFuncs[0])*65+20,
+                    35 + fontWidthSize * pos, (currFunc-currFuncs[0])*65+59
+                );
             }
-    
             else {
                 stroke(0, 0, 0);
                 strokeWeight(1);
-                line(35 + 0.55*tSize * (pos), (currFunc-currFuncs[0])*65+23+0.1*tSize, 35 + 0.55*tSize * pos, (currFunc-currFuncs[0])*65+59-0.1*tSize);
+                line(
+                    35 + fontWidthSize * tSize * pos, (currFunc-currFuncs[0])*65+23+0.1*tSize,
+                    35 + fontWidthSize * tSize * pos, (currFunc-currFuncs[0])*65+59-0.1*tSize
+                );
             }
-    
         }
     }
     
@@ -2202,7 +2197,7 @@ var addGraph = function() {
                 }
             }
             resetMatrix();
-	    translate(0, 400+funcTranslate);
+            translate(0, 400+funcTranslate);
             fill(100, 100, 100);
             textSize(15);
             text(funcs[i].name, width-106, floor(i/3)*30+50);
@@ -2400,7 +2395,7 @@ void draw() {
         textAlign(LEFT, BASELINE);
         textSize(13);
         resetMatrix();
-	graph(grapphs[i].func, grapphs[i].color, grapphs[i].vars, grapphs[i].constraints, x, y + 495 + funcTranslate+graphscrolling, w, w);
+        graph(grapphs[i].func, grapphs[i].color, grapphs[i].vars, grapphs[i].constraints, x, y + 495 + funcTranslate+graphscrolling, w, w);
     }
 
     //functions menu
@@ -2479,10 +2474,10 @@ void draw() {
     
     //buttons to scroll through graphs
     if (graphscrolling < 0 && graphScroll(width-30, 460+funcTranslate, 30, 170, 170, 170)) {
-	graphscrolling += 2;
+        graphscrolling += 2;
     }
     if (graphscrolling > -(floor((grapphs.length - 1)/count) * width/(widthDivisor/1.3) + w - height + 150) && graphScroll(width-30, 500+funcTranslate, 30, 170, 170, 170)) {
-	graphscrolling -= 2;
+        graphscrolling -= 2;
     }
 
     
