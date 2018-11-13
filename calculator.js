@@ -171,26 +171,51 @@ var operations = [
 ];
 
 
-var evaluate = function(func, vars, values) {
+
+var evaluate = function(func, origVars, origValues) {
+
     func = "0+" + func;
+
     func = func.toLowerCase();
+
     func = func.replace(/\s/g, "");
-    func = func.replace(/e/g, "2.718281828459045");
-    func = func.replace(/pi/g, "3.141592653589793");
-    
+
+    var vars = ["e", "pi"];
+    var values = ["2.718281828459045", "3.141592653589793"];
+    for (var i = 0; i < origVars.length; i ++) {
+        vars.push(origVars[i]);
+        values.push(origValues[i]);
+    }
+
     // replace variables
     for (var i = 0; i < vars.length; i ++) {
         while (func !== func.replace(vars[i], values[i])) {
             if (str(values[i]).indexOf("e-") > -1) {
                 values[i] = 0;
             }
-            func = func.replace(vars[i], values[i]);
+            
+            var count = 0;
+            for (var j = 0; j < func.length; j ++) {
+                if (func[j] === vars[i][count]) {
+                    count ++;
+                    if (count === vars[i].length) {
+                        var multiplyOrNot = "";
+                        if ("0123456789.".indexOf(func[j - count]) > -1) {
+                            multiplyOrNot = "*";
+                        }
+                        func = func.substring(0, j - count + 1) + multiplyOrNot + values[i] + func.substring(j + 1, func.length);
+                        j -= count + multiplyOrNot.length;
+                        j += values[i].length;
+                        count = 0;
+                    }
+                } else {
+                    count = 0;
+                }
+            }
         }
     }
+    
     var result = 0;
-    /*if (values[0] < 0 && values[1] < 0) {
-        println(func);
-    }*/
     
     // find parentheses and handle them
     while (!isEqual(findGroup(func), [-1, -1])) {
@@ -699,13 +724,26 @@ var graph3D = function(funcs, colors, vars, constraints, x, y, w, h, d) {
 };
 
 var graph = function(funcs, cols, vars, constraints, x, y, w, h) {
-    if (vars.length === 1) {
-        graph2D(funcs, cols, vars, constraints, x, y, w, h);
-    } else if (vars.length === 2) {
-        graph3D(funcs, cols, vars, constraints, x, y, w, h, (w + h) / 2);
-    } else {
-        throw "Attempted to graph in more than 3 dimensions";
+
+    switch (vars.length) {
+
+        case 1:
+
+            graph2D(funcs, cols, vars, constraints, x, y, w, h);
+
+            break;
+
+        case 2:
+
+            graph3D(funcs, cols, vars, constraints, x, y, w, h, (w + h) / 2);
+
+            break;
+
+        default:
+
+            throw 'Attempted to graph in more than 3 dimensions';
     }
+
 };
 
 smooth();
