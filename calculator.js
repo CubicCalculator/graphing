@@ -593,8 +593,8 @@ var pointsAdjacent = function(p1, p2) {
     return xor(abs(p1[0] - p2[0]) === 1, abs(p1[1] - p2[1]) === 1);
 };
 
-var graph3D = function(funcs, colors, vars, constraints, x, y, w, h, d) {
-    var graphID = graph3DCount + funcs + constraints;
+var graph3D = function(funcs, colors, vars, constraints, x, y, w, h, d, rotating) {
+    var graphID = graph3DCount + funcs + constraints + x + y + w + h + d;
     if (!(graphID in graph3DStructures)) {
         var axisPos = [
             map(0, constraints[0][0], constraints[0][1], -w/2, w/2), 
@@ -667,6 +667,11 @@ var graph3D = function(funcs, colors, vars, constraints, x, y, w, h, d) {
         }
         id += colors[funcIdx];
         id += graph3DCount;
+        id += x;
+        id += y;
+        id += w;
+        id += h;
+        id += d;
         if (!(id in graphs)) {
             graphs[id] = { "points": [], "faces": [] };
             var graph = graphs[id];
@@ -714,36 +719,36 @@ var graph3D = function(funcs, colors, vars, constraints, x, y, w, h, d) {
     drawer(faces);
     popMatrix();
     
-    if (mousePressed) {
-        for (var i = 0; i < faces.length; i ++) {
-            rotateXAxis(-(pmouseY - mouseY)/20, faces[i], [0, 0, 0]);
-            rotateYAxis((pmouseX - mouseX)/20, faces[i], [0, 0, 0]);
+
+    if (rotating) {
+
+        if (mousePressed) {
+
+            for (var i = 0; i < faces.length; i ++) {
+
+                rotateXAxis(radians(-(pmouseY - mouseY)), faces[i], [0, 0, 0]);
+
+                rotateYAxis(radians(pmouseX - mouseX), faces[i], [0, 0, 0]);
+
+            }
+
         }
+
     }
     textAlign(LEFT, BASELINE);
 };
 
-var graph = function(funcs, cols, vars, constraints, x, y, w, h) {
-
+var graph = function(funcs, cols, vars, constraints, x, y, w, h, rotating) {
     switch (vars.length) {
-
         case 1:
-
             graph2D(funcs, cols, vars, constraints, x, y, w, h);
-
             break;
-
         case 2:
-
-            graph3D(funcs, cols, vars, constraints, x, y, w, h, (w + h) / 2);
-
+            graph3D(funcs, cols, vars, constraints, x, y, w, h, (w + h) / 2, rotating);
             break;
-
         default:
-
             throw 'Attempted to graph in more than 3 dimensions';
     }
-
 };
 
 smooth();
@@ -1128,125 +1133,69 @@ var edit = function(func, i) {
 };
 var hexagonbutton = function(x, y, s, col) {
     resetMatrix();
-
     noStroke();
 
-    
-//hexagonal collision detection
-
+    //hexagonal collision detection
     var inTri1 = false;
-
     var inTri2 = false;
-
     var inRect = false;
-
     var alpha;
-
     var beta;
-
     var gamma;
-
     var tri1 = {
-
         p1: [x, y-s/1.6+0.5],
-
         p2: [x+s/2-0.5, y-s/3.4],
-
         p3:[x-s/2+0.5, y-s/3.4]
-
     };
-
     var tri2 = {
-
         p1: [x-s/2+0.5, y+s/3.4],
-
         p2: [x,y+s/1.6-0.5],
-
         p3: [x+s/2-0.5, y+s/3.4]
-
     };
 
-    
-//tri1
-
+    //tri1
     alpha = ((tri1.p2[1] - tri1.p3[1])*(mouseX - tri1.p3[0]) + (tri1.p3[0] - tri1.p2[0])*(mouseY - tri1.p3[1])) / ((tri1.p2[1] - tri1.p3[1])*(tri1.p1[0] - tri1.p3[0]) + (tri1.p3[0] - tri1.p2[0])*(tri1.p1[1] - tri1.p3[1]));
-
     beta = ((tri1.p3[1] - tri1.p1[1])*(mouseX - tri1.p3[0]) + (tri1.p1[0] - tri1.p3[0])*(mouseY - tri1.p3[1])) / ((tri1.p2[1] - tri1.p3[1])*(tri1.p1[0] - tri1.p3[0]) + (tri1.p3[0] - tri1.p2[0])*(tri1.p1[1] - tri1.p3[1]));
-
     gamma = 1 - alpha - beta;
-
     
-if (alpha > 0 && beta > 0 && gamma > 0) {
-
+    if (alpha > 0 && beta > 0 && gamma > 0) {
         inTri1 = true;
-
     }
-
     
-//tri2
-
+    //tri2
     alpha = ((tri2.p2[1] - tri2.p3[1])*(mouseX - tri2.p3[0]) + (tri2.p3[0] - tri2.p2[0])*(mouseY - tri2.p3[1])) / ((tri2.p2[1] - tri2.p3[1])*(tri2.p1[0] - tri2.p3[0]) + (tri2.p3[0] - tri2.p2[0])*(tri2.p1[1] - tri2.p3[1]));
-
     beta = ((tri2.p3[1] - tri2.p1[1])*(mouseX - tri2.p3[0]) + (tri2.p1[0] - tri2.p3[0])*(mouseY - tri2.p3[1])) / ((tri2.p2[1] - tri2.p3[1])*(tri2.p1[0] - tri2.p3[0]) + (tri2.p3[0] - tri2.p2[0])*(tri2.p1[1] - tri2.p3[1]));
-
     gamma = 1 - alpha - beta;
-
     
-if (alpha > 0 && beta > 0 && gamma > 0) {
-
+    if (alpha > 0 && beta > 0 && gamma > 0) {
         inTri2 = true;
-
     }
-
     //rect
-
     if (mouseX > tri1.p3[0]-0.5 && mouseX < tri1.p2[0]+0.5 && mouseY > tri1.p2[1] && mouseY < tri2.p1[1]) {
-
         inRect = true;
-
     }
-
     
-if (inTri1 || inTri2 || inRect) {
-
+    if (inTri1 || inTri2 || inRect) {
         if (mousePressed) {
-
             stroke(0, 0, 0);
-
             strokeWeight(1);
-
         }
-
         if (mouseIsReleased) {
             deselect = false;
             return true;
-
         }
-
     }
-
     
-
-//drawing a hexagon
-
+    //drawing a hexagon
     fill(col);
-
     beginShape();
-
     vertex(x, y-s/1.6);
-
     vertex(x+s/2, y-s/3.4);
-
     vertex(x+s/2, y+s/3.4);
-
     vertex(x, y+s/1.6);
-
     vertex(x-s/2, y+s/3.4);
-
     vertex(x-s/2, y-s/3.4);
-
     vertex(x, y-s/1.6);
-
     endShape();
     pushMatrix();
     translate(0, funcTranslate);
@@ -2015,43 +1964,28 @@ var funcDropDown = function() {
         
         //new or delete function
         if (colOn === false && menuUp === false && editOk === false && helpopen === false) {
-    
             //delete function
-    
             if (circButton(width-22, 360+funcTranslate, 30, 175, 175, 175) && funcs.length>1 && currFunc !== "") {
-    
                 funcs.splice(currFunc, 1);
                 currFuncs[1]--;
                 if (currFunc === funcs.length) {
-    
                     currFunc--;
-    
                 }
                 if (funcs.length >= 6) {
                     currFuncs[0]--;
                 }
                 pos = funcs[currFunc].func.length;
-    
             }
      
-           //new function
-    
+            //new function
             if (circButton(width-22, 320+funcTranslate, 30, 175, 175, 175)) {
-    
                 letts = {};
-    
                 for (var i = 0; i < funcs.length;i++) {
-    
                     if (!(funcs[i].name[0] in letts)) {
-    
                         var funcLett = funcs[i].name[0];
-    
                         letts[funcLett] = [];
-    
                     }
-    
                 }
-    
                 for (var i = 0; i < funcs.length; i++) {
                     letts[funcs[i].name[0]].push(funcs[i].name[1]);
                 }
@@ -2367,6 +2301,7 @@ var help = function() {
 };
 
 //draw loop, makes program actually function and enables interaction
+var rotating = -1;
 void draw() {
     background(255, 255, 255);
     
@@ -2433,7 +2368,7 @@ void draw() {
         textAlign(LEFT, BASELINE);
         textSize(13);
         resetMatrix();
-        graph(grapphs[i].func, grapphs[i].color, grapphs[i].vars, grapphs[i].constraints, x, y + 495 + funcTranslate+graphscrolling, w, w);
+        graph(grapphs[i].func, grapphs[i].color, grapphs[i].vars, grapphs[i].constraints, x, y + 495 + funcTranslate + graphscrolling, w, w, (i === rotating) ? true : false);
     }
 
     //functions menu
@@ -2631,14 +2566,29 @@ void draw() {
 };
 
 //mouse and key functions
+
 void mousePressed() {
     if (prevMouse !== true) {
         mouseIsPresed = true;
+    }
+
+    for (var i = 0; i < grapphs.length; i ++) {
+        var count = 3;
+        var widthDivisor = 4;
+        var w = width/widthDivisor;
+        var x = (i%count)*width/widthDivisor + (i%count+1)*width/((count + 1)*widthDivisor/(widthDivisor - count));
+        var y = floor(i/count) * width/(widthDivisor/1.3);
+        y = y + 495 + funcTranslate + graphscrolling;
+        
+        if (inConstraints(mouseX, x, x + w) && inConstraints(mouseY, y, y + w)) {
+            rotating = i;
+        }
     }
 };
 
 void mouseReleased() {
     mouseIsReleased = true;
+    rotating = -1;
 };
 
 void keyPressed() {
