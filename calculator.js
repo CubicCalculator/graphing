@@ -495,8 +495,8 @@ var graph2D = function(funcs, cols, vars, constraints, x, y, w, h) {
             constraints[v][0] -= constraints[v][1];
         }
     }
-    var xInterval = (constraints[0][1] - constraints[0][0]) / w * 10;
-    var yInterval = (constraints[1][1] - constraints[1][0]) / h * 10;
+    var xInterval = (constraints[0][1] - constraints[0][0]) / w;
+    var yInterval = (constraints[1][1] - constraints[1][0]) / h;
     stroke(0);
     strokeWeight(1);
     
@@ -650,9 +650,9 @@ var graph3D = function(funcs, colors, vars, constraints, x, y, w, h, d, rotating
     }
     var faces = graph3DStructures[graphID];
     
-    var xInterval = (constraints[0][1] - constraints[0][0]) / graphInterval;
-    var yInterval = (constraints[1][1] - constraints[1][0]) / graphInterval;
-    var zInterval = (constraints[2][1] - constraints[2][0]) / graphInterval;
+    var xInterval = (constraints[0][1] - constraints[0][0]) / graphInterval * 5;
+    var yInterval = (constraints[1][1] - constraints[1][0]) / graphInterval * 5;
+    var zInterval = (constraints[2][1] - constraints[2][0]) / graphInterval * 5;
     
     for (var funcIdx = 0; funcIdx < funcs.length; funcIdx ++) {
         var func = funcs[funcIdx];
