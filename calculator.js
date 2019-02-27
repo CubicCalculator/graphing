@@ -495,8 +495,8 @@ var graph2D = function(funcs, cols, vars, constraints, x, y, w, h) {
             constraints[v][0] -= constraints[v][1];
         }
     }
-    var xInterval = (constraints[0][1] - constraints[0][0]) / w;
-    var yInterval = (constraints[1][1] - constraints[1][0]) / h;
+    var xInterval = (constraints[0][1] - constraints[0][0]) / w * 5;
+    var yInterval = (constraints[1][1] - constraints[1][0]) / h * 5;
     stroke(0);
     strokeWeight(1);
     
