@@ -2315,7 +2315,7 @@ void draw() {
         pushMatrix();
         translate(0, funcTranslate+400);
         
-        var x = (i%count)*width/widthDivisor + (i%count+1)*width/((count + 1)*widthDivisor/(widthDivisor - count));
+        var x = (i%count)*w + (i%count+1)*width/((count + 1)*widthDivisor/(widthDivisor - count));
         var y = floor(i/count) * width/(widthDivisor/1.3);
 
         fill(grapphs[i].color[0]);
@@ -2330,9 +2330,9 @@ void draw() {
         else {
             fill(0, 0, 0);
             var string = "";
-            for (var x = 0; x < grapphs[i].name.length; x++) {
-                string+=grapphs[i].name[x];
-                if (x !== grapphs[i].name.length-1) {
+            for (var xcoor = 0; xcoor < grapphs[i].name.length; xcoor ++) {
+                string+=grapphs[i].name[xcoor];
+                if (xcoor !== grapphs[i].name.length-1) {
                     string+=", ";
                 }
             }
