@@ -594,7 +594,7 @@ var pointsAdjacent = function(p1, p2) {
 };
 
 var graph3D = function(funcs, colors, vars, constraints, x, y, w, h, d, rotating) {
-    var graphID = graph3DCount + funcs + constraints + x + y + w + h + d;
+    var graphID = graph3DCount + funcs + constraints + x + w + h + d;
     if (!(graphID in graph3DStructures)) {
         var axisPos = [
             map(0, constraints[0][0], constraints[0][1], -w/2, w/2), 
