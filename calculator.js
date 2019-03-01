@@ -668,7 +668,6 @@ var graph3D = function(funcs, colors, vars, constraints, x, y, w, h, d, rotating
         id += colors[funcIdx];
         id += graph3DCount;
         id += x;
-        id += y;
         id += w;
         id += h;
         id += d;
